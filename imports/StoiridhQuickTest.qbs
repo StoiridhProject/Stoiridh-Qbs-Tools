@@ -17,53 +17,39 @@
 //                                                                                                //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 import qbs 1.0
-import qbs.File
 import qbs.FileInfo
 
 StoiridhQuickProduct {
-    type: ["application", "autotest", "qtquick-test"]
+    type: ['application', 'autotest']
     targetName: "tst_" + testName
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Properties                                                                                //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     property string testName: ""
+    property path quickTestSourceDirectory: FileInfo.joinPaths(product.sourceDirectory, 'qml')
+
+    readonly property bool isAbsolutePath: FileInfo.isAbsolutePath(quickTestSourceDirectory)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Dependencies                                                                              //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    Depends { name: "Qt"; submodules: ["testlib", "quicktest"] }
+    Depends { name: 'Qt.qmltest' }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Configuration                                                                             //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    Qt.quicktest.sourceDirectory: FileInfo.joinPaths(product.sourceDirectory, "qml")
-
+    Properties {
+        condition: quickTestSourceDirectory !== undefined && isAbsolutePath
+        cpp.defines: ['QUICK_TEST_SOURCE_DIR="' + quickTestSourceDirectory + '"']
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  QML                                                                                       //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     Group {
         name: "QML"
-        prefix: "qml/"
-        files: "*.qml"
-        fileTags: ["qml"]
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Rules                                                                                     //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    Rule {
-        inputs: ['qml']
-
-        Artifact {
-            filePath: FileInfo.joinPaths("qml", input.fileName)
-            fileTags: ['qtquick-test']
-        }
-
-        prepare: {
-            var cmd = new JavaScriptCommand();
-            cmd.silent = true;
-            cmd.sourceCode = function() { File.copy(input.filePath, output.filePath); };
-            return cmd;
-        }
+        prefix: 'qml/'
+        files: '*.qml'
+        fileTags: 'qml'
     }
 }

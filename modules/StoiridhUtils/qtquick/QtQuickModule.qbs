@@ -22,7 +22,7 @@ import qbs.FileInfo
 import qbs.ModUtils
 
 Module {
-    name: "qtquick"
+    name: 'qtquick'
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Properties                                                                                //
@@ -42,10 +42,10 @@ Module {
     //  Validate                                                                                  //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     validate: {
-        var validator = new ModUtils.PropertyValidator("qtquick");
-        validator.setRequiredProperty("uri", uri);
-        validator.setRequiredProperty("qmlDir", qmlDir);
-        validator.setRequiredProperty("installDir", installDir);
+        var validator = new ModUtils.PropertyValidator('qtquick');
+        validator.setRequiredProperty('uri', uri);
+        validator.setRequiredProperty('qmlDir', qmlDir);
+        validator.setRequiredProperty('installDir', installDir);
         validator.validate();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -55,9 +55,9 @@ Module {
         inputs: ['qml']
 
         outputArtifacts: {
-            var qmlDir = ModUtils.moduleProperty(product, "qmlDir");
+            var qmlDir = ModUtils.moduleProperty(product, 'qmlDir');
             var qmlPath = FileInfo.joinPaths(product.sourceDirectory, qmlDir);
-            var installDir = ModUtils.moduleProperty(product, "installDir");
+            var installDir = ModUtils.moduleProperty(product, 'installDir');
             var path = FileInfo.joinPaths(installDir, FileInfo.relativePath(qmlPath, input.filePath));
 
             return [{fileTags: ['qtquick-plugin'], filePath: path}];
@@ -65,73 +65,13 @@ Module {
         outputFileTags: ['qtquick-plugin']
 
         prepare: {
-            var uri = ModUtils.moduleProperty(product, "uri");
+            var uri = ModUtils.moduleProperty(product, 'uri');
             var cmd = new JavaScriptCommand();
-            cmd.description = "[" + uri + "] copying " + input.fileName;
+            cmd.description = '[' + uri + '] copying ' + input.fileName;
             cmd.sourceCode = function() {
-                File.copy(input.filePath, output.filePath);
+                File.copy(input.filePath, output.filePath)
             };
             return cmd;
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    property string uri
-//    property string qmlDir: "qml"
-
-//    FileTagger {
-//        fileTags: "qml"
-//        patterns: ["*.qml", "qmldir"]
-//    }
-
-//    Rule {
-//        inputs: "qml"
-
-//        Artifact {
-//            filePath: FileInfo.relativePath(product.sourceDirectory, input.filePath)
-////            filePath: FileInfo.joinPaths(project.buildDirectory, project.installDir, "share", FileInfo.relativePath(product.sourceDirectory, input.filePath))
-//            fileTags: "qtquick-plugin"
-//        }
-
-////        Artifact {
-
-////            filePath: FileInfo.joinPaths(project.buildDirectory, project.installDir, "share", FileInfo.relativePath(product.sourceDirectory, input.filePath))
-////            fileTags: "qtquick-plugin"
-////        }
-
-//        prepare: {
-//            var cmd = new JavaScriptCommand();
-//            cmd.description = "copying " + input.fileName;
-////            cmd.description = "copying " + project.buildDirectory;
-//            cmd.highlight = "filegen";
-//            cmd.sourceCode = function() {
-////                var relPath = FileInfo.relativePath(product.sourceDirectory, FileInfo.path(input.filePath));
-////                var destDir = FileInfo.joinPaths(product.destinationDirectory, relPath, input.fileName);
-
-////                File.copy(input.filePath, destDir);
-//                print("There is a test...");
-//                print("TEST", input.filePath);
-//                print("TEST", output.filePath);
-
-//                File.copy(input.filePath, output.filePath);
-//            };
-
-//            return cmd;
-//        }
-//    }
-//}

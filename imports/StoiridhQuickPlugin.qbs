@@ -20,22 +20,21 @@ import qbs 1.0
 import qbs.FileInfo
 
 StoiridhQuickProduct {
-    type: ["dynamiclibrary", "qtquick-plugin"]
+    type: ['dynamiclibrary', 'qtquick-plugin']
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Properties                                                                                //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     property string uri: parent.name
-    property string qmlDir: "qml"
-    readonly property path installDir: FileInfo.joinPaths("lib",
-                                                          project.productName,
-                                                          "qml",
-                                                          uri.replace(".", "/"))
+    property string qmlDir: 'qml'
+
+    readonly property path installDir: FileInfo.joinPaths(project.qmlDirectory,
+                                                          uri.replace(/\./g, '/'))
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Dependencies                                                                              //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    Depends { name: "StoiridhUtils"; submodules: "qtquick" }
+    Depends { name: 'StoiridhUtils.qtquick' }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Configuration                                                                             //
@@ -49,15 +48,15 @@ StoiridhQuickProduct {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     Group {
         name: "QML"
-        prefix: "qml/"
-        files: ["**/*.qml", "qmldir"]
+        prefix: 'qml/'
+        files: ['**/*.qml', 'qmldir']
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Install                                                                                   //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     Group {
-        fileTagsFilter: "dynamiclibrary"
+        fileTagsFilter: 'dynamiclibrary'
         qbs.install: true
-        qbs.installDir: installDir
+        qbs.installDir: FileInfo.joinPaths(project.qmlDirectory, uri.replace(/\./g, '/'))
     }
 }

@@ -19,19 +19,19 @@
 import qbs 1.0
 
 StoiridhQuickProduct {
-    type: ["application"]
+    type: ['application']
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Dependencies                                                                              //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    Depends { name: "Qt.widgets" }
+    Depends { name: 'Qt.widgets' }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Install                                                                                   //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     Group {
-        fileTagsFilter: "application"
+        fileTagsFilter: product.type
         qbs.install: true
-        qbs.installDir: "bin"
+        qbs.installDir: project.binaryDirectory
     }
 }

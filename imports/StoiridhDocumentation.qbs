@@ -19,31 +19,69 @@
 import qbs 1.0
 import qbs.FileInfo
 
-Module {
-    id: quicktest
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Properties                                                                                //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    property string sourceDirectory
-
-    readonly property stringList __quiktestDefines: [
-        "QT_QMLTEST_LIB"
-    ].concat(sourceDirectory !== "" ? ['QUICK_TEST_SOURCE_DIR="' + sourceDirectory + '"']
-                                    : [])
+Product {
+    id: root
+    type: ['qdoc-html', 'qhp', 'qch']
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Dependencies                                                                              //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    Depends { name: "cpp" }
-    Depends { name: "Qt.core" }
+    Depends { name: 'Qt.core' }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //  Properties                                                                                //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    property path installDirectory: project.docDirectory
+    property path installDocsDirectory: FileInfo.joinPaths(project.sourceDirectory, 'doc')
+    property path projectDirectory: FileInfo.joinPaths(sourceDirectory, '..')
+    property path docSourceDirectory: FileInfo.joinPaths(sourceDirectory, 'src')
+    property string projectVersion: "1.0.0"
+    property string baseName
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Configuration                                                                             //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    cpp.dynamicLibraries: "Qt5QuickTest"
-    cpp.defines: __quiktestDefines
-    cpp.includePaths: FileInfo.joinPaths(Qt.core.incPath, "QtQuickTest")
+    Qt.core.qdocQhpFileName: baseName + '.qhp'
+    Qt.core.qdocEnvironment: {
+        var env = [];
+        env.push('STOIRIDH_INSTALL_DOCS=' + root.installDocsDirectory);
+        env.push('PROJECT_DIR=' + root.projectDirectory);
+        env.push('SOURCE_DIR=' + root.docSourceDirectory);
 
-    Qt.core.config: ["warn_on", "qmltestcase"]
+        var projectVersion = root.projectVersion;
+        env.push('PROJECT_VERSION=' + projectVersion);
+        env.push('PROJECT_VERSION_TAG=' + projectVersion.replace(/\./g, ''));
+
+        var docPath = Qt.core.docPath;
+        env.push('QDOC_INDEX_DIR=' + docPath);
+        env.push('QT_INSTALL_DOCS=' + docPath);
+
+        return env;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //  Sources                                                                                   //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    files: ['src/*.qdoc']
+
+    Group {
+        name: "QDoc Configuration"
+        fileTags: 'qdocconf-main'
+        files: '*.qdocconf'
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //  Install                                                                                   //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    Group {
+        condition: project.docDirectory !== undefined
+        fileTagsFilter: 'qch'
+        qbs.install: true
+        qbs.installDir: project.docDirectory
+    }
+
+    Group {
+        condition: project.docDirectory !== undefined
+        fileTagsFilter: 'qdoc-html'
+        qbs.install: true
+        qbs.installDir: FileInfo.joinPaths(project.docDirectory, baseName)
+    }
 }

@@ -19,10 +19,10 @@
 import qbs 1.0
 
 StoiridhProduct {
-    type: ["dynamiclibrary", "plugin"]
+    type: ['dynamiclibrary', 'plugin']
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Dependencies                                                                              //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    Depends { name: "Qt"; submodules: ["core", "gui"] }
+    Depends { name: 'Qt'; submodules: ['core', 'gui'] }
 }

@@ -30,6 +30,7 @@ StoiridhQuickProduct {
     //  Install                                                                                   //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     Group {
+        condition: project.binaryDirectory !== undefined
         fileTagsFilter: product.type
         qbs.install: true
         qbs.installDir: project.binaryDirectory

@@ -49,7 +49,7 @@ StoiridhQuickProduct {
     Group {
         name: "QML"
         prefix: 'qml/'
-        files: ['**/*.qml', 'qmldir']
+        files: ['**/*.qml', '**/qmldir']
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Install                                                                                   //

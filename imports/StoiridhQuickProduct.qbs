@@ -17,6 +17,7 @@
 //                                                                                                //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 import qbs 1.0
+import qbs.FileInfo
 
 StoiridhProduct {
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,4 +29,5 @@ StoiridhProduct {
     //  Configuration                                                                             //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     Qt.quick.qmlDebugging: qbs.buildVariant === 'debug'
+    Qt.quick.qmlImportsPath: FileInfo.joinPaths(qbs.installRoot, project.qmlDirectory)
 }

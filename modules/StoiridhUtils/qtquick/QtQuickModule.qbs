@@ -23,20 +23,27 @@ import qbs.ModUtils
 
 Module {
     name: 'qtquick'
+    additionalProductTypes: ['copied_qml_files', 'copied_qmldir_files']
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Properties                                                                                //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     property string uri
-    property string qmlDir
-    property string installDir
+    property string importVersion
+    property string qmlSourceDirectory
+    property string installDirectory
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  FileTagger                                                                                //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     FileTagger {
         fileTags: 'qml'
-        patterns: ['*.qml', 'qmldir']
+        patterns: ['*.qml']
+    }
+
+    FileTagger {
+        fileTags: 'qmldir'
+        patterns: ['qmldir']
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Validate                                                                                  //
@@ -44,33 +51,51 @@ Module {
     validate: {
         var validator = new ModUtils.PropertyValidator('qtquick');
         validator.setRequiredProperty('uri', uri);
-        validator.setRequiredProperty('qmlDir', qmlDir);
-        validator.setRequiredProperty('installDir', installDir);
+        validator.setRequiredProperty('importVersion', importVersion);
+        validator.setRequiredProperty('qmlSourceDirectory', qmlSourceDirectory);
+        validator.setRequiredProperty('installDirectory', installDirectory);
         validator.validate();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Rules                                                                                     //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     Rule {
-        inputs: ['qml']
+        inputs: ['qml', 'qmldir']
 
+        outputFileTags: ['copied_qml_files', 'copied_qmldir_files']
         outputArtifacts: {
-            var qmlDir = ModUtils.moduleProperty(product, 'qmlDir');
-            var qmlPath = FileInfo.joinPaths(product.sourceDirectory, qmlDir);
-            var installDir = ModUtils.moduleProperty(product, 'installDir');
-            var path = FileInfo.joinPaths(installDir, FileInfo.relativePath(qmlPath, input.filePath));
+            var uri = ModUtils.moduleProperty(product, 'uri');
+            var qmlSourceDirectory = ModUtils.moduleProperty(product, 'qmlSourceDirectory');
+            var installDirectory = FileInfo.joinPaths(ModUtils.moduleProperty(product, 'installDirectory'),
+                                                      uri.replace(/\./g, '/'));
+            var filePath = FileInfo.joinPaths(installDirectory, FileInfo.relativePath(qmlSourceDirectory,
+                                                                                input.filePath));
+            var artifacts = [];
 
-            return [{fileTags: ['qtquick-plugin'], filePath: path}];
+            if (input.fileTags.contains('qmldir')) {
+                artifacts.push({ filePath: filePath, fileTags: ['copied_qmldir_files'] });
+            } else {
+                artifacts.push({ filePath: filePath, fileTags: ['copied_qml_files'] });
+            }
+
+            return artifacts;
         }
-        outputFileTags: ['qtquick-plugin']
 
         prepare: {
             var uri = ModUtils.moduleProperty(product, 'uri');
+            var qmlSourceDirectory = ModUtils.moduleProperty(product, 'qmlSourceDirectory');
+            var subdirectory = FileInfo.path(FileInfo.relativePath(qmlSourceDirectory,
+                                                                   input.filePath));
+
+            if (subdirectory !== '.')
+                uri += '.' + subdirectory;
+
             var cmd = new JavaScriptCommand();
             cmd.description = '[' + uri + '] copying ' + input.fileName;
             cmd.sourceCode = function() {
                 File.copy(input.filePath, output.filePath)
             };
+
             return cmd;
         }
     }

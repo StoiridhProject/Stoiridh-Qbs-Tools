@@ -19,57 +19,83 @@
 import qbs 1.0
 import qbs.File
 import qbs.FileInfo
+import qbs.Process
+import Stoiridh.Utils
 
-StoiridhQuickProduct {
-    type: ['dynamiclibrary']
-
+Probe {
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Properties                                                                                //
+    //  Input properties                                                                          //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    property string uri: parent.name
-    property string qmlDirectory: 'qml'
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Dependencies                                                                              //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    Depends { name: 'StoiridhUtils.qtquick' }
+    property string minimumVersion
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Configuration                                                                             //
+    //  Output properties                                                                         //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    StoiridhUtils.qtquick.uri: uri
-    StoiridhUtils.qtquick.importVersion: version
-    StoiridhUtils.qtquick.qmlSourceDirectory: FileInfo.joinPaths(product.sourceDirectory, qmlDirectory)
-    StoiridhUtils.qtquick.installDirectory: FileInfo.joinPaths(qbs.installRoot, project.qmlDirectory)
+    property path path
+    property path filePath
+    property string version
 
-    /*! \internal */
-    StoiridhUtils.qtquick.pythonModuleFilePath: {
-        var qbsSearchPaths = project.qbsSearchPaths;
-        for (var i in qbsSearchPaths) {
-            var filePath = FileInfo.joinPaths(project.sourceDirectory, qbsSearchPaths[i],
-                                              'python/stoiridh.py');
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //  Configure                                                                                 //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    configure: {
+        var environmentPaths = qbs.getEnv('PATH').split(qbs.pathListSeparator);
+        var filePaths = [];
 
-            if (File.exists(filePath) && FileInfo.isAbsolutePath(filePath))
-                return filePath;
+        if (qbs.hostOS.contains('linux')) {
+            var fileNames = ['python', 'python2', 'python3'];
+
+            for (var i in fileNames) {
+                var fp = FileInfo.joinPaths('/usr/bin', fileNames[i]);
+
+                if (File.exists(fp))
+                    filePaths.push(fp);
+            }
+        } else if (qbs.hostOS.contains('windows')) {
+            var fileNames = ['python.exe', 'py.exe'];
+
+            for (var i in fileNames) {
+                for (var j in environmentPaths) {
+                    var fp = FileInfo.joinPaths(environmentPaths[j], fileNames[i]);
+
+                    if (File.exists(fp) && FileInfo.isAbsolutePath(fp))
+                        filePaths.push(fp);
+                }
+            }
+
+            // Python not found in the environment paths, try Windows directory instead.
+            if (filePaths.length === 0) {
+                var fp = FileInfo.joinPaths(qbs.getEnv('WINDIR'), 'py.exe');
+
+                if (File.exists(fp) && FileInfo.isAbsolutePath(fp))
+                    filePaths.push(fp);
+            }
         }
 
-        return undefined;
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  QML                                                                                       //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    Group {
-        name: "QML"
-        prefix: 'qml/'
-        files: ['**/*.qml', '**/qmldir', '**/plugins.qmltypes']
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Install                                                                                   //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    Group {
-        condition: project.qmlDirectory !== undefined
-        fileTagsFilter: ['dynamiclibrary']
-        qbs.install: true
-        qbs.installDir: FileInfo.joinPaths(project.qmlDirectory, uri.replace(/\./g, '/'))
+        // checks the versions of python
+        for (var i in filePaths) {
+            var process;
+            var output = '';
+            try {
+                process = new Process();
+                process.exec(filePaths[i], ['--version'], true);
+                output = process.readStdOut().split('\n')[0];
+            } catch (e) {
+                print(e.fileName + ':' + e.lineNumber + ':', e.message);
+            } finally {
+                if (process)
+                    process.close();
+            }
+
+            var v = Utils.checkVersion(output, minimumVersion);
+
+            if (v.isValid) {
+                filePath = filePaths[i];
+                path = FileInfo.path(filePath);
+                version = v.version;
+                found = true;
+                break;
+            }
+        }
     }
 }

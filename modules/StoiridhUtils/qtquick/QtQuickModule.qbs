@@ -23,8 +23,24 @@ import qbs.ModUtils
 
 Module {
     name: 'qtquick'
-    additionalProductTypes: ['copied_qml_files', 'copied_qmldir_files']
+    additionalProductTypes: ['qml-data']
 
+    Properties {
+        condition: (!qbs.hostOS.contains('windows')
+                    || (qbs.hostOS.contains('windows') && qbs.buildVariant === 'release'))
+        additionalProductTypes: outer.concat(['stoiridh-internal-python-process'])
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //  Dependencies                                                                              //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    Depends {
+        id: python
+        condition: (!qbs.hostOS.contains('windows')
+                    || (qbs.hostOS.contains('windows') && qbs.buildVariant === 'release'))
+        name: 'Python'
+        required: true
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Properties                                                                                //
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -33,6 +49,21 @@ Module {
     property string qmlSourceDirectory
     property string installDirectory
 
+    /*! \internal */
+    property path pythonModuleFilePath
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //  Validate                                                                                  //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    validate: {
+        var validator = new ModUtils.PropertyValidator('qtquick');
+        validator.setRequiredProperty('uri', uri);
+        validator.setRequiredProperty('importVersion', importVersion);
+        validator.setRequiredProperty('qmlSourceDirectory', qmlSourceDirectory);
+        validator.setRequiredProperty('installDirectory', installDirectory);
+        validator.setRequiredProperty('pythonModuleFilePath', pythonModuleFilePath);
+        validator.validate();
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  FileTagger                                                                                //
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,40 +76,28 @@ Module {
         fileTags: 'qmldir'
         patterns: ['qmldir']
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Validate                                                                                  //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    validate: {
-        var validator = new ModUtils.PropertyValidator('qtquick');
-        validator.setRequiredProperty('uri', uri);
-        validator.setRequiredProperty('importVersion', importVersion);
-        validator.setRequiredProperty('qmlSourceDirectory', qmlSourceDirectory);
-        validator.setRequiredProperty('installDirectory', installDirectory);
-        validator.validate();
+
+    FileTagger {
+        fileTags: 'qmltypes'
+        patterns: ['*.qmltypes']
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Rules                                                                                     //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     Rule {
-        inputs: ['qml', 'qmldir']
+        inputs: ['qml', 'qmldir', 'qmltypes']
 
-        outputFileTags: ['copied_qml_files', 'copied_qmldir_files']
-        outputArtifacts: {
-            var uri = ModUtils.moduleProperty(product, 'uri');
-            var qmlSourceDirectory = ModUtils.moduleProperty(product, 'qmlSourceDirectory');
-            var installDirectory = FileInfo.joinPaths(ModUtils.moduleProperty(product, 'installDirectory'),
-                                                      uri.replace(/\./g, '/'));
-            var filePath = FileInfo.joinPaths(installDirectory, FileInfo.relativePath(qmlSourceDirectory,
-                                                                                input.filePath));
-            var artifacts = [];
+        Artifact {
+            fileTags: ['qml-data']
+            filePath: {
+                var uri = ModUtils.moduleProperty(product, 'uri');
+                var qmlSourceDirectory = ModUtils.moduleProperty(product, 'qmlSourceDirectory');
+                var id = ModUtils.moduleProperty(product, 'installDirectory');
+                var installDirectory = FileInfo.joinPaths(id, uri.replace(/\./g, '/'));
+                var irfp = FileInfo.relativePath(qmlSourceDirectory, input.filePath);
 
-            if (input.fileTags.contains('qmldir')) {
-                artifacts.push({ filePath: filePath, fileTags: ['copied_qmldir_files'] });
-            } else {
-                artifacts.push({ filePath: filePath, fileTags: ['copied_qml_files'] });
+                return FileInfo.joinPaths(installDirectory, irfp);
             }
-
-            return artifacts;
         }
 
         prepare: {
@@ -93,9 +112,41 @@ Module {
             var cmd = new JavaScriptCommand();
             cmd.description = '[' + uri + '] copying ' + input.fileName;
             cmd.sourceCode = function() {
-                File.copy(input.filePath, output.filePath)
+                File.copy(input.filePath, output.filePath);
             };
 
+            return cmd;
+        }
+    }
+
+    Rule {
+        condition: python.found && python.condition
+        inputs: ['qml-data']
+
+        Artifact {
+            fileTags: ['stoiridh-internal-python-process']
+            filePath: '.deps'
+            alwaysUpdated: false
+        }
+
+        prepare: {
+            var python = product.moduleProperty('Python', 'filePath');
+            var script = ModUtils.moduleProperty(product, 'pythonModuleFilePath');
+
+            // arguments
+            var qtBinPath = product.moduleProperty('Qt.core', 'binPath');
+            var uri = ModUtils.moduleProperty(product, 'uri');
+            var importVersion = ModUtils.moduleProperty(product, 'importVersion');
+            var id = ModUtils.moduleProperty(product, 'installDirectory');
+            var installDirectory = FileInfo.joinPaths(id, uri.replace(/\./g, '/'));
+
+            var args = [script, 'dump', '--qtbindir', qtBinPath, uri, importVersion,
+                        installDirectory];
+
+            var cmd = new Command(python, args);
+            cmd.silent = true;
+            cmd.description = 'running python process for ' + uri;
+            cmd.highlight = 'filegen';
             return cmd;
         }
     }

@@ -22,14 +22,9 @@ import qbs.FileInfo
 import qbs.ModUtils
 
 Module {
+    id: module
     name: 'qtquick'
     additionalProductTypes: ['qml-data']
-
-    Properties {
-        condition: (!qbs.hostOS.contains('windows')
-                    || (qbs.hostOS.contains('windows') && qbs.buildVariant === 'release'))
-        additionalProductTypes: outer.concat(['stoiridh-internal-python-process'])
-    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Dependencies                                                                              //
@@ -38,6 +33,7 @@ Module {
         id: python
         condition: (!qbs.hostOS.contains('windows')
                     || (qbs.hostOS.contains('windows') && qbs.buildVariant === 'release'))
+
         name: 'Python'
         required: true
     }
@@ -52,6 +48,10 @@ Module {
     /*! \internal */
     property path pythonModuleFilePath
 
+    Properties {
+        condition: python.condition
+        additionalProductTypes: outer.concat(['stoiridh-internal-python-process'])
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Validate                                                                                  //
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,7 +61,6 @@ Module {
         validator.setRequiredProperty('importVersion', importVersion);
         validator.setRequiredProperty('qmlSourceDirectory', qmlSourceDirectory);
         validator.setRequiredProperty('installDirectory', installDirectory);
-        validator.setRequiredProperty('pythonModuleFilePath', pythonModuleFilePath);
         validator.validate();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -120,7 +119,7 @@ Module {
     }
 
     Rule {
-        condition: python.found && python.condition
+        condition: File.exists(pythonModuleFilePath) && python.condition && python.found
         inputs: ['qml-data']
 
         Artifact {

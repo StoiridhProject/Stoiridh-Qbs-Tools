@@ -20,6 +20,7 @@ import qbs 1.0
 import qbs.File
 import qbs.FileInfo
 import qbs.ModUtils
+import Stoiridh.Utils
 
 Module {
     id: module
@@ -64,7 +65,7 @@ Module {
         validator.validate();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  FileTagger                                                                                //
+    //  FileTaggers                                                                               //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     FileTagger {
         fileTags: 'qml'
@@ -84,6 +85,7 @@ Module {
     //  Rules                                                                                     //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     Rule {
+        condition: Utils.isValidProperty(module.installDirectory)
         inputs: ['qml', 'qmldir', 'qmltypes']
 
         Artifact {

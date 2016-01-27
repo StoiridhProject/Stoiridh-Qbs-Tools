@@ -17,11 +17,15 @@
 //                                                                                                //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 import qbs 1.0
+import Stoiridh.QtQuick
+import Stoiridh.Utils
 
-StoiridhQuickTest {
+QtQuick.Product {
+    type: ['application']
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Dependencies                                                                              //
+    //  Install                                                                                   //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    Depends { name: 'Qt.test' }
+    install: Utils.isValidProperty(project.binaryDirectory)
+    installDirectory: project.binaryDirectory
 }

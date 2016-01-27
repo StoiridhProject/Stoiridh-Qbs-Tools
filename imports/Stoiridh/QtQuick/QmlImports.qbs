@@ -16,44 +16,35 @@
 //            along with this program.  If not, see <http://www.gnu.org/licenses/>.               //
 //                                                                                                //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-var Version = loadExtension('Stoiridh.Utils.Version');
+import qbs 1.0
+import qbs.FileInfo
 
-function checkVersion(input, minimum) {
-    try {
-        var inputVersion = Version.VersionNumber.fromString(input);
-        var minimumVersion = Version.VersionNumber.fromString(minimum);
-    } catch (e) {
-        print(e.fileName + ':' + e.lineNumber + ':', e.message);
+Product {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //  Properties                                                                                //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    property string uri
+    property string qmlDirectory: 'qml'
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //  Dependencies                                                                              //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    Depends { name: 'StoiridhUtils.qtquick' }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //  Configuration                                                                             //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    StoiridhUtils.qtquick.uri: uri
+    StoiridhUtils.qtquick.importVersion: version
+    StoiridhUtils.qtquick.qmlSourceDirectory: FileInfo.joinPaths(product.sourceDirectory, qmlDirectory)
+    StoiridhUtils.qtquick.installDirectory: FileInfo.joinPaths(qbs.installRoot, project.qmlDirectory)
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //  QML                                                                                       //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    Group {
+        name: "QML"
+        prefix: qmlDirectory
+        files: ['/**/*.qml', '/**/qmldir']
     }
-
-    return {
-        isValid: (inputVersion.compareTo(minimumVersion) >= 0),
-        version: inputVersion.toString()
-    };
-}
-
-/* Checks if the given \a inputs are valid properties. */
-function isValidProperties(inputs) {
-    if (Array.isArray(inputs)) {
-        for (var i in inputs) {
-            if (!isValidProperty(inputs[i])) {
-                return false;
-            }
-        }
-    } else {
-        throw "isValidProperties: inputs parameter must be an array!";
-    }
-
-    return true;
-}
-
-/* Checks if the given \a input is a valid property. */
-function isValidProperty(input) {
-    if (input === undefined || input === null) {
-        return false;
-    } else if (typeof input === 'string' && input === '') {
-        return false;
-    }
-
-    return true;
 }

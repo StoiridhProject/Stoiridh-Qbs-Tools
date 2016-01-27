@@ -17,19 +17,11 @@
 //                                                                                                //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 import qbs 1.0
+import Stoiridh.Qt
 
-StoiridhProduct {
-    type: ['dynamiclibrary']
-
+Qt.GuiApplication {
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Install                                                                                   //
+    //  Dependencies                                                                              //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    Group {
-        condition: (project.librariesDirectory !== undefined
-                    || project.binaryDirectory !== undefined)
-        fileTagsFilter: product.type
-        qbs.install: true
-        qbs.installDir: qbs.targetOS.contains('windows') ? project.binaryDirectory
-                                                         : project.librariesDirectory
-    }
+    Depends { name: 'Qt.widgets' }
 }

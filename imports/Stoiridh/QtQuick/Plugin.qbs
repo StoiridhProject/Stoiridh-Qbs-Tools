@@ -17,35 +17,57 @@
 //                                                                                                //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 import qbs 1.0
+import qbs.File
 import qbs.FileInfo
+import Stoiridh.QtQuick
+import Stoiridh.Utils
 
-StoiridhQuickTest {
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Dependencies                                                                              //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    Depends { name: 'Qt.qmltest' }
+QtQuick.DynamicLibrary {
+    type: ['qtquick-plugin'].concat(base)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Properties                                                                                //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    property path quickTestSourceDirectory: FileInfo.joinPaths(product.sourceDirectory, 'qml')
-    readonly property bool isAbsolutePath: FileInfo.isAbsolutePath(quickTestSourceDirectory)
+    property string uri: parent.name
+    property string qmlDirectory: 'qml'
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //  Dependencies                                                                              //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    Depends { name: 'StoiridhUtils.qtquick' }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Configuration                                                                             //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    Properties {
-        condition: quickTestSourceDirectory !== undefined && isAbsolutePath
-        cpp.defines: ['QUICK_TEST_SOURCE_DIR="' + quickTestSourceDirectory + '"']
+    StoiridhUtils.qtquick.uri: uri
+    StoiridhUtils.qtquick.importVersion: version
+    StoiridhUtils.qtquick.qmlSourceDirectory: FileInfo.joinPaths(product.sourceDirectory, qmlDirectory)
+    StoiridhUtils.qtquick.installDirectory: FileInfo.joinPaths(qbs.installRoot, project.qmlDirectory)
+
+    /*! \internal */
+    StoiridhUtils.qtquick.pythonModuleFilePath: {
+        var qbsSearchPaths = project.qbsSearchPaths;
+        for (var i in qbsSearchPaths) {
+            var filePath = FileInfo.joinPaths(project.sourceDirectory, qbsSearchPaths[i],
+                                              'python/stoiridh.py');
+
+            if (File.exists(filePath) && FileInfo.isAbsolutePath(filePath))
+                return filePath;
+        }
+
+        return undefined;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  QML                                                                                       //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     Group {
         name: "QML"
-        prefix: 'qml/'
-        files: '*.qml'
-        fileTags: 'qml'
+        prefix: qmlDirectory
+        files: ['/**/*.qml', '/**/qmldir', '/**/plugins.qmltypes']
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //  Install                                                                                   //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    install: Utils.isValidProperty(project.qmlDirectory)
+    installDirectory: FileInfo.joinPaths(project.qmlDirectory, uri.replace(/\./g, '/'))
 }

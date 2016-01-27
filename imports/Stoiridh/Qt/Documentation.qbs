@@ -18,6 +18,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 import qbs 1.0
 import qbs.FileInfo
+import Stoiridh.Utils
 
 Product {
     id: root
@@ -72,14 +73,14 @@ Product {
     //  Install                                                                                   //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     Group {
-        condition: project.docDirectory !== undefined
+        condition: Utils.isValidProperty(project.docDirectory)
         fileTagsFilter: 'qch'
         qbs.install: true
         qbs.installDir: project.docDirectory
     }
 
     Group {
-        condition: project.docDirectory !== undefined
+        condition: Utils.isValidProperty(project.docDirectory)
         fileTagsFilter: 'qdoc-html'
         qbs.install: true
         qbs.installDir: FileInfo.joinPaths(project.docDirectory, baseName)

@@ -17,18 +17,8 @@
 //                                                                                                //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 import qbs 1.0
-import qbs.FileInfo
+import Stoiridh.Qt
 
-StoiridhProduct {
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Dependencies                                                                              //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    Depends { name: 'Qt'; submodules: ['core', 'gui', 'qml', 'quick'] }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Configuration                                                                             //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    Qt.quick.qmlDebugging: qbs.buildVariant === 'debug'
-    Qt.quick.qmlImportsPath: FileInfo.joinPaths(qbs.installRoot, project.qmlDirectory)
-    qmlImportPaths: FileInfo.joinPaths(qbs.installRoot, project.qmlDirectory)
+Qt.DynamicLibrary {
+    type: ['qt-plugin'].concat(base)
 }

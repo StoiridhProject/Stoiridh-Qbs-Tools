@@ -17,35 +17,16 @@
 //                                                                                                //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 import qbs 1.0
-import qbs.FileInfo
+import Stoiridh.Cpp
+import Stoiridh.Utils
 
-Product {
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Properties                                                                                //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    property string uri
-    property string qmlDirectory: 'qml'
+Cpp.BaseProduct {
+    type: ['dynamiclibrary']
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Dependencies                                                                              //
+    //  Install                                                                                   //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    Depends { name: 'StoiridhUtils.qtquick' }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Configuration                                                                             //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    StoiridhUtils.qtquick.uri: uri
-    StoiridhUtils.qtquick.importVersion: version
-    StoiridhUtils.qtquick.qmlSourceDirectory: FileInfo.joinPaths(product.sourceDirectory, qmlDirectory)
-    StoiridhUtils.qtquick.installDirectory: FileInfo.joinPaths(qbs.installRoot, project.qmlDirectory)
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  QML                                                                                       //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    Group {
-        name: "QML"
-        prefix: qmlDirectory
-        files: ['/**/*.qml', '/**/qmldir']
-    }
+    install: Utils.isValidProperties([project.binaryDirectory, project.librariesDirectory])
+    installDirectory: qbs.targetOS.contains('windows') ? project.binaryDirectory
+                                                       : project.librariesDirectory
 }

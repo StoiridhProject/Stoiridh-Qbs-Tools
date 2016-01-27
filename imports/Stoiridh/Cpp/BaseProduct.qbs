@@ -16,44 +16,33 @@
 //            along with this program.  If not, see <http://www.gnu.org/licenses/>.               //
 //                                                                                                //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-var Version = loadExtension('Stoiridh.Utils.Version');
+import qbs 1.0
 
-function checkVersion(input, minimum) {
-    try {
-        var inputVersion = Version.VersionNumber.fromString(input);
-        var minimumVersion = Version.VersionNumber.fromString(minimum);
-    } catch (e) {
-        print(e.fileName + ':' + e.lineNumber + ':', e.message);
+Product {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //  Properties                                                                                //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    property bool install: false
+    property string installDirectory
+    property stringList installFileTagsFilter: type
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //  Dependencies                                                                              //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    Depends { name: 'cpp' }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //  Configuration                                                                             //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    cpp.cxxLanguageVersion: 'c++14'
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //  Install (Adapter)                                                                         //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    Group {
+        condition: product.install
+        fileTagsFilter: product.installFileTagsFilter
+        qbs.install: true
+        qbs.installDir: product.installDirectory
     }
-
-    return {
-        isValid: (inputVersion.compareTo(minimumVersion) >= 0),
-        version: inputVersion.toString()
-    };
-}
-
-/* Checks if the given \a inputs are valid properties. */
-function isValidProperties(inputs) {
-    if (Array.isArray(inputs)) {
-        for (var i in inputs) {
-            if (!isValidProperty(inputs[i])) {
-                return false;
-            }
-        }
-    } else {
-        throw "isValidProperties: inputs parameter must be an array!";
-    }
-
-    return true;
-}
-
-/* Checks if the given \a input is a valid property. */
-function isValidProperty(input) {
-    if (input === undefined || input === null) {
-        return false;
-    } else if (typeof input === 'string' && input === '') {
-        return false;
-    }
-
-    return true;
 }

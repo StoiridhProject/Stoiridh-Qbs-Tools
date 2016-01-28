@@ -27,13 +27,15 @@ Module {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     Probes.PythonProbe {
         id: pythonProbe
-        minimumVersion: '3.5.0'
+        minimumVersion: minimumVersionRequired
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Properties                                                                                //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    property bool found: pythonProbe.found
-    property path path: pythonProbe.path
-    property path filePath: pythonProbe.filePath
-    property string version: pythonProbe.version
+    readonly property bool found: pythonProbe.found
+    readonly property path path: pythonProbe.path
+    readonly property path filePath: pythonProbe.filePath
+    readonly property string version: pythonProbe.version
+
+    property string minimumVersionRequired: '3.5.0'
 }

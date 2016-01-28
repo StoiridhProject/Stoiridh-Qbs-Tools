@@ -56,7 +56,8 @@ Probe {
 
             for (var i in fileNames) {
                 for (var j in environmentPaths) {
-                    var fp = FileInfo.joinPaths(environmentPaths[j], fileNames[i]);
+                    var fp = FileInfo.joinPaths(FileInfo.fromWindowsSeparators(environmentPaths[j]),
+                                                fileNames[i]);
 
                     if (File.exists(fp) && FileInfo.isAbsolutePath(fp))
                         filePaths.push(fp);
@@ -65,7 +66,8 @@ Probe {
 
             // Python not found in the environment paths, try Windows directory instead.
             if (filePaths.length === 0) {
-                var fp = FileInfo.joinPaths(qbs.getEnv('WINDIR'), 'py.exe');
+                var fp = FileInfo.joinPaths(FileInfo.fromWindowsSeparators(qbs.getEnv('WINDIR')),
+                                            'py.exe');
 
                 if (File.exists(fp) && FileInfo.isAbsolutePath(fp))
                     filePaths.push(fp);

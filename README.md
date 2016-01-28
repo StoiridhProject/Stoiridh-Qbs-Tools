@@ -1,6 +1,8 @@
 # Stòiridh Qbs Configuration
 
-Stòiridh Qbs Configuration is a toolset for Qbs-based projects to make easier the creating and installing of your projects.
+Stòiridh Qbs Configuration is a toolset for Qbs-based projects to make easier the creation, the configuration, and the installation of your projects.
+
+For more information about the project, you can cast a glance at the  [wiki](https://github.com/viprip/Stoiridh-Qbs-Configuration/wiki).
 
 ## Example
 

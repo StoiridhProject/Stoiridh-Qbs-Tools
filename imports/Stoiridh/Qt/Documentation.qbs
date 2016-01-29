@@ -22,17 +22,15 @@ import Stoiridh.Utils
 
 Product {
     id: root
-    type: ['qdoc-html', 'qhp', 'qch']
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Dependencies                                                                              //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    Depends { name: 'Qt.core' }
+    Depends { name: 'StoiridhUtils.Qt.Documentation' }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Properties                                                                                //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    property path installDirectory: project.docDirectory
     property path installDocsDirectory: FileInfo.joinPaths(project.sourceDirectory, 'doc')
     property path projectDirectory: FileInfo.joinPaths(sourceDirectory, '..')
     property path docSourceDirectory: FileInfo.joinPaths(sourceDirectory, 'src')
@@ -42,23 +40,17 @@ Product {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Configuration                                                                             //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    Qt.core.qdocQhpFileName: baseName + '.qhp'
-    Qt.core.qdocEnvironment: {
-        var env = [];
-        env.push('STOIRIDH_INSTALL_DOCS=' + root.installDocsDirectory);
-        env.push('PROJECT_DIR=' + root.projectDirectory);
-        env.push('SOURCE_DIR=' + root.docSourceDirectory);
+    StoiridhUtils.Qt.Documentation.baseName: baseName
+    StoiridhUtils.Qt.Documentation.installDocsDirectory: installDocsDirectory
+    StoiridhUtils.Qt.Documentation.projectDirectory: projectDirectory
+    StoiridhUtils.Qt.Documentation.sourceDirectory: docSourceDirectory
+    StoiridhUtils.Qt.Documentation.projectVersion: projectVersion
 
-        var projectVersion = root.projectVersion;
-        env.push('PROJECT_VERSION=' + projectVersion);
-        env.push('PROJECT_VERSION_TAG=' + projectVersion.replace(/\./g, ''));
+    StoiridhUtils.Qt.Documentation.installDirectory: FileInfo.joinPaths(qbs.installRoot,
+                                                                        project.docDirectory)
+    /*! \internal */
+    StoiridhUtils.Qt.Documentation.qbsSearchPaths: project.qbsSearchPaths
 
-        var docPath = Qt.core.docPath;
-        env.push('QDOC_INDEX_DIR=' + docPath);
-        env.push('QT_INSTALL_DOCS=' + docPath);
-
-        return env;
-    }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Sources                                                                                   //
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,21 +60,5 @@ Product {
         name: "QDoc Configuration"
         fileTags: 'qdocconf-main'
         files: '*.qdocconf'
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Install                                                                                   //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    Group {
-        condition: Utils.isValidProperty(project.docDirectory)
-        fileTagsFilter: 'qch'
-        qbs.install: true
-        qbs.installDir: project.docDirectory
-    }
-
-    Group {
-        condition: Utils.isValidProperty(project.docDirectory)
-        fileTagsFilter: 'qdoc-html'
-        qbs.install: true
-        qbs.installDir: FileInfo.joinPaths(project.docDirectory, baseName)
     }
 }

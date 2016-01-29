@@ -21,12 +21,21 @@
 import argparse
 
 from stoiridh.module import qml
+from stoiridh import qt as Qt
 
 
 def parse_arguments():
     """Parses and returns the arguments given by the command-line."""
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(dest='subcommand', help="Subcommands help")
+
+    # doc: allows to move the generated help content to the target directory
+    doc = subparsers.add_parser('doc', description="""Move the source (e.g.,'html' directory and
+                                                      *.qch files) directory to target
+                                                      directory.""")
+    doc.add_argument('name', help="directory name where the help files will be move")
+    doc.add_argument('source', help="source directory where the help files have been generated")
+    doc.add_argument('target', help="target directory to install the generated help files")
 
     # dump: allows to dump a qml module and generate its 'plugins.qmltypes' file
     dp = subparsers.add_parser('dump')
@@ -41,7 +50,18 @@ def parse_arguments():
 if __name__ == '__main__':
     args = parse_arguments()
 
-    if args.subcommand == 'dump':
+    if args.subcommand == 'doc':
+        doc = Qt.Documentation(args.name, args.source, args.target)
+
+        try:
+            doc.install()
+        except Qt.HtmlDirectoryNotFound as e:
+            print(e)
+            exit(0)
+        except (NotADirectoryError, OSError) as e:
+            print(e)
+            exit(1)
+    elif args.subcommand == 'dump':
         module = qml.Module(args.name, args.version, args.path)
         module.qt_binary_dir = args.qtbindir
 

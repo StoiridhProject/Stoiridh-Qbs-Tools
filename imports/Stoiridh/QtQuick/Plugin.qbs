@@ -41,22 +41,15 @@ QtQuick.DynamicLibrary {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     StoiridhUtils.qtquick.uri: uri
     StoiridhUtils.qtquick.importVersion: version
-    StoiridhUtils.qtquick.qmlSourceDirectory: FileInfo.joinPaths(product.sourceDirectory, qmlDirectory)
-    StoiridhUtils.qtquick.installDirectory: FileInfo.joinPaths(qbs.installRoot, project.qmlDirectory)
+    StoiridhUtils.qtquick.qmlSourceDirectory: FileInfo.joinPaths(product.sourceDirectory,
+                                                                 qmlDirectory)
+
+    StoiridhUtils.qtquick.installDirectory: FileInfo.joinPaths(qbs.installRoot,
+                                                               project.qmlDirectory)
 
     /*! \internal */
-    StoiridhUtils.qtquick.pythonModuleFilePath: {
-        var qbsSearchPaths = project.qbsSearchPaths;
-        for (var i in qbsSearchPaths) {
-            var filePath = FileInfo.joinPaths(project.sourceDirectory, qbsSearchPaths[i],
-                                              'python/stoiridh.py');
+    StoiridhUtils.qtquick.qbsSearchPaths: project.qbsSearchPaths
 
-            if (File.exists(filePath) && FileInfo.isAbsolutePath(filePath))
-                return filePath;
-        }
-
-        return undefined;
-    }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  QML                                                                                       //
     ////////////////////////////////////////////////////////////////////////////////////////////////

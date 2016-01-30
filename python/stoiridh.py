@@ -20,7 +20,6 @@
 ####################################################################################################
 import argparse
 
-from stoiridh.module import qml
 from stoiridh import qt as Qt
 
 
@@ -41,7 +40,7 @@ def parse_arguments():
     dp = subparsers.add_parser('dump')
     dp.add_argument('--qtbindir', required=True, help="Qt's binary directory")
     dp.add_argument('name', help="name of the QML module")
-    dp.add_argument('version', help='version of the QML module')
+    dp.add_argument('version', help="version of the QML module")
     dp.add_argument('path', help="root path of the QML module containing the qmldir file")
 
     return parser.parse_args()
@@ -62,12 +61,12 @@ if __name__ == '__main__':
             print(e)
             exit(1)
     elif args.subcommand == 'dump':
-        module = qml.Module(args.name, args.version, args.path)
+        module = Qt.quick.Module(args.name, args.version, args.path)
         module.qt_binary_dir = args.qtbindir
 
         try:
             module.dump()
-        except qml.PluginNotFoundError as e:
+        except Qt.quick.PluginNotFoundError as e:
             print(e)
             exit(0)
         except (FileNotFoundError, OSError) as e:

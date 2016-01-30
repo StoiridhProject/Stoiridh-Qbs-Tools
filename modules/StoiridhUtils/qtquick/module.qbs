@@ -20,6 +20,7 @@ import qbs 1.0
 import qbs.File
 import qbs.FileInfo
 import qbs.ModUtils
+import Stoiridh.Internal
 import Stoiridh.Utils
 
 Module {
@@ -47,21 +48,25 @@ Module {
     property string installDirectory
 
     /*! \internal */
-    property path pythonModuleFilePath
+    property stringList qbsSearchPaths
 
     Properties {
         condition: python.condition
-        additionalProductTypes: outer.concat(['stoiridh-internal-python-process'])
+        additionalProductTypes: ['stoiridh.internal.python.qml-data'].concat(outer)
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Validate                                                                                  //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     validate: {
         var validator = new ModUtils.PropertyValidator('qtquick');
+        // QtQuick module properties
         validator.setRequiredProperty('uri', uri);
         validator.setRequiredProperty('importVersion', importVersion);
         validator.setRequiredProperty('qmlSourceDirectory', qmlSourceDirectory);
         validator.setRequiredProperty('installDirectory', installDirectory);
+
+        // internal property
+        validator.setRequiredProperty('qbsSearchPaths', qbsSearchPaths);
         validator.validate();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,7 +90,6 @@ Module {
     //  Rules                                                                                     //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     Rule {
-        condition: Utils.isValidProperty(module.installDirectory)
         inputs: ['qml', 'qmldir', 'qmltypes']
 
         Artifact {
@@ -121,18 +125,20 @@ Module {
     }
 
     Rule {
-        condition: File.exists(pythonModuleFilePath) && python.condition && python.found
+        condition: python.condition && python.found
         inputs: ['qml-data']
+        explicitlyDependsOn: ['dynamiclibrary']
 
         Artifact {
-            fileTags: ['stoiridh-internal-python-process']
+            fileTags: ['stoiridh.internal.python.qml-data']
             filePath: '.deps'
             alwaysUpdated: false
         }
 
         prepare: {
+            var qbsSearchPaths = ModUtils.moduleProperties(product, 'qbsSearchPaths');
+            var script = Internal.getPythonScript('python/stoiridh.py', qbsSearchPaths);
             var python = product.moduleProperty('Python', 'filePath');
-            var script = ModUtils.moduleProperty(product, 'pythonModuleFilePath');
 
             // arguments
             var qtBinPath = product.moduleProperty('Qt.core', 'binPath');
@@ -146,7 +152,7 @@ Module {
 
             var cmd = new Command(python, args);
             cmd.silent = true;
-            cmd.description = 'running python process for ' + uri;
+            cmd.description = 'dumping ' + uri;
             cmd.highlight = 'filegen';
             return cmd;
         }

@@ -21,7 +21,7 @@ var FileInfo = loadExtension('qbs.FileInfo');
 
 function getPythonScript(filename, paths) {
     if (!filename.endsWith('.py'))
-        throw filename + ' is not a valid filename.'
+        throw filename + ' is not a valid filename.';
 
     for (var i in paths) {
         var filePath = FileInfo.joinPaths(project.sourceDirectory, paths[i], filename);

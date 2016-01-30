@@ -21,8 +21,6 @@ import qbs.FileInfo
 import Stoiridh.Utils
 
 Product {
-    id: root
-
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Dependencies                                                                              //
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -32,7 +30,7 @@ Product {
     //  Properties                                                                                //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     property path installDocsDirectory: FileInfo.joinPaths(project.sourceDirectory, 'doc')
-    property path projectDirectory: FileInfo.joinPaths(sourceDirectory, '..')
+    property path projectDirectory: FileInfo.path(sourceDirectory)
     property path docSourceDirectory: FileInfo.joinPaths(sourceDirectory, 'src')
     property string projectVersion: "1.0.0"
     property string baseName

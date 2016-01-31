@@ -28,6 +28,15 @@ QtQuick.Application {
 }
 ```
 
+# Requirements
+
+|                Name               | Minimum Version Required |    Note    |
+|:---------------------------------:|:------------------------:|:----------:|
+| [Qbs](https://www.qt.io)          |          1.4.0           |            |
+| [Python](https://www.python.org/) |          3.5.0           | (Optional) |
+
+> **NOTE:** Python is only required while installing the artefacts of the following items: [Qt.Documentation](https://github.com/viprip/Stoiridh-Qbs-Configuration/wiki/Stoiridh.Qt-import-module#documentation), [QtQuick.Plugin](https://github.com/viprip/Stoiridh-Qbs-Configuration/wiki/Stoiridh.QtQuick-import-module#plugin), and [QtQuick.QmlImports](https://github.com/viprip/Stoiridh-Qbs-Configuration/wiki/Stoiridh.QtQuick-import-module#qmlimports).
+
 # Features
 
 Stòiridh Qbs Configuration handles three kind of projects:
@@ -84,7 +93,6 @@ This import statement holds the following items:
 - QmlAutotest
 - QmlImports
 - WidgetsApplication
-
 
 # Licence
 

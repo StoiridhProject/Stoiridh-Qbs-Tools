@@ -20,6 +20,8 @@ import qbs 1.0
 import qbs.FileInfo
 
 Product {
+    type: ['qml-imports']
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Properties                                                                                //
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,8 +38,13 @@ Product {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     StoiridhUtils.qtquick.uri: uri
     StoiridhUtils.qtquick.importVersion: version
-    StoiridhUtils.qtquick.qmlSourceDirectory: FileInfo.joinPaths(product.sourceDirectory, qmlDirectory)
-    StoiridhUtils.qtquick.installDirectory: FileInfo.joinPaths(qbs.installRoot, project.qmlDirectory)
+    StoiridhUtils.qtquick.qmlSourceDirectory: FileInfo.joinPaths(product.sourceDirectory,
+                                                                 qmlDirectory)
+    StoiridhUtils.qtquick.installDirectory: FileInfo.joinPaths(qbs.installRoot,
+                                                               project.qmlDirectory)
+
+    /*! \internal */
+    StoiridhUtils.qtquick.qbsSearchPaths: project.qbsSearchPaths
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  QML                                                                                       //

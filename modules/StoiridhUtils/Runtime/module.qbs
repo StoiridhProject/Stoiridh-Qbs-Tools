@@ -17,42 +17,32 @@
 //                                                                                                //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 import qbs 1.0
-import qbs.FileInfo
-import Stoiridh.Utils
+import qbs.ModUtils
 
-Product {
+Module {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Properties                                                                                //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    property bool install: false
-    property string installDirectory
-    property stringList installFileTagsFilter: type
+    property path binaryPath
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Dependencies                                                                              //
+    //  Validate                                                                                  //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    Depends { name: 'cpp' }
-    Depends { name: 'StoiridhUtils.Runtime' }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Configuration                                                                             //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    cpp.cxxLanguageVersion: 'c++14'
-
-    StoiridhUtils.Runtime.binaryPath: {
-        var binaryDirectory = Utils.isValidProperty(project.binaryDirectory)
-                            ? project.binaryDirectory
-                            : 'bin';
-
-        return FileInfo.joinPaths(qbs.installRoot, binaryDirectory);
+    validate: {
+        var validator = new ModUtils.PropertyValidator('StoiridhUtils.Runtime');
+        validator.setRequiredProperty('binaryPath', binaryPath);
+        validator.validate();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Install (Adapter)                                                                         //
+    //  Environments                                                                              //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    Group {
-        condition: product.install
-        fileTagsFilter: product.installFileTagsFilter
-        qbs.install: true
-        qbs.installDir: product.installDirectory
+    setupRunEnvironment: {
+        var env;
+
+        if (qbs.targetOS.contains('windows')) {
+            env = new ModUtils.EnvironmentVariable('PATH', qbs.pathListSeparator, true);
+            env.append(binaryPath);
+            env.set();
+        }
     }
 }

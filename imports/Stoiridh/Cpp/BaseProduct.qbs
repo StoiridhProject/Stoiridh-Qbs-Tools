@@ -32,6 +32,7 @@ Product {
     //  Dependencies                                                                              //
     ////////////////////////////////////////////////////////////////////////////////////////////////
     Depends { name: 'cpp' }
+    Depends { name: 'StoiridhUtils.Project' }
     Depends { name: 'StoiridhUtils.Runtime' }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,11 +41,7 @@ Product {
     cpp.cxxLanguageVersion: 'c++14'
 
     StoiridhUtils.Runtime.binaryPath: {
-        var binaryDirectory = Utils.isValidProperty(project.binaryDirectory)
-                            ? project.binaryDirectory
-                            : 'bin';
-
-        return FileInfo.joinPaths(qbs.installRoot, binaryDirectory);
+        return FileInfo.joinPaths(qbs.installRoot, StoiridhUtils.Project.binaryDirectory)
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Install (Adapter)                                                                         //

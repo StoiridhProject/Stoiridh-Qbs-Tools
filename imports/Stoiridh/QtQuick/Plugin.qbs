@@ -44,8 +44,9 @@ QtQuick.DynamicLibrary {
     StoiridhUtils.qtquick.qmlSourceDirectory: FileInfo.joinPaths(product.sourceDirectory,
                                                                  qmlDirectory)
 
-    StoiridhUtils.qtquick.installDirectory: FileInfo.joinPaths(qbs.installRoot,
-                                                               project.qmlDirectory)
+    StoiridhUtils.qtquick.installDirectory: {
+        return FileInfo.joinPaths(qbs.installRoot, StoiridhUtils.Project.qmlDirectory)
+    }
 
     /*! \internal */
     StoiridhUtils.qtquick.qbsSearchPaths: project.qbsSearchPaths
@@ -61,6 +62,8 @@ QtQuick.DynamicLibrary {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Install                                                                                   //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    install: Utils.isValidProperty(project.qmlDirectory)
-    installDirectory: FileInfo.joinPaths(project.qmlDirectory, uri.replace(/\./g, '/'))
+    install: Utils.isValidProperty(StoiridhUtils.Project.qmlDirectory)
+    installDirectory: {
+        return FileInfo.joinPaths(StoiridhUtils.Project.qmlDirectory, uri.replace(/\./g, '/'))
+    }
 }

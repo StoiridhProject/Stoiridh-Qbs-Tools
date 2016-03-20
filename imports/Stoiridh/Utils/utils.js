@@ -57,3 +57,8 @@ function isValidProperty(input) {
 
     return true;
 }
+
+/* Returns \a input if it is a valid property, otherwise \a defaultValue. */
+function getProperty(input, defaultValue) {
+    return isValidProperty(input) ? input : defaultValue;
+}

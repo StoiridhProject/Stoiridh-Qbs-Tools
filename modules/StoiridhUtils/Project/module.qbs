@@ -20,45 +20,37 @@ import qbs 1.0
 import qbs.FileInfo
 import Stoiridh.Utils
 
-Product {
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Dependencies                                                                              //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    Depends { name: 'StoiridhUtils'; submodules: ['Project', 'Qt.Documentation']}
-
+Module {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Properties                                                                                //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    property path installDocsDirectory: FileInfo.joinPaths(project.sourceDirectory, 'doc')
-    property path projectDirectory: FileInfo.path(sourceDirectory)
-    property path docSourceDirectory: FileInfo.joinPaths(sourceDirectory, 'src')
-    property string projectVersion: "1.0.0"
-    property string baseName
+    property string productName: undefined
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Configuration                                                                             //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    StoiridhUtils.Qt.Documentation.baseName: baseName
-    StoiridhUtils.Qt.Documentation.installDocsDirectory: installDocsDirectory
-    StoiridhUtils.Qt.Documentation.projectDirectory: projectDirectory
-    StoiridhUtils.Qt.Documentation.sourceDirectory: docSourceDirectory
-    StoiridhUtils.Qt.Documentation.projectVersion: projectVersion
-
-    StoiridhUtils.Qt.Documentation.installDirectory: {
-        return FileInfo.joinPaths(qbs.installRoot, StoiridhUtils.Project.docDirectory)
+    property string binaryDirectory: {
+        return Utils.getProperty(project.binaryDirectory, 'bin');
     }
 
-    /*! \internal */
-    StoiridhUtils.Qt.Documentation.qbsSearchPaths: project.qbsSearchPaths
+    property string librariesDirectory: {
+        return Utils.getProperty(project.librariesDirectory, 'lib');
+    }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Sources                                                                                   //
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    files: ['src/*.qdoc']
+    property string pluginsDirectory: {
+        var pluginsDirectory = FileInfo.joinPaths(librariesDirectory, productName, 'plugins');
+        return Utils.getProperty(project.pluginsDirectory, pluginsDirectory);
+    }
 
-    Group {
-        name: "QDoc Configuration"
-        fileTags: 'qdocconf-main'
-        files: '*.qdocconf'
+    property string qmlDirectory: {
+        var qmlDirectory = FileInfo.joinPaths(librariesDirectory, productName, 'qml');
+        return Utils.getProperty(project.qmlDirectory, qmlDirectory);
+    }
+
+    property string shareDirectory: {
+        var shareDirectory = FileInfo.joinPaths('share', productName);
+        return Utils.getProperty(project.shareDirectory, shareDirectory);
+    }
+
+    property string docDirectory: {
+        var docDirectory = FileInfo.joinPaths('share', 'doc', productName);
+        return Utils.getProperty(project.docDirectory, docDirectory);
     }
 }

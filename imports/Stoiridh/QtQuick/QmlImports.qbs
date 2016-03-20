@@ -40,8 +40,9 @@ Product {
     StoiridhUtils.qtquick.importVersion: version
     StoiridhUtils.qtquick.qmlSourceDirectory: FileInfo.joinPaths(product.sourceDirectory,
                                                                  qmlDirectory)
-    StoiridhUtils.qtquick.installDirectory: FileInfo.joinPaths(qbs.installRoot,
-                                                               project.qmlDirectory)
+    StoiridhUtils.qtquick.installDirectory: {
+        return FileInfo.joinPaths(qbs.installRoot, StoiridhUtils.Project.qmlDirectory)
+    }
 
     /*! \internal */
     StoiridhUtils.qtquick.qbsSearchPaths: project.qbsSearchPaths

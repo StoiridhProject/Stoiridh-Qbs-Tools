@@ -26,7 +26,13 @@ Cpp.BaseProduct {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Install                                                                                   //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    install: Utils.isValidProperties([project.binaryDirectory, project.librariesDirectory])
-    installDirectory: qbs.targetOS.contains('windows') ? project.binaryDirectory
-                                                       : project.librariesDirectory
+    install: {
+        var binaryDirectory = StoiridhUtils.Project.binaryDirectory
+        var librariesDirectory = StoiridhUtils.Project.librariesDirectory
+
+        return Utils.isValidProperties([binaryDirectory, librariesDirectory])
+    }
+
+    installDirectory: qbs.targetOS.contains('windows') ? StoiridhUtils.Project.binaryDirectory
+                                                       : StoiridhUtils.Project.librariesDirectory
 }

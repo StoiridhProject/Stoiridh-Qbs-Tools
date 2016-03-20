@@ -26,6 +26,6 @@ QtQuick.Product {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Install                                                                                   //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    install: Utils.isValidProperty(project.binaryDirectory)
-    installDirectory: project.binaryDirectory
+    install: Utils.isValidProperty(StoiridhUtils.Project.binaryDirectory)
+    installDirectory: StoiridhUtils.Project.binaryDirectory
 }

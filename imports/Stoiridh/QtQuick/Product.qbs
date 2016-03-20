@@ -29,8 +29,10 @@ Cpp.BaseProduct {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Configuration                                                                             //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    property stringList qmlImportPaths: FileInfo.joinPaths(qbs.installRoot, project.qmlDirectory)
+    property stringList qmlImportPaths: {
+        return FileInfo.joinPaths(qbs.installRoot, StoiridhUtils.Project.qmlDirectory)
+    }
 
     Qt.quick.qmlDebugging: qbs.buildVariant === 'debug'
-    Qt.quick.qmlImportsPath: FileInfo.joinPaths(qbs.installRoot, project.qmlDirectory)
+    Qt.quick.qmlImportsPath: qmlImportPaths
 }

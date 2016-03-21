@@ -89,14 +89,18 @@ Probe {
                     process.close();
             }
 
-            var v = Utils.checkVersion(output, minimumVersion);
+            try {
+                var v = Utils.checkVersion(output, minimumVersion);
 
-            if (v.isValid) {
-                filePath = filePaths[i];
-                path = FileInfo.path(filePath);
-                version = v.version;
-                found = true;
-                break;
+                if (v.isValid) {
+                    filePath = filePaths[i];
+                    path = FileInfo.path(filePath);
+                    version = v.version;
+                    found = true;
+                    break;
+                }
+            } catch(e) {
+                print(e);
             }
         }
     }

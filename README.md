@@ -1,8 +1,8 @@
-# Stòiridh Qbs Configuration
+# Stòiridh Qbs Tools
 
-Stòiridh Qbs Configuration is a toolset for Qbs-based projects to make easier the creation, the configuration, and the installation of your projects.
+Stòiridh Qbs Tools is a toolset for Qbs-based projects to make easier the creation, the configuration, and the installation of your projects.
 
-For more information about the project, you can cast a glance at the  [wiki](https://github.com/viprip/Stoiridh-Qbs-Configuration/wiki).
+For more information about the project, you can cast a glance at the  [wiki](https://github.com/viprip/Stoiridh-Qbs-Tools/wiki).
 
 ## Example
 
@@ -35,11 +35,11 @@ QtQuick.Application {
 | [Qbs](https://www.qt.io)          |          1.4.4           |            |
 | [Python](https://www.python.org/) |          3.5.0           | (Optional) |
 
-> **NOTE:** Python is only required while installing the artefacts of the following items: [Qt.Documentation](https://github.com/viprip/Stoiridh-Qbs-Configuration/wiki/Stoiridh.Qt-import-module#documentation), [QtQuick.Plugin](https://github.com/viprip/Stoiridh-Qbs-Configuration/wiki/Stoiridh.QtQuick-import-module#plugin), and [QtQuick.QmlImports](https://github.com/viprip/Stoiridh-Qbs-Configuration/wiki/Stoiridh.QtQuick-import-module#qmlimports).
+> **NOTE:** Python is only required while installing the artefacts of the following items: [Qt.Documentation](https://github.com/viprip/Stoiridh-Qbs-Tools/wiki/Stoiridh.Qt-import-module#documentation), [QtQuick.Plugin](https://github.com/viprip/Stoiridh-Qbs-Tools/wiki/Stoiridh.QtQuick-import-module#plugin), and [QtQuick.QmlImports](https://github.com/viprip/Stoiridh-Qbs-Tools/wiki/Stoiridh.QtQuick-import-module#qmlimports).
 
 # Features
 
-Stòiridh Qbs Configuration handles three kind of projects:
+Stòiridh Qbs Tools handles three kind of projects:
 - C++
 - Qt
 - Qt Quick
@@ -96,7 +96,7 @@ This import statement holds the following items:
 
 # Licence
 
-The project is licenced under the GPL version 3. See [LICENCE.GPL3](https://github.com/viprip/Stoiridh-Qbs-Configuration/blob/master/LICENCE.GPL3) located at the root of the project for more information.
+The project is licenced under the GPL version 3. See [LICENCE.GPL3](https://github.com/viprip/Stoiridh-Qbs-Tools/blob/master/LICENCE.GPL3) located at the root of the project for more information.
 
 > This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

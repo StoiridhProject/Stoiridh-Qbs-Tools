@@ -225,7 +225,7 @@ class _Package:
         filepath = self.temp.filepath
 
         if filepath.exists():
-            with tarfile.open(str(filepath)) as tar:
+            with tarfile.open(str(filepath), mode='r:gz') as tar:
                 rootdir = '%s/share' % tar.getnames()[0]
                 self.temp.path = Path(filepath.parent, rootdir)
                 for info in tar:
@@ -267,7 +267,7 @@ class _TemporaryPackage:
 
     @property
     def path(self):
-        """This property hold the path where the files have been extracted."""
+        """This property holds the path where the files have been extracted."""
         return self._path
 
     @path.setter

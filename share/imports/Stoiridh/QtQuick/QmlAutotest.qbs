@@ -29,7 +29,7 @@ QtQuick.Autotest {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //  Properties                                                                                //
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    property path quickTestSourceDirectory: FileInfo.joinPaths(product.sourceDirectory, 'qml')
+    property path quickTestSourceDirectory: FileInfo.joinPaths(product.sourceDirectory, 'data')
     readonly property bool isAbsolutePath: FileInfo.isAbsolutePath(quickTestSourceDirectory)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

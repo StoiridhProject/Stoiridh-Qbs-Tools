@@ -30,12 +30,10 @@ QtQuick.Application {
 
 # Requirements
 
-|                Name               | Minimum Version Required |    Note    |
-|:---------------------------------:|:------------------------:|:----------:|
-| [Qbs](https://www.qt.io)          |          1.4.4           |            |
-| [Python](https://www.python.org/) |          3.5.0           | (Optional) |
-
-> **NOTE:** Python is only required while installing the artefacts of the following items: [Qt.Documentation](https://github.com/viprip/Stoiridh-Qbs-Tools/wiki/Stoiridh.Qt-import-module#documentation), [QtQuick.Plugin](https://github.com/viprip/Stoiridh-Qbs-Tools/wiki/Stoiridh.QtQuick-import-module#plugin), and [QtQuick.QmlImports](https://github.com/viprip/Stoiridh-Qbs-Tools/wiki/Stoiridh.QtQuick-import-module#qmlimports).
+|                Name               | Minimum Version Required |
+|:---------------------------------:|:------------------------:|
+| [Qbs](https://www.qt.io)          |          1.5.0           |
+| [Python](https://www.python.org/) |          3.5.1           |
 
 # Features
 

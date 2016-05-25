@@ -35,3 +35,6 @@ Makefile*
 
 # Python
 __pycache__/
+
+# Sphinx
+doc/build/

@@ -17,7 +17,6 @@
 ##            along with this program.  If not, see <http://www.gnu.org/licenses/>.               ##
 ##                                                                                                ##
 ####################################################################################################
-import asyncio
 import os
 import shutil
 import sys
@@ -25,8 +24,10 @@ import unittest
 
 from pathlib import Path
 from stoiridh.qbs.tools import SDK
+from util.decorators import asyncio_loop
 
 
+@asyncio_loop
 @unittest.skipIf(not (sys.platform.startswith('linux') or sys.platform.startswith('win32')),
                  'stoiridh.qbs.tools.SDK is only available on GNU/Linux and Windows.')
 class TestSDK(unittest.TestCase):
@@ -51,16 +52,6 @@ class TestSDK(unittest.TestCase):
             cls.INSTALL_ROOT_PATH = Path(os.environ['APPDATA'], SDK.ROOT_DIR)
 
         cls.QBS_ROOT_PATH = cls.INSTALL_ROOT_PATH.joinpath('qbs')
-
-        # get the asynchronous event loop. If closed, start a new one until all tests are completed.
-        cls.loop = asyncio.get_event_loop()
-
-        if cls.loop.is_closed():
-            cls.loop = asyncio.new_event_loop()
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.loop.close()
 
     def setUp(self):
         self.sdk = SDK(TestSDK.VERSIONS, loop=TestSDK.loop)

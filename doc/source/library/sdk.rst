@@ -1,5 +1,5 @@
 :py:mod:`stoiridh.qbs.tools.sdk` --- SDK
-========================================
+====================================================================================================
 
 .. py:module:: stoiridh.qbs.tools.sdk
 .. moduleauthor:: William McKIE

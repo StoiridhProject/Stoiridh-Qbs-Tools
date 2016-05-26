@@ -58,7 +58,7 @@ def main():
 
     if args.command == 'init':
         loop = asyncio.get_event_loop()
-        sdk = SDK(STOIRIDH_SUPPORTED_VERSIONS, loop=loop)
+        sdk = SDK(STOIRIDH_SUPPORTED_VERSIONS)
         if args.force:
             sdk.clean()
         print('There are %d supported version(s) of %s...' % (len(STOIRIDH_SUPPORTED_VERSIONS),

@@ -12,7 +12,7 @@ Stòiridh Qbs Tools.
 
 Download, extract, and install the package throughout the network.
 
-.. py:class:: SDK(versions, loop)
+.. py:class:: SDK(versions, loop=None)
 
     Construct a :py:class:`SDK` object.
 
@@ -20,8 +20,8 @@ Download, extract, and install the package throughout the network.
 
     - *versions*, corresponds to a :py:obj:`list` of versions string.
 
-    - *loop*, must be a base of the :py:class:`asyncio.BaseEventLoop` object. It is required for the
-      coroutine :py:meth:`install` method.
+    - *loop*, is an optional parameter that refers to an asynchronous event loop. If :py:obj:`None`,
+      then the *loop* will be assigned to the current :py:func:`asyncio.get_event_loop()`.
 
     .. py:attribute:: install_root_path
 

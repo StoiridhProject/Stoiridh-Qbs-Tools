@@ -54,7 +54,7 @@ class TestSDK(unittest.TestCase):
         cls.QBS_ROOT_PATH = cls.INSTALL_ROOT_PATH.joinpath('qbs')
 
     def setUp(self):
-        self.sdk = SDK(TestSDK.VERSIONS, loop=TestSDK.loop)
+        self.sdk = SDK(TestSDK.VERSIONS)
 
     def tearDown(self):
         # remove the testing root directory each time a test is completed.

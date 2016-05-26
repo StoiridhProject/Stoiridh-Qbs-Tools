@@ -39,15 +39,16 @@ class SDK:
     URL = 'https://github.com/viprip/Stoiridh-Qbs-Tools/archive/{version}.tar.gz'
     ROOT_DIR = Path('StoiridhProject/StoiridhQbsTools')
 
-    def __init__(self, versions, loop):
+    def __init__(self, versions, loop=None):
         """Construct a :py:class:`SDK` object.
 
         Parameters:
 
         - *versions*, corresponds to a :py:obj:`list` of versions string.
 
-        - *loop*, must be a base of the :py:class:`asyncio.BaseEventLoop` object. It is required for
-          the coroutine :py:meth:`install` method.
+        - *loop*, is an optional parameter that refers to an asynchronous event loop. If
+          :py:obj:`None`, then the *loop* will be assigned to the current
+          :py:func:`asyncio.get_event_loop()`.
         """
         self._versions = versions or None
 
@@ -58,7 +59,11 @@ class SDK:
         else:
             raise RuntimeError('Your Operating System (%s) is not supported.' % sys.platform)
 
-        self._loop = loop
+        if loop is None:
+            self._loop = asyncio.get_event_loop()
+        else:
+            self._loop = loop
+
         self._packages = [_Package(url, self.qbs_root_path, self._loop)
                           for url in self.__get_archive_urls()]
 

@@ -25,7 +25,7 @@ class Qbs:
     def __init__(self, filepath, version):
         """Construct a :py:class:`Qbs` object.
 
-        Generally speaking, This object is working jointly with the
+        Generally speaking, this object is working jointly with the
         :py:class:`~stoiridh.qbs.tools.qbs.Scanner` object.
 
         Parameters:
@@ -61,7 +61,7 @@ class Qbs:
 
     @property
     def filepath(self):
-        """This read-only property returns the Qbs version.
+        """This read-only property returns filepath of the Qbs executable.
 
         :rtype: pathlib.Path
         """

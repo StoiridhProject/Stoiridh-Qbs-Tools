@@ -34,8 +34,7 @@
 
         If the ``QBS_HOME`` environment variable is set, then the scanner will look into it first.
         When done and if no suitable version found, then the scanner will look into the ``PATH``
-        environment variable. Once again, if there are no suitable version found, the scanner will
-        return a :py:obj:`None` type; otherwise, a :py:class:`~Qbs` object will be returned back to
-        the caller.
+        environment variable. Once again, if there is no suitable version found, the scanner will
+        return a :py:obj:`None` type; otherwise, a :py:class:`~Qbs` object.
 
         :rtype: :py:class:`~Qbs` or :py:obj:`None`

@@ -1,0 +1,3 @@
+[qbs]
+filepath = /usr/bin/qbs
+version = 1.5.0

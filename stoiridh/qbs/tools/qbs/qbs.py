@@ -45,11 +45,13 @@ class Qbs:
             raise TypeError('argument (filepath) should be a str or a pathlib.Path object, not %r'
                             % type(filepath))
 
-        if isinstance(version, VersionNumber):
+        if isinstance(version, str):
+            self._version = VersionNumber(version)
+        elif isinstance(version, VersionNumber):
             self._version = version
         else:
-            raise TypeError('''argument (version) should be a stoiridh.qbs.tools.VersionNumber
-                               object, not %r''' % type(version))
+            raise TypeError('''argument (version) should be a str or
+                               stoiridh.qbs.tools.VersionNumber object, not %r''' % type(version))
 
     @property
     def path(self):
@@ -74,3 +76,15 @@ class Qbs:
         :rtype: ~stoiridh.qbs.tools.versionnumber.VersionNumber
         """
         return self._version
+
+    def __repr__(self):
+        return ('<%s filepath=%s version=%s>'
+                % (self.__class__.__name__, self.filepath, self.version))
+
+    def __eq__(self, other):
+        if not isinstance(other, Qbs):
+            return NotImplemented
+        return vars(self) == vars(other)
+
+    def __ne__(self, other):
+        return not self == other

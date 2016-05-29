@@ -38,3 +38,6 @@ __pycache__/
 
 # Sphinx
 doc/build/
+
+# tests
+tests/data/sqt.conf

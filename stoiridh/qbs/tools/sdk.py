@@ -53,9 +53,9 @@ class SDK:
         self._versions = versions or None
 
         if sys.platform.startswith('linux'):
-            self._rootpath = Path(os.environ['HOME'], '.config', SDK.ROOT_DIR)
+            self._rootpath = Path(os.environ['HOME'], '.config', self.ROOT_DIR)
         elif sys.platform.startswith('win32'):
-            self._rootpath = Path(os.environ['APPDATA'], SDK.ROOT_DIR)
+            self._rootpath = Path(os.environ['APPDATA'], self.ROOT_DIR)
         else:
             raise RuntimeError('Your Operating System (%s) is not supported.' % sys.platform)
 

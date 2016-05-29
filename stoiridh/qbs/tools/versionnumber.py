@@ -25,7 +25,7 @@ class VersionNumber:
 
     def __init__(self, *args):
         """Construct a :py:class:`VersionNumber` object. *args* corresponds to the major, minor, and
-        patch segments and accepts either a :py:obj:`str` object or :py:obj:`int` object.
+        patch segments and accepts either a :py:obj:`str` object or an :py:obj:`int` object.
 
         Example::
 

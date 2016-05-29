@@ -34,8 +34,8 @@ class Qbs:
         - *version*, is its version number.
 
         :raise: :py:exc:`TypeError` when *filepath* is not a :py:class:`str` object or a
-                :py:class:`pathlib.Path` object, but also when *version* is not a
-                :py:class:`~stoiridh.qbs.tools.versionnumber.VersionNumber` object.
+                :py:class:`pathlib.Path` object, but also when *version* is not a :py:class:`str`
+                object or a :py:class:`~stoiridh.qbs.tools.versionnumber.VersionNumber` object.
         """
         if isinstance(filepath, str):
             self._filepath = Path(filepath)
@@ -50,7 +50,7 @@ class Qbs:
         elif isinstance(version, VersionNumber):
             self._version = version
         else:
-            raise TypeError('''argument (version) should be a str or
+            raise TypeError('''argument (version) should be a str or a
                                stoiridh.qbs.tools.VersionNumber object, not %r''' % type(version))
 
     @property

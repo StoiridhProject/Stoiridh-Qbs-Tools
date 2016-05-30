@@ -19,7 +19,6 @@
 ####################################################################################################
 import asyncio
 import configparser
-import re
 
 from collections import OrderedDict
 from pathlib import Path

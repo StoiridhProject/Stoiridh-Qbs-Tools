@@ -21,7 +21,7 @@
 
    :raise: :py:exc:`TypeError` when *filepath* is not a :py:class:`str` object or a
            :py:class:`pathlib.Path` object, but also when *version* is not a :py:class:`str`
-           object or a :py:class:`~stoiridh.qbs.tools.versionnumber.VersionNumber` object.
+           object or a :py:class:`~stoiridh.qbs.tools.VersionNumber` object.
 
    .. py:attribute:: path
 
@@ -39,7 +39,7 @@
 
       This read-only property returns the Qbs version.
 
-      :rtype: ~stoiridh.qbs.tools.versionnumber.VersionNumber
+      :rtype: ~stoiridh.qbs.tools.VersionNumber
 
    .. py:method:: __eq__(self, other)
 

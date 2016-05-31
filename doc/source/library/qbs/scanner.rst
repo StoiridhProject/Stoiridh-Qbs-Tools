@@ -24,7 +24,7 @@
       This read-only property returns the minimum version required by the scanner in order to find
       the Qbs executable.
 
-      :rtype: ~stoiridh.qbs.tools.versionnumber.VersionNumber
+      :rtype: ~stoiridh.qbs.tools.VersionNumber
 
    .. py:method:: scan(loop=None)
 

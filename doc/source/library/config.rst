@@ -2,8 +2,8 @@
 ====================================================================================================
 
 .. py:module:: stoiridh.qbs.tools
-.. moduleauthor:: William McKIE
-.. sectionauthor:: William McKIE
+.. moduleauthor:: William McKIE <mckie.william@hotmail.co.uk>
+.. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
 ----------------------------------------------------------------------------------------------------
 

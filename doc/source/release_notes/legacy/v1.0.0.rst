@@ -1,0 +1,41 @@
+1.0.0 (31 January 2016) -- Release Notes
+====================================================================================================
+
+.. header
+.. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
+
+----------------------------------------------------------------------------------------------------
+
+First release for Stòiridh Qbs Configuration.
+
+New Features
+^^^^^^^^^^^^
+
+Imports
+"""""""
+
+- Stoiridh.Cpp
+   - Added an Application item.
+   - Added a DynamicLibrary item.
+   - Added a StaticLibrary item.
+- Stoiridh.Qt
+   - Added a ConsoleApplication item.
+   - Added a CorePlugin item.
+   - Added a Documentation item.
+   - Added a DynamicLibrary item.
+   - Added a GUIApplication item.
+   - Added a GUIPlugin item.
+   - Added a WidgetsApplication item.
+- Stoiridh.QtQuick
+   - Added an Application item.
+   - Added a CppAutotest item.
+   - Added a DynamicLibrary item.
+   - Added a Plugin item.
+   - Added a QmlAutotest item.
+   - Added a QmlImports item.
+   - Added a WidgetsApplication item.
+
+Modules
+"""""""
+
+- Python

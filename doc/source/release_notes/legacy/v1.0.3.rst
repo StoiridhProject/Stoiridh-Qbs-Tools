@@ -1,0 +1,19 @@
+1.0.3 (27 February 2016) -- Release Notes
+====================================================================================================
+
+.. header
+.. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
+
+----------------------------------------------------------------------------------------------------
+
+This maintenance release contains bug fixes about the *Stoiridh.QtQuick* module.
+
+Bug Fixes
+^^^^^^^^^
+
+Imports
+"""""""
+
+- Stoiridh.QtQuick
+   - Product
+      - Fixed a warning issue about an undeclared property.

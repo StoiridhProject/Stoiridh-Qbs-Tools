@@ -1,0 +1,26 @@
+1.0.1 (01 February 2016) -- Release Notes
+====================================================================================================
+
+.. header
+.. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
+
+----------------------------------------------------------------------------------------------------
+
+This first maintenance release contains bug fixes about *QmlImports* item and Python module.
+
+Bug Fixes
+^^^^^^^^^
+
+Imports
+"""""""
+
+- Stoiridh.QtQuick
+   - QmlImports
+      - Added a type to identify the kind of project.
+      - Added the missing property: qbsSearchPaths.
+
+Modules
+"""""""
+
+- Python
+   - Fixed missing module import in stoiridh.qt.quick module.

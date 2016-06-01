@@ -6,11 +6,12 @@
 Welcome to Stòiridh Qbs Tools's documentation!
 ==============================================
 
-Contents:
+**Contents:**
 
 .. toctree::
    :maxdepth: 2
 
+   Release Notes <release_notes/release_notes>
 
 Indices and tables
 ==================

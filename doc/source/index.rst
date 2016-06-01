@@ -11,6 +11,7 @@ Welcome to Stòiridh Qbs Tools's documentation!
 .. toctree::
    :maxdepth: 2
 
+   Glossary <glossary>
    Release Notes <release_notes/release_notes>
 
 Indices and tables

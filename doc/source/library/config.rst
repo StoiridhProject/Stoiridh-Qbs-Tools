@@ -1,8 +1,7 @@
 :py:mod:`stoiridh.qbs.tools` --- Config
 ====================================================================================================
 
-.. py:module:: stoiridh.qbs.tools
-.. moduleauthor:: William McKIE <mckie.william@hotmail.co.uk>
+.. py:currentmodule:: stoiridh.qbs.tools
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
 ----------------------------------------------------------------------------------------------------
@@ -68,7 +67,7 @@
 
       :rtype: dict
 
-   .. py:method:: update(section, data, reset=False)
+   .. py:method:: update(section, data[, reset=False])
 
       Update the *data* associated to the corresponding *section*. If *section* doesn't exists, a
       new one is created and the *data* will be associated to this section.

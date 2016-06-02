@@ -1,16 +1,10 @@
 :py:mod:`stoiridh.qbs.tools` --- SDK
 ====================================================================================================
 
-.. py:module:: stoiridh.qbs.tools
-.. moduleauthor:: William McKIE <mckie.william@hotmail.co.uk>
+.. py:currentmodule:: stoiridh.qbs.tools
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
 ----------------------------------------------------------------------------------------------------
-
-The :py:mod:`~stoiridh.qbs.tools` module provides an interface to handle the packages of
-Stòiridh Qbs Tools.
-
-Download, extract, and install the package throughout the network.
 
 .. py:class:: SDK(versions[, loop=None])
 

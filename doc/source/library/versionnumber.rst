@@ -1,8 +1,7 @@
 :py:mod:`stoiridh.qbs.tools` --- VersionNumber
 ====================================================================================================
 
-.. py:module:: stoiridh.qbs.tools
-.. moduleauthor:: William McKIE <mckie.william@hotmail.co.uk>
+.. py:currentmodule:: stoiridh.qbs.tools
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
 ----------------------------------------------------------------------------------------------------

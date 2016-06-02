@@ -1,89 +1,87 @@
-:py:mod:`stoiridh.qbs.tools.versionnumber` --- VersionNumber
+:py:mod:`stoiridh.qbs.tools` --- VersionNumber
 ====================================================================================================
 
-.. py:module:: stoiridh.qbs.tools.versionnumber
-.. moduleauthor:: William McKIE
-.. sectionauthor:: William McKIE
+.. py:currentmodule:: stoiridh.qbs.tools
+.. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
 ----------------------------------------------------------------------------------------------------
 
-.. py:class:: VersionNumber(*args)
+.. py:class:: VersionNumber(version_str)
+              VersionNumber(major, minor, patch)
 
-    Construct a :py:class:`VersionNumber` object. *args* corresponds to the major, minor, and patch
-    segments and accepts either a :py:obj:`str` object or an :py:obj:`int` object.
+   Construct a :py:class:`VersionNumber` object. *args* corresponds to the major, minor, and patch
+   segments and accepts either a :py:obj:`str` object or an :py:obj:`int` object.
 
-    Example::
+   Example::
 
-        >>> VersionNumber('1.2')
-        1.2.0
-        >>> VersionNumber('1.5.7')
-        1.5.7
-        >>> VersionNumber(1, 5, 7)
-        1.5.7
+      >>> VersionNumber('1.2')
+      1.2.0
+      >>> VersionNumber('1.5.7')
+      1.5.7
+      >>> VersionNumber(1, 5, 7)
+      1.5.7
 
-    :raise: :py:exc:`ValueError` if :py:obj:`str` is not a valid version like
-            ``major.minor[.patch]``.
+   :raise: :py:exc:`ValueError` if :py:obj:`str` is not a valid version like
+           ``major.minor[.patch]``.
 
-    .. py:attribute:: major
+   .. py:attribute:: major
 
-        This property holds the major segment of the version number.
+      This property holds the major segment of the version number.
 
-        :rtype: int
+      :rtype: int
 
-    .. py:attribute:: minor
+   .. py:attribute:: minor
 
-        This property holds the minor segment of the version number.
+      This property holds the minor segment of the version number.
 
-        :rtype: int
+      :rtype: int
 
-    .. py:attribute:: patch
+   .. py:attribute:: patch
 
-        This property holds the patch segment of the version number.
+      This property holds the patch segment of the version number.
 
-        :rtype: int
+      :rtype: int
 
-    .. py:method:: __eq__(self, other)
+   .. py:method:: __eq__(self, other)
 
-        Return :py:data:`True`, if *self* is equal to *other*; otherwise, return :py:data:`False`.
+      Return :py:data:`True`, if *self* is equal to *other*; otherwise, return :py:data:`False`.
 
-        :raise: :py:data:`NotImplemented` if *other* is not an instance of
-                :py:class:`VersionNumber` object.
+      :raise: :py:data:`NotImplemented` if *other* is not an instance of :py:class:`VersionNumber`
+              object.
 
-    .. py:method:: __ne__(self, other)
+   .. py:method:: __ne__(self, other)
 
-        Return :py:data:`True`, if *self* is not equal to *other*; otherwise, return
-        :py:data:`False`.
+      Return :py:data:`True`, if *self* is not equal to *other*; otherwise, return :py:data:`False`.
 
-        :raise: :py:data:`NotImplemented` if *other* is not an instance of
-                :py:class:`VersionNumber` object.
+      :raise: :py:data:`NotImplemented` if *other* is not an instance of :py:class:`VersionNumber`
+              object.
 
-    .. py:method:: __lt__(self, other)
+   .. py:method:: __lt__(self, other)
 
-        Return :py:data:`True`, if *self* is less than *other*; otherwise, return :py:data:`False`.
+      Return :py:data:`True`, if *self* is less than *other*; otherwise, return :py:data:`False`.
 
-        :raise: :py:data:`NotImplemented` if *other* is not an instance of
-                :py:class:`VersionNumber` object.
+      :raise: :py:data:`NotImplemented` if *other* is not an instance of :py:class:`VersionNumber`
+              object.
 
-    .. py:method:: __le__(self, other)
+   .. py:method:: __le__(self, other)
 
-        Return :py:data:`True`, if *self* is less than or equal to *other*; otherwise, return
-        :py:data:`False`.
+      Return :py:data:`True`, if *self* is less than or equal to *other*; otherwise, return
+      :py:data:`False`.
 
-        :raise: :py:data:`NotImplemented` if *other* is not an instance of
-                :py:class:`VersionNumber` object.
+      :raise: :py:data:`NotImplemented` if *other* is not an instance of :py:class:`VersionNumber`
+              object.
 
-    .. py:method:: __gt__(self, other)
+   .. py:method:: __gt__(self, other)
 
-        Return :py:data:`True`, if *self* is greater than *other*; otherwise, return
-        :py:data:`False`.
+      Return :py:data:`True`, if *self* is greater than *other*; otherwise, return :py:data:`False`.
 
-        :raise: :py:data:`NotImplemented` if *other* is not an instance of
-                :py:class:`VersionNumber` object.
+      :raise: :py:data:`NotImplemented` if *other* is not an instance of :py:class:`VersionNumber`
+              object.
 
-    .. py:method:: __ge__(self, other)
+   .. py:method:: __ge__(self, other)
 
-        Return :py:data:`True`, if *self* is greater than or equal to *other*; otherwise, return
-        :py:data:`False`.
+      Return :py:data:`True`, if *self* is greater than or equal to *other*; otherwise, return
+      :py:data:`False`.
 
-        :raise: :py:data:`NotImplemented` if *other* is not an instance of
-                :py:class:`VersionNumber` object.
+      :raise: :py:data:`NotImplemented` if *other* is not an instance of :py:class:`VersionNumber`
+              object.

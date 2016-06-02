@@ -1,61 +1,55 @@
-:py:mod:`stoiridh.qbs.tools.sdk` --- SDK
+:py:mod:`stoiridh.qbs.tools` --- SDK
 ====================================================================================================
 
-.. py:module:: stoiridh.qbs.tools.sdk
-.. moduleauthor:: William McKIE
-.. sectionauthor:: William McKIE
+.. py:currentmodule:: stoiridh.qbs.tools
+.. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
 ----------------------------------------------------------------------------------------------------
 
-The :py:mod:`~stoiridh.qbs.tools` module provides an interface to handle the packages of
-Stòiridh Qbs Tools.
+.. py:class:: SDK(versions[, loop=None])
 
-Download, extract, and install the package throughout the network.
+   Construct a :py:class:`SDK` object.
 
-.. py:class:: SDK(versions, loop=None)
+   Parameters:
 
-    Construct a :py:class:`SDK` object.
+   - *versions*, corresponds to a :py:obj:`list` of versions string.
 
-    Parameters:
+   - *loop*, is an optional parameter that refers to an asynchronous event loop. If :py:obj:`None`,
+     then the *loop* will be assigned to the current :py:func:`asyncio.get_event_loop()`.
 
-    - *versions*, corresponds to a :py:obj:`list` of versions string.
+   .. py:attribute:: install_root_path
 
-    - *loop*, is an optional parameter that refers to an asynchronous event loop. If :py:obj:`None`,
-      then the *loop* will be assigned to the current :py:func:`asyncio.get_event_loop()`.
+      Return the root path of the Stòiridh Qbs Tools SDK where the files will be installed.
 
-    .. py:attribute:: install_root_path
+      .. note::
+         - Under GNU/Linux, the SDK is located in
+           ``$HOME/.config/StoiridhProject/StoiridhQbsTools``
+         - Under Windows, the SDK is located in
+           ``%APPDATA%/StoiridhProject/StoiridhQbsTools``
 
-        Return the root path of the Stòiridh Qbs Tools SDK where the files will be installed.
+      :rtype: pathlib.Path
 
-        .. note::
-            - Under GNU/Linux, the SDK is located in
-              ``$HOME/.config/StoiridhProject/StoiridhQbsTools``
-            - Under Windows, the SDK is located in
-              ``%APPDATA%/StoiridhProject/StoiridhQbsTools``
+   .. py:attribute:: qbs_root_path
 
-        :rtype: pathlib.Path
+      Return the Qbs root path located within the :py:attr:`install_root_path` directory.
 
-    .. py:attribute:: qbs_root_path
+      :rtype: pathlib.Path
 
-        Return the Qbs root path located within the :py:attr:`install_root_path` directory.
+   .. py:attribute:: packages
 
-        :rtype: pathlib.Path
+      Return all packages available.
 
-    .. py:attribute:: packages
+   .. py:attribute:: noninstalled_packages
 
-        Return all packages available.
+      Return a generator containing all packages that were not installed in the
+      :py:attr:`qbs_root_path` directory.
 
-    .. py:attribute:: noninstalled_packages
+   .. py:method:: clean()
 
-        Return a generator containing all packages that were not installed in the
-        :py:attr:`qbs_root_path` directory.
+      Remove all installed packages within the :py:attr:`qbs_root_path` directory.
 
-    .. py:method:: clean()
+   .. py:method:: install()
 
-        Remove all installed packages within the :py:attr:`qbs_root_path` directory.
+      Install the packages available that were not already installed.
 
-    .. py:method:: install()
-
-        Install the packages available that were not already installed.
-
-        This is a :ref:`coroutine <coroutine>` method.
+      This is a :ref:`coroutine <coroutine>` method.

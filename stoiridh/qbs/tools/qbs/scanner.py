@@ -57,7 +57,7 @@ class Scanner:
         """This read-only property returns the minimum version required by the scanner in order to
         find the Qbs executable.
 
-        :rtype: ~stoiridh.qbs.tools.versionnumber.VersionNumber
+        :rtype: ~stoiridh.qbs.tools.VersionNumber
         """
         return self._minimum_version
 

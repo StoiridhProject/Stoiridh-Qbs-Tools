@@ -1,8 +1,7 @@
 :py:mod:`stoiridh.qbs.tools.qbs` --- Qbs
 ====================================================================================================
 
-.. py:module:: stoiridh.qbs.tools.qbs
-.. moduleauthor:: William McKIE <mckie.william@hotmail.co.uk>
+.. py:currentmodule:: stoiridh.qbs.tools.qbs
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
 ----------------------------------------------------------------------------------------------------

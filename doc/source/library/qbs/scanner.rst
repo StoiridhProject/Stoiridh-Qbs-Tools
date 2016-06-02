@@ -1,13 +1,8 @@
 :py:mod:`stoiridh.qbs.tools.qbs` --- Scanner
 ====================================================================================================
 
-.. py:module:: stoiridh.qbs.tools.qbs
-.. moduleauthor:: William McKIE <mckie.william@hotmail.co.uk>
+.. py:currentmodule:: stoiridh.qbs.tools.qbs
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
-
-.. external links
-
-.. _Qbs: https://doc.qt.io/qbs/index.html
 
 ----------------------------------------------------------------------------------------------------
 
@@ -16,7 +11,7 @@
    Construct a :py:class:`Scanner` object.
 
    The scanner will perform a scan of the ``QBS_HOME`` and the ``PATH`` environment variables,
-   respectively, in order to find the `Qbs`_ executable according to the *minimum_version*
+   respectively, in order to find the :term:`Qbs` executable according to the *minimum_version*
    parameter.
 
    .. py:attribute:: minimum_version

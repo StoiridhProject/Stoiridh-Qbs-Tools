@@ -21,5 +21,7 @@ Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
+* :ref:`Python Module Index <modindex>`
+* `Qbs Item Index <qbs-itemindex.html>`_
+* `Qbs Module Index <qbs-modindex.html>`_
 * :ref:`search`

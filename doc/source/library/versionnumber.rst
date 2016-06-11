@@ -46,42 +46,42 @@
 
       Return :py:data:`True`, if *self* is equal to *other*; otherwise, return :py:data:`False`.
 
-      :raise: :py:data:`NotImplemented` if *other* is not an instance of :py:class:`VersionNumber`
-              object.
+      :raise: :py:data:`NotImplemented` if *other* is not an instance of the
+              :py:class:`VersionNumber` object.
 
    .. py:method:: __ne__(self, other)
 
       Return :py:data:`True`, if *self* is not equal to *other*; otherwise, return :py:data:`False`.
 
-      :raise: :py:data:`NotImplemented` if *other* is not an instance of :py:class:`VersionNumber`
-              object.
+      :raise: :py:data:`NotImplemented` if *other* is not an instance of the
+              :py:class:`VersionNumber` object.
 
    .. py:method:: __lt__(self, other)
 
       Return :py:data:`True`, if *self* is less than *other*; otherwise, return :py:data:`False`.
 
-      :raise: :py:data:`NotImplemented` if *other* is not an instance of :py:class:`VersionNumber`
-              object.
+      :raise: :py:data:`NotImplemented` if *other* is not an instance of the
+              :py:class:`VersionNumber` object.
 
    .. py:method:: __le__(self, other)
 
       Return :py:data:`True`, if *self* is less than or equal to *other*; otherwise, return
       :py:data:`False`.
 
-      :raise: :py:data:`NotImplemented` if *other* is not an instance of :py:class:`VersionNumber`
-              object.
+      :raise: :py:data:`NotImplemented` if *other* is not an instance of the
+              :py:class:`VersionNumber` object.
 
    .. py:method:: __gt__(self, other)
 
       Return :py:data:`True`, if *self* is greater than *other*; otherwise, return :py:data:`False`.
 
-      :raise: :py:data:`NotImplemented` if *other* is not an instance of :py:class:`VersionNumber`
-              object.
+      :raise: :py:data:`NotImplemented` if *other* is not an instance of the
+              :py:class:`VersionNumber` object.
 
    .. py:method:: __ge__(self, other)
 
       Return :py:data:`True`, if *self* is greater than or equal to *other*; otherwise, return
       :py:data:`False`.
 
-      :raise: :py:data:`NotImplemented` if *other* is not an instance of :py:class:`VersionNumber`
-              object.
+      :raise: :py:data:`NotImplemented` if *other* is not an instance of the
+              :py:class:`VersionNumber` object.

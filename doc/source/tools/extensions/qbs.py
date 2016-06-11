@@ -88,7 +88,7 @@ class QbsCurrentSDK(Directive):
 
 
 class QbsItemImport(Directive):
-    """Directive to mark description of a new Import in order to import the items."""
+    """Directive to mark description of a new Import in order to import items."""
     has_content = False
     required_arguments = 1
     optional_arguments = 0
@@ -174,7 +174,8 @@ class QbsObject(ObjectDescription):
         * `value` --- the default value of the value
 
         Any of those items may return a :py:obj:`None` type except for the *name* item that should
-        return a valid value."""
+        return a valid value.
+        """
         raise NotImplementedError("must be implemented in subclasses")
 
     def get_signature_name(self, **kwargs):
@@ -269,8 +270,7 @@ class QbsItemObject(QbsObject):
 
     def parse(self, sig):
         """Parse the signature for a Qbs Item and return a tuple with 3 items:
-        (None, name, None).
-        """
+        (None, name, None)."""
         m = qbs_sig_re.match(sig)
 
         if not m:
@@ -319,8 +319,7 @@ class QbsModuleObject(QbsObject):
 
     def parse(self, sig):
         """Parse the signature for a Qbs module and return a tuple with 3 items:
-        (None, name, None).
-        """
+        (None, name, None)."""
         m = qbs_sig_re.match(sig)
         if not m:
             self.state_machine.reporter.error(_('%s is not a valid Qbs %s signature.') %
@@ -354,8 +353,7 @@ class QbsPropertyObject(QbsObject):
 
     def parse(self, sig):
         """Parse the signature for a Qbs property and return a tuple with 3 items:
-        (type, name[, value]).
-        """
+        (type, name[, value])."""
         m = qbs_prop_sig_re.match(sig)
         if not m:
             self.state_machine.reporter.error(_('%s is not a valid Qbs %s signature.') %
@@ -365,8 +363,7 @@ class QbsPropertyObject(QbsObject):
 
     def get_signature_prefix(self):
         """Return the signature prefix of the property. If the *readonly* option is specified, then
-        *readonly* will be added at first.
-        """
+        *readonly* will be added at first."""
         return ('readonly ' if 'readonly' in self.options else '') + self.objtype + ' '
 
     def get_index_text(self, sdkname, name):
@@ -409,7 +406,7 @@ class QbsXRefRole(XRefRole):
             # parts of the contents
             if title[0:1] == '~':
                 title = title[1:]
-                # special case: for the import directive where we do remove the left part which
+                # special case: for the import directive we do remove the left part which
                 # corresponds to the SDK's name.
                 if refnode['reftype'] == 'imp':
                     dot = title.find('.')
@@ -460,7 +457,6 @@ class QbsItemIndex(QbsObjectIndex):
             if sdkname != itemname:
                 if not current_sdkname.startswith(sdkname):
                     sdksynopsis = self.get_sdk_synopsis(sdkname)
-                    print('>>>', sdksynopsis)
                     entries.append([sdkname, 1, '', '', '', '', sdksynopsis])
                     current_sdkname = sdkname
                     subtype = 2
@@ -555,7 +551,7 @@ class QbsDomain(Domain):
     ]
 
     def clear_doc(self, docname):
-        for data in ('sdks', 'imports', 'modules', 'items', 'objects'):
+        for data in self.initial_data.keys():
             self._clear_doc(data, docname)
 
     def _clear_doc(self, data, docname):
@@ -564,7 +560,7 @@ class QbsDomain(Domain):
                 del self.data[data][name]
 
     def merge_domaindata(self, docnames, otherdata):
-        for data in ('sdks', 'imports', 'modules', 'items', 'objects'):
+        for data in self.initial_data.keys():
             self._merge_domaindata(data, docnames, otherdata)
 
     def _merge_domaindata(self, data, docnames, otherdata):
@@ -575,12 +571,14 @@ class QbsDomain(Domain):
     def get_objects(self):
         for sdkname, (docname, synopsis) in self.data['sdks'].items():
             yield (sdkname, sdkname, 'sdk', docname, '', 0)
+        for importname, (docname, synopsis) in self.data['imports'].items():
+            yield (importname, importname, 'import', docname, '', 0)
         for modname, (docname, synopsis) in self.data['modules'].items():
             yield (modname, modname, 'module', docname, '', 0)
         for itemname, (docname, synopsis) in self.data['items'].items():
             yield (itemname, itemname, 'item', docname, '', 0)
         for fullname, (docname, objtype) in self.data['objects'].items():
-            if objtype not in ('module', 'item', 'sdk'):
+            if objtype not in ('sdk', 'import', 'module', 'item'):
                 yield (fullname, fullname, objtype, docname, '', 1)
 
     def find_objects(self, env, sdkname, modname, importname, itemname, name, type, searchmode):

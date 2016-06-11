@@ -24,7 +24,7 @@
    .. py:method:: scan(loop=None)
 
       This :ref:`coroutine <coroutine>` method performs a scan from the ``QBS_HOME`` and the
-      ``PATH`` environment variables in order to find the `Qbs`_ executable according to the
+      ``PATH`` environment variables in order to find the :term:`Qbs` executable according to the
       :py:attr:`minimum_version` property.
 
       If the ``QBS_HOME`` environment variable is set, then the scanner will look into it first.

@@ -15,8 +15,8 @@ Introduction
 
    The *Python* module extends Qbs with Python.
 
-Usage
-^^^^^
+Use
+^^^
 
 .. code-block:: qbs
 

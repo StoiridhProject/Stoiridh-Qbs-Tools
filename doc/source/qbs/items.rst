@@ -1,4 +1,4 @@
-Release Notes -- Legacy
+|project| -- Qbs Items
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -6,15 +6,16 @@ Release Notes -- Legacy
 
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
+.. _stoiridhqbstools-qbs-items:
+
 ----------------------------------------------------------------------------------------------------
 
-In this section, you will find the release notes of the legacy versions. Those versions do not
-support the Python API of Stòiridh Qbs Tools and should not be used in new projects:
+In this chapter, you will see all :term:`Qbs Items` that are available with |project|. Each *items*
+are in their respective packages:
 
 .. toctree::
    :maxdepth: 1
 
-   1.0.3 (27 February 2016) <legacy/v1.0.3>
-   1.0.2 (05 February 2016) <legacy/v1.0.2>
-   1.0.1 (01 February 2016) <legacy/v1.0.1>
-   1.0.0 (31 January 2016)  <legacy/v1.0.0>
+   Stoiridh.Cpp <items/package_stoiridh.cpp>
+   Stoiridh.Qt <items/package_stoiridh.qt>
+   Stoiridh.QtQuick <items/package_stoiridh.qtquick>

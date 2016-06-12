@@ -1,8 +1,12 @@
 :py:mod:`stoiridh.qbs.tools.qbs` --- Scanner
 ====================================================================================================
 
-.. py:currentmodule:: stoiridh.qbs.tools.qbs
+.. Copyright 2015-2016 Stòiridh Project.
+.. This file is under the FDL licence, see LICENCE.FDL for details.
+
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
+
+.. py:currentmodule:: stoiridh.qbs.tools.qbs
 
 ----------------------------------------------------------------------------------------------------
 

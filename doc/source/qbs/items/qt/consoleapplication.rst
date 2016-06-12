@@ -37,7 +37,7 @@ Use
 Dependencies
 ^^^^^^^^^^^^
 
-The *ConsoleApplication* item has an dependency to the following modules:
+The *ConsoleApplication* item depends from the following modules:
 
 * cpp [#]_
 * Qt.core [#]_

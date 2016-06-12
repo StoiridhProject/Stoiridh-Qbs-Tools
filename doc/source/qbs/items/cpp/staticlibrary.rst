@@ -34,7 +34,7 @@ Use
 Dependencies
 ^^^^^^^^^^^^
 
-The *StaticLibrary* item has an dependency to the following module:
+The *StaticLibrary* item depends from the following module:
 
 * cpp [#]_
 

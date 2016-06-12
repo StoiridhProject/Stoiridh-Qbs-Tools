@@ -37,7 +37,7 @@ Use
 Dependencies
 ^^^^^^^^^^^^
 
-The *GUIPlugin* item has an dependency to the following modules:
+The *GUIPlugin* item depends from the following modules:
 
 * cpp [#]_
 * Qt [#]_

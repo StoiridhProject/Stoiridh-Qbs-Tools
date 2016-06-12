@@ -34,7 +34,7 @@ Use
 Dependencies
 ^^^^^^^^^^^^
 
-The *Application* item has an dependency to the following module:
+The *Application* item depends from the following module:
 
 * cpp [#]_
 

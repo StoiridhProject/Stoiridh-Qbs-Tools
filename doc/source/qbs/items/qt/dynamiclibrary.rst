@@ -38,7 +38,7 @@ Use
 Dependencies
 ^^^^^^^^^^^^
 
-The *DynamicLibrary* item has an dependency to the following modules:
+The *DynamicLibrary* item depends from the following modules:
 
 * cpp [#]_
 * Qt.core [#]_

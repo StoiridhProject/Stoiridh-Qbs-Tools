@@ -37,7 +37,7 @@ Use
 Dependencies
 ^^^^^^^^^^^^
 
-The *WidgetsApplication* item has an dependency to the following modules:
+The *WidgetsApplication* item depends from the following modules:
 
 * cpp [#]_
 * Qt [#]_

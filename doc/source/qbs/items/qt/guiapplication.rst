@@ -37,7 +37,7 @@ Use
 Dependencies
 ^^^^^^^^^^^^
 
-The *GUIApplication* item has an dependency to the following modules:
+The *GUIApplication* item depends from the following modules:
 
 * cpp [#]_
 * Qt [#]_

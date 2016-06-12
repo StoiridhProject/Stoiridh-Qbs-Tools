@@ -34,7 +34,7 @@ Use
 Dependencies
 ^^^^^^^^^^^^
 
-The *DynamicLibrary* item has an dependency to the following module:
+The *DynamicLibrary* item depends from the following module:
 
 * cpp [#]_
 

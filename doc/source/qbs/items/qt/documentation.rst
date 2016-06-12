@@ -38,7 +38,7 @@ Use
 Dependencies
 ^^^^^^^^^^^^
 
-The *Documentation* item has an dependency to the following modules:
+The *Documentation* item depends from the following modules:
 
 * cpp [#]_
 * Qt.core [#]_

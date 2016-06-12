@@ -26,9 +26,14 @@ qbs_sig_re = re.compile(r'^(?P<name>[\w]+)$')
 
 # RE for a Qbs property
 qbs_prop_sig_re = re.compile(r'''
-^(\w+\s)                            # property type
- (\w+\s?)                           # identifier name
- (?:\:?\s([\"\']?[\w\.]+[\"\']?))?$ # default value
+^(\w+\s)                                # property type
+ (\w+\s?)                               # identifier name
+ (?:\:\s                                # default value:
+ (?:([\w\.]+\((?:[\w\s\.\,\'\"\-]+)?\)  #   a function
+  |\d+[\.\,\d]*                         #   a numerical value
+  |[\"\'][\w\.]*[\"\']                  #   a string
+  |\w+)))?                              #   a variable or a keyword
+$
 ''', re.VERBOSE)
 
 

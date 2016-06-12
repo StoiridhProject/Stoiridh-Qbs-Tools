@@ -7,7 +7,7 @@ Stòiridh Qbs Tools --- Qbs API Reference
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
 .. qbs:sdk:: StoiridhQbsTools
-    :synopsis: Extend Qbs functionalities
+   :synopsis: Extend Qbs functionalities
 
 ----------------------------------------------------------------------------------------------------
 

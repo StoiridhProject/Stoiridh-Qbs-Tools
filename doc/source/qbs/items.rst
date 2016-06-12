@@ -14,6 +14,6 @@ In this chapter, you will see all :term:`Qbs Items` that are available with |pro
 are in their respective packages:
 
 .. toctree::
-    :maxdepth: 1
+   :maxdepth: 1
 
-    Stoiridh.Cpp <items/package_stoiridh.cpp>
+   Stoiridh.Cpp <items/package_stoiridh.cpp>

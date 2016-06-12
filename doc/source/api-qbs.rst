@@ -1,9 +1,13 @@
 Stòiridh Qbs Tools --- Qbs API Reference
 ====================================================================================================
 
+.. Copyright 2015-2016 Stòiridh Project.
+.. This file is under the FDL licence, see LICENCE.FDL for details.
+
+.. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
+
 .. qbs:sdk:: StoiridhQbsTools
     :synopsis: Extend Qbs functionalities
-.. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
 ----------------------------------------------------------------------------------------------------
 
@@ -16,4 +20,5 @@ Table of Contents:
 .. toctree::
    :maxdepth: 2
 
+   Items <qbs/items>
    Modules <qbs/modules>

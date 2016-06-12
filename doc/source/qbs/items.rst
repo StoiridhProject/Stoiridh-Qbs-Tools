@@ -17,3 +17,4 @@ are in their respective packages:
    :maxdepth: 1
 
    Stoiridh.Cpp <items/package_stoiridh.cpp>
+   Stoiridh.Qt <items/package_stoiridh.qt>

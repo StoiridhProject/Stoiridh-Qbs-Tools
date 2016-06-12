@@ -87,8 +87,8 @@ class QbsCurrentSDK(Directive):
         return []
 
 
-class QbsItemImport(Directive):
-    """Directive to mark description of a new Import in order to import items."""
+class QbsPackage(Directive):
+    """Directive to mark description of a new Package."""
     has_content = False
     required_arguments = 1
     optional_arguments = 0
@@ -101,9 +101,9 @@ class QbsItemImport(Directive):
     }
 
     def run(self):
-        importname = self.arguments[0].strip()
+        pkgname = self.arguments[0].strip()
         env = self.state.document.settings.env
-        env.ref_context['qbs:import'] = importname
+        env.ref_context['qbs:package'] = pkgname
 
         if 'noindex' in self.options:
             return []
@@ -111,43 +111,42 @@ class QbsItemImport(Directive):
         sdkname = self.options.get('sdk', env.ref_context.get('qbs:sdk', None))
 
         if sdkname:
-            importname = sdkname + '.' + importname
+            pkgname = sdkname + '.' + pkgname
 
-        env.domaindata['qbs']['imports'][importname] = (env.docname,
-                                                        self.options.get('synopsis', ''))
-        env.domaindata['qbs']['objects'][importname] = (env.docname, 'import')
+        env.domaindata['qbs']['packages'][pkgname] = (env.docname, self.options.get('synopsis', ''))
+        env.domaindata['qbs']['objects'][pkgname] = (env.docname, 'package')
 
         # target
-        targetname = 'import-' + importname
+        targetname = 'package-' + pkgname
         targetnode = nodes.target('', '', ids=[targetname], ismod=True)
         self.state.document.note_explicit_target(targetnode)
 
         # index
         if sdkname:
-            itext = _('%s (Qbs Import in %s)') % (importname[len(sdkname) + 1:], sdkname)
+            itext = _('%s (Qbs Package in %s)') % (pkgname[len(sdkname) + 1:], sdkname)
         else:
-            itext = _('%s (Qbs Import') % (importname[len(sdkname) + 1:])
+            itext = _('%s (Qbs Package') % (pkgname[len(sdkname) + 1:])
         inode = addnodes.index(entries=[('single', itext, targetname, '', None)])
 
         return [targetnode, inode]
 
 
-class QbsItemCurrentImport(Directive):
-    """This directive is just to tell Sphinx that we're documenting stuff in Import foo, but
-    links to Import foo won't lead here."""
+class QbsCurrentPackage(Directive):
+    """This directive is just to tell Sphinx that we're documenting stuff in Package foo, but
+    links to Package foo won't lead here."""
     has_content = False
     required_arguments = 1
     optional_arguments = 0
     final_argument_whitespace = False
 
     def run(self):
-        importname = self.arguments[0].strip()
+        pkgname = self.arguments[0].strip()
         env = self.state.document.settings.env
 
-        if importname == 'None':
-            env.ref_context.pop('qbs:import', None)
+        if pkgname == 'None':
+            env.ref_context.pop('qbs:package', None)
         else:
-            env.ref_context['qbs:import'] = importname
+            env.ref_context['qbs:package'] = pkgname
 
         return []
 
@@ -188,14 +187,14 @@ class QbsObject(ObjectDescription):
 
     def handle_signature(self, sig, signode):
         sdkname = self.options.get('sdk', self.env.ref_context.get('qbs:sdk'))
-        importname = self.options.get('import', self.env.ref_context.get('qbs:import'))
+        pkgname = self.options.get('package', self.env.ref_context.get('qbs:package'))
         modname = self.env.ref_context.get('qbs:module', None)
         itemname = self.env.ref_context.get('qbs:item', None)
 
         type, name, value = self.parse(sig)
 
         signode['module'] = modname
-        signode['import'] = importname
+        signode['package'] = pkgname
         signode['item'] = itemname
 
         if self.objtype == 'property':
@@ -228,9 +227,9 @@ class QbsObject(ObjectDescription):
 
     def add_target_and_index(self, name, sig, signode):
         sdkname = self.options.get('sdk', self.env.ref_context.get('qbs:sdk'))
-        importname = self.options.get('import', self.env.ref_context.get('qbs:import'))
+        pkgname = self.options.get('package', self.env.ref_context.get('qbs:package'))
 
-        name_prefix = (sdkname and sdkname + '.' or '') + (importname and importname + '.' or '')
+        name_prefix = (sdkname and sdkname + '.' or '') + (pkgname and pkgname + '.' or '')
         fullname = name_prefix + name
 
         if fullname not in self.state.document.ids:
@@ -261,7 +260,7 @@ class QbsItemObject(QbsObject):
     option_spec = {
         'noindex': directives.unchanged,
         'sdk': directives.unchanged,
-        'import': directives.unchanged,
+        'package': directives.unchanged,
         'synopsis': lambda x: x
     }
 
@@ -287,20 +286,20 @@ class QbsItemObject(QbsObject):
 
     def get_index_text(self, sdkname, name):
         """Return the text for the index entry of an item."""
-        importname = self.options.get('import', self.env.ref_context.get('qbs:import', None))
-        if importname:
-            importname = (sdkname and sdkname + '.' + importname or importname)
-        return super().get_index_text(importname, name)
+        pkgname = self.options.get('package', self.env.ref_context.get('qbs:package', None))
+        if pkgname:
+            pkgname = (sdkname and sdkname + '.' + pkgname or pkgname)
+        return super().get_index_text(pkgname, name)
 
     def before_content(self):
         super().before_content()
         if self.names:
             self.env.ref_context['qbs:item'] = self.names[0]
-            # update the *qbs:import* from the reference context if the user has set the *import*
+            # update the *qbs:package* from the reference context if the user has set the *package*
             # option.
-            importname = self.options.get('import', self.env.ref_context.get('qbs:import', None))
-            if importname:
-                self.env.ref_context['qbs:import'] = importname
+            pkgname = self.options.get('package', self.env.ref_context.get('qbs:package', None))
+            if pkgname:
+                self.env.ref_context['qbs:package'] = pkgname
             # we'll now document the properties for a Qbs item, so we do remove 'qbs:module' from
             # the reference context.
             self.env.ref_context.pop('qbs:module', None)
@@ -337,9 +336,9 @@ class QbsModuleObject(QbsObject):
         if self.names:
             self.env.ref_context['qbs:module'] = self.names[0]
             # we'll now document the properties for a Qbs module, so we do remove both 'qbs:item'
-            # and 'qbs:import' from the reference context.
+            # and 'qbs:package' from the reference context.
             self.env.ref_context.pop('qbs:item', None)
-            self.env.ref_context.pop('qbs:import', None)
+            self.env.ref_context.pop('qbs:package', None)
 
 
 class QbsPropertyObject(QbsObject):
@@ -368,7 +367,7 @@ class QbsPropertyObject(QbsObject):
 
     def get_index_text(self, sdkname, name):
         """Return the text for the index entry of a property."""
-        importname = self.env.ref_context.get('qbs:import', None)
+        pkgname = self.env.ref_context.get('qbs:package', None)
 
         dot = name.rfind('.')
 
@@ -380,11 +379,11 @@ class QbsPropertyObject(QbsObject):
             owner = ''
 
         if sdkname and owner:
-            prefix = (importname and '.'.join((sdkname, importname, owner)) or
+            prefix = (pkgname and '.'.join((sdkname, pkgname, owner)) or
                       '.'.join((sdkname, owner)))
             itext = '%s (%s Qbs %s)' % (property_name, prefix, self.objtype.capitalize())
         else:
-            prefix = (importname and '.'.join((importname, property_name)) or property_name)
+            prefix = (pkgname and '.'.join((pkgname, property_name)) or property_name)
             itext = '%s (Qbs %s)' % (prefix, self.objtype.capitalize())
 
         return itext
@@ -395,7 +394,7 @@ class QbsPropertyObject(QbsObject):
 class QbsXRefRole(XRefRole):
     def process_link(self, env, refnode, has_explicit_title, title, target):
         refnode['qbs:sdk'] = env.ref_context.get('qbs:sdk')
-        refnode['qbs:import'] = env.ref_context.get('qbs:import')
+        refnode['qbs:package'] = env.ref_context.get('qbs:package')
         refnode['qbs:module'] = env.ref_context.get('qbs:module')
         refnode['qbs:item'] = env.ref_context.get('qbs:item')
 
@@ -406,9 +405,9 @@ class QbsXRefRole(XRefRole):
             # parts of the contents
             if title[0:1] == '~':
                 title = title[1:]
-                # special case: for the import directive we do remove the left part which
+                # special case: for the package directive we do remove the left part which
                 # corresponds to the SDK's name.
-                if refnode['reftype'] == 'imp':
+                if refnode['reftype'] == 'pkg':
                     dot = title.find('.')
                 else:
                     dot = title.rfind('.')
@@ -513,7 +512,7 @@ class QbsDomain(Domain):
 
     object_types = {
         'sdk': ObjType(l_('sdk'), 'sdk'),
-        'import': ObjType(l_('import'), 'imp'),
+        'package': ObjType(l_('package'), 'pkg'),
         'item': ObjType(l_('item'), 'item'),
         'module': ObjType(l_('module'), 'mod'),
         'property': ObjType(l_('property'), 'prop')
@@ -522,8 +521,8 @@ class QbsDomain(Domain):
     directives = {
         'sdk': QbsSDK,
         'currentsdk': QbsCurrentSDK,
-        'import': QbsItemImport,
-        'currentimport': QbsItemCurrentImport,
+        'package': QbsPackage,
+        'currentpackage': QbsCurrentPackage,
         'item': QbsItemObject,
         'module': QbsModuleObject,
         'property': QbsPropertyObject
@@ -531,7 +530,7 @@ class QbsDomain(Domain):
 
     roles = {
         'sdk': QbsXRefRole(),
-        'imp': QbsXRefRole(),
+        'pkg': QbsXRefRole(),
         'item': QbsXRefRole(),
         'mod': QbsXRefRole(),
         'prop': QbsXRefRole()
@@ -539,7 +538,7 @@ class QbsDomain(Domain):
 
     initial_data = {
         'sdks': {},     # sdkname -> docname, synopsis
-        'imports': {},  # importname -> docname, synopsis
+        'packages': {},  # pkgname -> docname, synopsis
         'modules': {},  # modname -> docname, synopsis
         'items': {},    # itemname -> docname, synopsis
         'objects': {}   # fullname -> docname, objtype
@@ -571,17 +570,17 @@ class QbsDomain(Domain):
     def get_objects(self):
         for sdkname, (docname, synopsis) in self.data['sdks'].items():
             yield (sdkname, sdkname, 'sdk', docname, '', 0)
-        for importname, (docname, synopsis) in self.data['imports'].items():
-            yield (importname, importname, 'import', docname, '', 0)
+        for pkgname, (docname, synopsis) in self.data['packages'].items():
+            yield (pkgname, pkgname, 'package', docname, '', 0)
         for modname, (docname, synopsis) in self.data['modules'].items():
             yield (modname, modname, 'module', docname, '', 0)
         for itemname, (docname, synopsis) in self.data['items'].items():
             yield (itemname, itemname, 'item', docname, '', 0)
         for fullname, (docname, objtype) in self.data['objects'].items():
-            if objtype not in ('sdk', 'import', 'module', 'item'):
+            if objtype not in ('sdk', 'package', 'module', 'item'):
                 yield (fullname, fullname, objtype, docname, '', 1)
 
-    def find_objects(self, env, sdkname, modname, importname, itemname, name, type, searchmode):
+    def find_objects(self, env, sdkname, modname, pkgname, itemname, name, type, searchmode):
         if not name:
             return []
 
@@ -595,8 +594,8 @@ class QbsDomain(Domain):
             objtypes = self.objtypes_for_role(type)
             if objtypes:
                 if sdkname:
-                    if importname and not name.startswith(importname):
-                        newname = '.'.join((sdkname, importname, name))
+                    if pkgname and not name.startswith(pkgname):
+                        newname = '.'.join((sdkname, pkgname, name))
                     elif modname and not name.startswith(modname):
                         newname = '.'.join((sdkname, modname, name))
                     else:
@@ -623,11 +622,11 @@ class QbsDomain(Domain):
                         newname = '.'.join((sdkname, modname, name))
                 elif itemname:
                     # searching a *name* for an item which is relative to the current document.
-                    if importname:
+                    if pkgname:
                         if name.startswith(itemname):
-                            newname = '.'.join((sdkname, importname, name))
+                            newname = '.'.join((sdkname, pkgname, name))
                         else:
-                            newname = '.'.join((sdkname, importname, itemname, name))
+                            newname = '.'.join((sdkname, pkgname, itemname, name))
                     else:
                         if name.startswith(itemname):
                             newname = '.'.join((sdkname, name))
@@ -640,12 +639,12 @@ class QbsDomain(Domain):
 
     def resolve_xref(self, env, fromdocname, builder, type, target, node, contnode):
         sdkname = node.get('qbs:sdk')
-        importname = node.get('qbs:import')
+        pkgname = node.get('qbs:package')
         modname = node.get('qbs:module')
         itemname = node.get('qbs:item')
         searchmode = node.hasattr('refspecific')
 
-        matches = self.find_objects(env, sdkname, modname, importname, itemname, target, type,
+        matches = self.find_objects(env, sdkname, modname, pkgname, itemname, target, type,
                                     searchmode)
 
         if not matches:
@@ -658,8 +657,8 @@ class QbsDomain(Domain):
 
         if obj[1] == 'sdk':
             return self._make_sdk_refnode(builder, fromdocname, name, contnode)
-        elif obj[1] == 'import':
-            return self._make_import_refnode(builder, fromdocname, name, contnode)
+        elif obj[1] == 'package':
+            return self._make_package_refnode(builder, fromdocname, name, contnode)
         elif obj[1] == 'module':
             return self._make_module_refnode(builder, fromdocname, name, contnode)
         elif obj[1] == 'item':
@@ -675,13 +674,13 @@ class QbsDomain(Domain):
             title += ': ' + synopsis
         return make_refnode(builder, fromdocname, docname, 'sdk-' + name, contnode, title)
 
-    def _make_import_refnode(self, builder, fromdocname, name, contnode):
-        """Make a reference node for a Qbs import."""
-        docname, synopsis = self.data['imports'][name]
+    def _make_package_refnode(self, builder, fromdocname, name, contnode):
+        """Make a reference node for a Qbs package."""
+        docname, synopsis = self.data['packages'][name]
         title = name
         if synopsis:
             title += ': ' + synopsis
-        return make_refnode(builder, fromdocname, docname, 'import-' + name, contnode, title)
+        return make_refnode(builder, fromdocname, docname, 'package-' + name, contnode, title)
 
     def _make_module_refnode(self, builder, fromdocname, name, contnode):
         """Make a reference node for a Qbs module."""

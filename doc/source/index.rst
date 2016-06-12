@@ -13,7 +13,7 @@ Welcome! This is the documentation for |project-version|, last updated |today|.
 .. toctree::
    :maxdepth: 2
 
-   API Reference <api>
+   API References <api>
    Glossary <glossary>
    Release Notes <release_notes/release_notes>
 
@@ -21,5 +21,7 @@ Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
+* :ref:`Python Module Index <modindex>`
+* `Qbs Item Index <qbs-itemindex.html>`_
+* `Qbs Module Index <qbs-modindex.html>`_
 * :ref:`search`

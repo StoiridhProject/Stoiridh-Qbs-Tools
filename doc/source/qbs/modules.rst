@@ -1,17 +1,15 @@
-|project| --- API Reference
+Qbs -- Modules
 ====================================================================================================
 
-.. _Qbs API Reference:
+.. _stoiridhqbstools-qbs-modules:
+.. moduleauthor:: William McKIE <mckie.william@hotmail.co.uk>
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
-
 
 ----------------------------------------------------------------------------------------------------
 
-|project| provides two API for people who want to develop a project using
-:term:`Qt Build Suite (Qbs) <Qbs>`.
+In this chapter, you will see all :term:`Qbs Modules` that is available with |project|:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
-   Qbs <api-qbs>
-   Python <api-python>
+   Python <modules/python>

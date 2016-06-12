@@ -42,7 +42,7 @@ class Scanner:
         """Construct a :py:class:`Scanner` object.
 
         The scanner will perform a scan of the ``QBS_HOME`` and the ``PATH`` environment variables,
-        respectively, in order to find the `Qbs`_ executable according to the *minimum_version*
+        respectively, in order to find the :term:`Qbs` executable according to the *minimum_version*
         parameter.
         """
         if isinstance(minimum_version, VersionNumber):
@@ -63,7 +63,7 @@ class Scanner:
 
     async def scan(self, loop=None):
         """This :ref:`coroutine <coroutine>` method performs a scan from the ``QBS_HOME`` and the
-        ``PATH`` environment variables in order to find the `Qbs`_ executable according to the
+        ``PATH`` environment variables in order to find the :term:`Qbs` executable according to the
         :py:attr:`minimum_version` property.
 
         If the ``QBS_HOME`` environment variable is set, then the scanner will look into it first.

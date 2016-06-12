@@ -3,6 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. Copyright 2015-2016 Stòiridh Project.
+.. This file is under the FDL licence, see LICENCE.FDL for details.
+
 |project-version| documentation
 ===============================
 

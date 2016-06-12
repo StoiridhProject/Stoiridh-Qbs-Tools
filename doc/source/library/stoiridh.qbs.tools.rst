@@ -1,4 +1,4 @@
-|project| - Python 3 API Reference
+:py:mod:`stoiridh.qbs.tools` module
 ====================================================================================================
 
 .. py:module:: stoiridh.qbs.tools

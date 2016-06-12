@@ -18,3 +18,4 @@ are in their respective packages:
 
    Stoiridh.Cpp <items/package_stoiridh.cpp>
    Stoiridh.Qt <items/package_stoiridh.qt>
+   Stoiridh.QtQuick <items/package_stoiridh.qtquick>

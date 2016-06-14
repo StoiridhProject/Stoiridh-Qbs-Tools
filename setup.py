@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 ####################################################################################################
 ##                                                                                                ##
@@ -18,56 +17,54 @@
 ##            along with this program.  If not, see <http://www.gnu.org/licenses/>.               ##
 ##                                                                                                ##
 ####################################################################################################
-import argparse
-import asyncio
+import stoiridhtools
+import sys
 
 from pathlib import Path
-from stoiridh.qbs.tools import SDK
+from setuptools import setup, find_packages
 
 
-# constants
-STOIRIDH_PROJECT_NAME = 'Stòiridh Qbs Tools'
-STOIRIDH_PROJECT_VERSION = '1.1.0'
-STOIRIDH_SUPPORTED_VERSIONS = ['1.1.0']
+if sys.version_info < (3, 5):
+    print('ERROR: StoiridhTools requires at least Python 3.5 to run.')
+    sys.exit(1)
 
 
-def prepare_arguments(parser):
-    parser.add_argument('-V', '--version', action='store_true',
-                        help="show the version number and exit")
-    commands = parser.add_subparsers(dest='command',
-                                     description="Manage the versions of the SDK.")
+# get the long description from the README.md file
+readme = Path('README.rst').resolve()
 
-    # init command
-    init = commands.add_parser('init',
-                               help="initialise %s" % STOIRIDH_PROJECT_NAME,
-                               description="""Install the non-installed versions of %s"""
-                                           % STOIRIDH_PROJECT_NAME)
-    init.add_argument('-f', '--force', action='store_true', help="force initialisation")
+with readme.open(encoding='utf-8') as f:
+    long_description = f.read()
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Setup the build environment for %s"
-                                                 % STOIRIDH_PROJECT_NAME)
-    prepare_arguments(parser)
-
-    args = parser.parse_args()
-
-    if args.version:
-        print(STOIRIDH_PROJECT_VERSION)
-        exit(0)
-
-    if args.command == 'init':
-        loop = asyncio.get_event_loop()
-        sdk = SDK(STOIRIDH_SUPPORTED_VERSIONS)
-        if args.force:
-            sdk.clean()
-        print('There are %d supported version(s) of %s...' % (len(STOIRIDH_SUPPORTED_VERSIONS),
-                                                              STOIRIDH_PROJECT_NAME))
-        # start the install of the SDK in an asynchronous way
-        loop.run_until_complete(sdk.install())
-        loop.close()
-    else:
-        parser.print_help()
-
-if __name__ == '__main__':
-    main()
+setup(
+    name='stoiridhtools',
+    version=stoiridhtools.__version__,
+    license='GPLv3+',
+    author='Stòiridh Project',
+    author_email='stoiridh-project@googlegroups.com',
+    url='https://github.com/StoiridhProject/StoiridhTools',
+    description='Enhance your Qbs-based projects',
+    long_description=long_description,
+    classifiers=[
+        'Development Status :: 1 - Planning',
+        'Environment :: Console',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+        'Natural Language :: English',
+        'Operating System :: POSIX :: Linux',
+        'Operating System :: Microsoft :: Windows',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3 :: Only',
+        'Topic :: Software Development',
+        'Topic :: Utilities',
+    ],
+    platforms='linux win32',
+    keywords='development build-tools qbs stoiridhtools',
+    packages=find_packages(exclude=["tests"]),
+    include_package_data=True,
+    entry_points={
+        'console_scripts': [
+            'stoiridhtools=stoiridhtools.cli:main',
+        ],
+    },
+)

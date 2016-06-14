@@ -26,7 +26,7 @@ class Qbs:
         """Construct a :py:class:`Qbs` object.
 
         Generally speaking, this object is working jointly with the
-        :py:class:`~stoiridh.qbs.tools.qbs.Scanner` object.
+        :py:class:`~stoiridhtools.qbs.Scanner` object.
 
         Parameters:
 
@@ -35,7 +35,7 @@ class Qbs:
 
         :raise: :py:exc:`TypeError` when *filepath* is not a :py:class:`str` object or a
                 :py:class:`pathlib.Path` object, but also when *version* is not a :py:class:`str`
-                object or a :py:class:`~stoiridh.qbs.tools.VersionNumber` object.
+                object or a :py:class:`~stoiridhtools.VersionNumber` object.
         """
         if isinstance(filepath, str):
             self._filepath = Path(filepath)
@@ -51,7 +51,7 @@ class Qbs:
             self._version = version
         else:
             raise TypeError('''argument (version) should be a str or a
-                               stoiridh.qbs.tools.VersionNumber object, not %r''' % type(version))
+                               stoiridhtools.VersionNumber object, not %r''' % type(version))
 
     @property
     def path(self):
@@ -73,7 +73,7 @@ class Qbs:
     def version(self):
         """This read-only property returns the Qbs version.
 
-        :rtype: ~stoiridh.qbs.tools.VersionNumber
+        :rtype: ~stoiridhtools.VersionNumber
         """
         return self._version
 

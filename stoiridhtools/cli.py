@@ -17,23 +17,55 @@
 ##            along with this program.  If not, see <http://www.gnu.org/licenses/>.               ##
 ##                                                                                                ##
 ####################################################################################################
-import unittest
+import stoiridhtools
+import argparse
+import asyncio
 
-from stoiridhtools import qbs, VersionNumber
-from util.decorators import asyncio_loop
+from pathlib import Path
+
+# constants
+STOIRIDHTOOLS_PROJECT_NAME = 'Stòiridh Qbs Tools'
+STOIRIDHTOOLS_PROJECT_VERSION = stoiridhtools.__version__
+STOIRIDHTOOLS_SUPPORTED_VERSIONS = ['0.1.0']
 
 
-@asyncio_loop
-class TestQbsScanner(unittest.TestCase):
-    def setUp(self):
-        self.scanner = qbs.Scanner()
+def prepare_arguments(parser):
+    parser.add_argument('-V', '--version', action='store_true',
+                        help="show the version number and exit")
+    commands = parser.add_subparsers(dest='command',
+                                     description="Manage the versions of the SDK.")
 
-    def test_minimum_version(self):
-        self.assertEqual(self.scanner.minimum_version, VersionNumber('1.5.0'))
-        self.scanner = qbs.Scanner(minimum_version=VersionNumber('1.4.5'))
-        self.assertEqual(self.scanner.minimum_version, VersionNumber('1.4.5'))
+    # init command
+    init = commands.add_parser('init',
+                               help="initialise %s" % STOIRIDHTOOLS_PROJECT_NAME,
+                               description="""Install the non-installed versions of %s"""
+                                           % STOIRIDHTOOLS_PROJECT_NAME)
+    init.add_argument('-f', '--force', action='store_true', help="force initialisation")
 
-    def test_scan(self):
-        qbs = TestQbsScanner.loop.run_until_complete(self.scanner.scan())
-        self.assertIsNotNone(qbs)
-        self.assertGreaterEqual(qbs.version, VersionNumber('1.5.0'))
+
+def main():
+    parser = argparse.ArgumentParser(description="Setup the build environment for %s"
+                                                 % STOIRIDHTOOLS_PROJECT_NAME)
+    prepare_arguments(parser)
+
+    args = parser.parse_args()
+
+    if args.version:
+        print(STOIRIDHTOOLS_PROJECT_VERSION)
+        exit(0)
+
+    if args.command == 'init':
+        loop = asyncio.get_event_loop()
+        sdk = stoiridhtools.SDK(STOIRIDHTOOLS_SUPPORTED_VERSIONS)
+        if args.force:
+            sdk.clean()
+        print('There are %d supported version(s) of %s...' % (len(STOIRIDHTOOLS_SUPPORTED_VERSIONS),
+                                                              STOIRIDHTOOLS_PROJECT_NAME))
+        # start the install of the SDK in an asynchronous way
+        loop.run_until_complete(sdk.install())
+        loop.close()
+    else:
+        parser.print_help()
+
+if __name__ == '__main__':
+    main()

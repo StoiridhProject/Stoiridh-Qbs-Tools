@@ -35,6 +35,9 @@ Makefile*
 
 # Python
 __pycache__/
+build/
+*.egg-info/
+dist/
 
 # Sphinx
 doc/build/

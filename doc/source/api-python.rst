@@ -13,5 +13,5 @@ Welcome to the |project|'s Python 3 API Reference!
 .. toctree::
    :maxdepth: 2
 
-   stoiridh.qbs.tools module <library/stoiridh.qbs.tools>
-   stoiridh.qbs.tools.qbs module <library/stoiridh.qbs.tools.qbs>
+   stoiridhtools module <library/stoiridhtools>
+   stoiridhtools.qbs module <library/stoiridhtools.qbs>

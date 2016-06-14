@@ -1,4 +1,4 @@
-:py:mod:`stoiridh.qbs.tools` --- SDK
+:py:mod:`stoiridhtools` --- SDK
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -6,7 +6,7 @@
 
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
-.. py:currentmodule:: stoiridh.qbs.tools
+.. py:currentmodule:: stoiridhtools
 
 ----------------------------------------------------------------------------------------------------
 

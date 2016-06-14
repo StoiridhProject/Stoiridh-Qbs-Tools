@@ -17,23 +17,9 @@
 ##            along with this program.  If not, see <http://www.gnu.org/licenses/>.               ##
 ##                                                                                                ##
 ####################################################################################################
-import unittest
-
-from stoiridhtools import qbs, VersionNumber
-from util.decorators import asyncio_loop
+import sys
 
 
-@asyncio_loop
-class TestQbsScanner(unittest.TestCase):
-    def setUp(self):
-        self.scanner = qbs.Scanner()
-
-    def test_minimum_version(self):
-        self.assertEqual(self.scanner.minimum_version, VersionNumber('1.5.0'))
-        self.scanner = qbs.Scanner(minimum_version=VersionNumber('1.4.5'))
-        self.assertEqual(self.scanner.minimum_version, VersionNumber('1.4.5'))
-
-    def test_scan(self):
-        qbs = TestQbsScanner.loop.run_until_complete(self.scanner.scan())
-        self.assertIsNotNone(qbs)
-        self.assertGreaterEqual(qbs.version, VersionNumber('1.5.0'))
+if __name__ == '__main__':
+    from stoiridhtools import cli
+    sys.exit(cli.main())

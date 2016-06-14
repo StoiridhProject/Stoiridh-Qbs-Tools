@@ -19,7 +19,7 @@
 ####################################################################################################
 import unittest
 
-from stoiridh.qbs.tools import qbs, VersionNumber
+from stoiridhtools import qbs, VersionNumber
 from util.decorators import asyncio_loop
 
 

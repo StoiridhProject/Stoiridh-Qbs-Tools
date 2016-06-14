@@ -22,7 +22,7 @@ import argparse
 import asyncio
 
 from pathlib import Path
-from stoiridh.qbs.tools import SDK
+from stoiridhtools import SDK
 
 
 # constants

@@ -23,7 +23,7 @@ import sys
 import unittest
 
 from pathlib import Path
-from stoiridh.qbs.tools import SDK
+from stoiridhtools import SDK
 from util.decorators import asyncio_loop
 
 

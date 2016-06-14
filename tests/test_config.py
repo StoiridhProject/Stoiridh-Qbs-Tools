@@ -22,7 +22,7 @@ import unittest
 
 from pathlib import Path
 from shutil import copyfile
-from stoiridh.qbs.tools import qbs, Config, VersionNumber
+from stoiridhtools import qbs, Config, VersionNumber
 from util.decorators import asyncio_loop
 
 

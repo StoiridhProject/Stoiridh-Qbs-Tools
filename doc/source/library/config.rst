@@ -1,4 +1,4 @@
-:py:mod:`stoiridh.qbs.tools` --- Config
+:py:mod:`stoiridhtools` --- Config
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -6,7 +6,7 @@
 
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
-.. py:currentmodule:: stoiridh.qbs.tools
+.. py:currentmodule:: stoiridhtools
 
 ----------------------------------------------------------------------------------------------------
 
@@ -24,7 +24,7 @@
 
    Example::
 
-     from stoiridh.qbs.tools import Config
+     from stoiridhtools import Config
 
      config = Config('path/to/config/directory')
 
@@ -60,7 +60,7 @@
          async with config.open() as cfg:
              data = await cfg.read('qbs')
 
-     :rtype: ~stoiridh.qbs.tools.Config
+     :rtype: ~stoiridhtools.Config
 
    .. py:method:: read(section)
 

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 ####################################################################################################
 ##                                                                                                ##
@@ -18,17 +17,16 @@
 ##            along with this program.  If not, see <http://www.gnu.org/licenses/>.               ##
 ##                                                                                                ##
 ####################################################################################################
+import stoiridhtools
 import argparse
 import asyncio
 
 from pathlib import Path
-from stoiridhtools import SDK
-
 
 # constants
-STOIRIDH_PROJECT_NAME = 'Stòiridh Qbs Tools'
-STOIRIDH_PROJECT_VERSION = '1.1.0'
-STOIRIDH_SUPPORTED_VERSIONS = ['1.1.0']
+STOIRIDHTOOLS_PROJECT_NAME = 'Stòiridh Qbs Tools'
+STOIRIDHTOOLS_PROJECT_VERSION = stoiridhtools.__version__
+STOIRIDHTOOLS_SUPPORTED_VERSIONS = ['0.1.0']
 
 
 def prepare_arguments(parser):
@@ -39,30 +37,30 @@ def prepare_arguments(parser):
 
     # init command
     init = commands.add_parser('init',
-                               help="initialise %s" % STOIRIDH_PROJECT_NAME,
+                               help="initialise %s" % STOIRIDHTOOLS_PROJECT_NAME,
                                description="""Install the non-installed versions of %s"""
-                                           % STOIRIDH_PROJECT_NAME)
+                                           % STOIRIDHTOOLS_PROJECT_NAME)
     init.add_argument('-f', '--force', action='store_true', help="force initialisation")
 
 
 def main():
     parser = argparse.ArgumentParser(description="Setup the build environment for %s"
-                                                 % STOIRIDH_PROJECT_NAME)
+                                                 % STOIRIDHTOOLS_PROJECT_NAME)
     prepare_arguments(parser)
 
     args = parser.parse_args()
 
     if args.version:
-        print(STOIRIDH_PROJECT_VERSION)
+        print(STOIRIDHTOOLS_PROJECT_VERSION)
         exit(0)
 
     if args.command == 'init':
         loop = asyncio.get_event_loop()
-        sdk = SDK(STOIRIDH_SUPPORTED_VERSIONS)
+        sdk = stoiridhtools.SDK(STOIRIDHTOOLS_SUPPORTED_VERSIONS)
         if args.force:
             sdk.clean()
-        print('There are %d supported version(s) of %s...' % (len(STOIRIDH_SUPPORTED_VERSIONS),
-                                                              STOIRIDH_PROJECT_NAME))
+        print('There are %d supported version(s) of %s...' % (len(STOIRIDHTOOLS_SUPPORTED_VERSIONS),
+                                                              STOIRIDHTOOLS_PROJECT_NAME))
         # start the install of the SDK in an asynchronous way
         loop.run_until_complete(sdk.install())
         loop.close()

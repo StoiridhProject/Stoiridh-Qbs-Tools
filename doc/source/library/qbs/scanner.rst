@@ -1,4 +1,4 @@
-:py:mod:`stoiridh.qbs.tools.qbs` --- Scanner
+:py:mod:`stoiridhtools.qbs` --- Scanner
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -6,7 +6,7 @@
 
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
-.. py:currentmodule:: stoiridh.qbs.tools.qbs
+.. py:currentmodule:: stoiridhtools.qbs
 
 ----------------------------------------------------------------------------------------------------
 
@@ -23,7 +23,7 @@
       This read-only property returns the minimum version required by the scanner in order to find
       the Qbs executable.
 
-      :rtype: ~stoiridh.qbs.tools.VersionNumber
+      :rtype: ~stoiridhtools.VersionNumber
 
    .. py:method:: scan(loop=None)
 

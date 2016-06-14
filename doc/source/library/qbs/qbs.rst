@@ -1,4 +1,4 @@
-:py:mod:`stoiridh.qbs.tools.qbs` --- Qbs
+:py:mod:`stoiridhtools.qbs` --- Qbs
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -6,7 +6,7 @@
 
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
-.. py:currentmodule:: stoiridh.qbs.tools.qbs
+.. py:currentmodule:: stoiridhtools.qbs
 
 ----------------------------------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@
    Construct a :py:class:`Qbs` object.
 
    Generally speaking, this object is working jointly with the
-   :py:class:`~stoiridh.qbs.tools.qbs.Scanner` object.
+   :py:class:`~stoiridhtools.qbs.Scanner` object.
 
    Parameters:
 
@@ -24,7 +24,7 @@
 
    :raise: :py:exc:`TypeError` when *filepath* is not a :py:class:`str` object or a
            :py:class:`pathlib.Path` object, but also when *version* is not a :py:class:`str`
-           object or a :py:class:`~stoiridh.qbs.tools.VersionNumber` object.
+           object or a :py:class:`~stoiridhtools.VersionNumber` object.
 
    .. py:attribute:: path
 
@@ -42,7 +42,7 @@
 
       This read-only property returns the Qbs version.
 
-      :rtype: ~stoiridh.qbs.tools.VersionNumber
+      :rtype: ~stoiridhtools.VersionNumber
 
    .. py:method:: __eq__(self, other)
 

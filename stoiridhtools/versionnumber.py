@@ -21,7 +21,7 @@ import re
 
 
 class VersionNumber:
-    re_version = re.compile(r'^(\d+)\.(\d+)(\.(\d+))?$')
+    version_re = re.compile(r'^(\d+)\.(\d+)(?:\.(\d+))?$')
 
     def __init__(self, *args):
         """Construct a :py:class:`VersionNumber` object. *args* corresponds to the major, minor, and
@@ -46,9 +46,9 @@ class VersionNumber:
             if isinstance(arg, VersionNumber):
                 self._segments = arg._segments[:]
             elif isinstance(arg, str):
-                m = VersionNumber.re_version.match(arg)
+                m = VersionNumber.version_re.match(arg)
                 if m:
-                    self._segments = [int(s) if s else 0 for s in m.group(1, 2, 4)]
+                    self._segments = [int(s) if s else 0 for s in m.group(1, 2, 3)]
                 else:
                     raise ValueError('The version number is not valid:', arg)
             elif isinstance(arg, int):
@@ -83,7 +83,7 @@ class VersionNumber:
         self._segments[2] = value
 
     def __hash__(self):
-        return hash(tuple([self._segments[i] for i in range(0, 3)]))
+        return hash(tuple(self._segments))
 
     def __repr__(self):
         return ('<%s major=%s minor=%s patch=%s>'

@@ -30,9 +30,10 @@ from util.decorators import asyncio_loop
 class TestConfig(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.default_config_file = Path('tests/data/sqt.conf.default').resolve()
+        cls.default_config_file = Path('tests/data/stoiridhtools.conf.default').resolve()
         # resolve the path to an absolute path before join the configuration file is ok, because the
-        # Config.FILENAME (here, sqt.conf) file doesn't exist until the tests has not begun.
+        # Config.FILENAME (here, stoiridhtools.conf) file doesn't exist until the tests has not
+        # begun.
         cls.config_file = Path('tests/data').resolve().joinpath(Config.FILENAME)
 
     @classmethod

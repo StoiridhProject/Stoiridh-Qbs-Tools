@@ -25,7 +25,7 @@ from pathlib import Path
 
 
 class Config:
-    FILENAME = 'sqt.conf'
+    FILENAME = 'stoiridhtools.conf'
 
     def __init__(self, path, loop=None):
         """Construct a :py:class:`Config` object.

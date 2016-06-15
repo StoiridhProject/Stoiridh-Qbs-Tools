@@ -43,4 +43,4 @@ dist/
 doc/build/
 
 # tests
-tests/data/sqt.conf
+tests/data/stoiridhtools.conf

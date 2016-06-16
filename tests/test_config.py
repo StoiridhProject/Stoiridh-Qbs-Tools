@@ -18,6 +18,7 @@
 ##                                                                                                ##
 ####################################################################################################
 import os
+import sys
 import unittest
 
 from pathlib import Path
@@ -27,6 +28,8 @@ from util.decorators import asyncio_loop
 
 
 @asyncio_loop
+@unittest.skipIf(not (sys.platform.startswith('linux') or sys.platform.startswith('win32')),
+                 'stoiridhtools.Config is only available on GNU/Linux and Windows.')
 class TestConfig(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -35,6 +38,12 @@ class TestConfig(unittest.TestCase):
         # Config.FILENAME (here, stoiridhtools.conf) file doesn't exist until the tests has not
         # begun.
         cls.config_file = Path('tests/data').resolve().joinpath(Config.FILENAME)
+
+        # config's default path
+        if sys.platform.startswith('linux'):
+            cls.default_path = Path(os.environ['HOME'], '.config', 'StoiridhProject/StoiridhTools')
+        elif sys.platform.startswith('win32'):
+            cls.default_path = Path(os.environ['APPDATA'], 'StoiridhProject/StoiridhTools')
 
     @classmethod
     def tearDownClass(cls):
@@ -47,6 +56,12 @@ class TestConfig(unittest.TestCase):
         self.qbs = qbs.Qbs('/usr/bin/qbs', VersionNumber('1.5.0'))
 
         copyfile(str(self.default_config_file), str(self.config.path.joinpath(Config.FILENAME)))
+
+    def test_get_default_path(self):
+        self.assertEqual(self.config.get_default_path(), self.default_path)
+
+    def test_path(self):
+        self.assertEqual(self.config.path, Path.cwd().joinpath('tests/data'))
 
     def test_open(self):
         async def wrapper():

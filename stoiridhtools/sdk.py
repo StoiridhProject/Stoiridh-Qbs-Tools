@@ -19,9 +19,7 @@
 ####################################################################################################
 import asyncio
 import logging
-import os
 import shutil
-import sys
 import tarfile
 import tempfile
 import urllib.request
@@ -37,27 +35,26 @@ LOG = logging.getLogger(__name__)
 
 class SDK:
     URL = 'https://github.com/viprip/Stoiridh-Qbs-Tools/archive/{version}.tar.gz'
-    ROOT_DIR = Path('StoiridhProject/StoiridhQbsTools')
 
-    def __init__(self, versions, loop=None):
+    def __init__(self, versions, path=None, loop=None):
         """Construct a :py:class:`SDK` object.
 
         Parameters:
 
         - *versions*, corresponds to a :py:obj:`list` of versions string.
-
+        - *path*, is the root path where the packages will be installed. If no path is given, the
+          default path from the :py:meth:`~stoiridhtools.Config.get_default_path` will be used.
         - *loop*, is an optional parameter that refers to an asynchronous event loop. If
           :py:obj:`None`, then the *loop* will be assigned to the current
           :py:func:`asyncio.get_event_loop()`.
         """
         self._versions = versions or None
 
-        if sys.platform.startswith('linux'):
-            self._rootpath = Path(os.environ['HOME'], '.config', self.ROOT_DIR)
-        elif sys.platform.startswith('win32'):
-            self._rootpath = Path(os.environ['APPDATA'], self.ROOT_DIR)
+        if isinstance(path, Path):
+            self._rootpath = path
         else:
-            raise RuntimeError('Your Operating System (%s) is not supported.' % sys.platform)
+            from .config import Config
+            self._rootpath = Config.get_default_path()
 
         if loop is None:
             self._loop = asyncio.get_event_loop()
@@ -69,13 +66,7 @@ class SDK:
 
     @property
     def install_root_path(self):
-        """Return the root path of the Stòiridh Qbs Tools SDK where the files will be installed.
-
-         .. note::
-            - Under GNU/Linux, the SDK is located in
-              ``$HOME/.config/StoiridhProject/StoiridhQbsTools``
-            - Under Windows, the SDK is located in
-              ``%APPDATA%/StoiridhProject/StoiridhQbsTools``
+        """Return the Stòiridh Tools SDK's root path where the files will be installed.
 
         :rtype: pathlib.Path
         """
@@ -183,7 +174,8 @@ class _Package:
     def temp(self):
         """Return the temporary package.
 
-        .. note:
+        .. note::
+
             The property is deleted when the package was successfully installed.
         """
         return self._temp_package

@@ -37,24 +37,24 @@ class TestSDK(unittest.TestCase):
         cls.VERSIONS = ['1.2.0', '1.1.0']
         cls.STOIRIDH_PROJECT_TEST_DIR = 'StoiridhProject-Test'
 
-        # since there is no official release for now, we'll modify the url of the Stòiridh Qbs
-        # Tools in order to be able to test the stoiridhtools.SDK class.
+        # since there is no official release for now, we'll modify the url of the Stòiridh Tools
+        # in order to be able to test the stoiridhtools.SDK class.
         datadir = Path('tests/data').resolve()
         SDK.URL = str(datadir.as_uri()) + '/{version}.tar.gz'
 
-        # modify the SDK's ROOT_DIR class attribute in order to avoid to remove the installed
-        # versions of the SDK from a release environment.
-        SDK.ROOT_DIR = Path(cls.STOIRIDH_PROJECT_TEST_DIR, 'StoiridhQbsTools')
+        # make the absolute install root path in order to avoid to remove from a release environment
+        # the already installed versions of the SDK.
+        ROOT_DIR = Path(cls.STOIRIDH_PROJECT_TEST_DIR, 'StoiridhTools')
 
         if sys.platform.startswith('linux'):
-            cls.INSTALL_ROOT_PATH = Path(os.environ['HOME'], '.config', SDK.ROOT_DIR)
+            cls.INSTALL_ROOT_PATH = Path(os.environ['HOME'], '.config', ROOT_DIR)
         elif sys.platform.startswith('win32'):
-            cls.INSTALL_ROOT_PATH = Path(os.environ['APPDATA'], SDK.ROOT_DIR)
+            cls.INSTALL_ROOT_PATH = Path(os.environ['APPDATA'], ROOT_DIR)
 
         cls.QBS_ROOT_PATH = cls.INSTALL_ROOT_PATH.joinpath('qbs')
 
     def setUp(self):
-        self.sdk = SDK(TestSDK.VERSIONS)
+        self.sdk = SDK(TestSDK.VERSIONS, path=self.INSTALL_ROOT_PATH)
 
     def tearDown(self):
         # remove the testing root directory each time a test is completed.
@@ -74,8 +74,7 @@ class TestSDK(unittest.TestCase):
         self.assertEqual(len(packages), len(TestSDK.VERSIONS))
 
         for i in range(len(packages)):
-            self.assertEqual(packages[i].url,
-                             SDK.URL.format(version=TestSDK.VERSIONS[i]))
+            self.assertEqual(packages[i].url, SDK.URL.format(version=TestSDK.VERSIONS[i]))
 
     def test_noninstalled_packages(self):
         packages = list(self.sdk.noninstalled_packages)

@@ -17,19 +17,14 @@
    Parameters:
 
    - *versions*, corresponds to a :py:obj:`list` of versions string.
-
+   - *path*, is the root path where the packages will be installed. If no path is given, the
+     default path from the :py:meth:`~stoiridhtools.Config.get_default_path` will be used.
    - *loop*, is an optional parameter that refers to an asynchronous event loop. If :py:obj:`None`,
      then the *loop* will be assigned to the current :py:func:`asyncio.get_event_loop()`.
 
    .. py:attribute:: install_root_path
 
-      Return the root path of the Stòiridh Qbs Tools SDK where the files will be installed.
-
-      .. note::
-         - Under GNU/Linux, the SDK is located in
-           ``$HOME/.config/StoiridhProject/StoiridhQbsTools``
-         - Under Windows, the SDK is located in
-           ``%APPDATA%/StoiridhProject/StoiridhQbsTools``
+      Return the Stòiridh Tools SDK's root path where the files will be installed.
 
       :rtype: pathlib.Path
 

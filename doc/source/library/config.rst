@@ -11,7 +11,7 @@
 ----------------------------------------------------------------------------------------------------
 
 
-.. py:class:: Config(path[, loop=None])
+.. py:class:: Config([path=None [, loop=None]])
 
    Construct a :py:class:`Config` object.
 
@@ -19,16 +19,17 @@
 
    Parameters:
 
-   - *path*, corresponds to the absolute path where the configuration file can be found.
+   - *path*, corresponds to the absolute path where the configuration file can be found. If
+     :py:obj:`None`, then the default location will be used.
    - *loop*, is an optional parameter which corresponds to a :ref:`coroutine <coroutine>` loop.
 
    Example::
 
-     from stoiridhtools import Config
+      from stoiridhtools import Config
 
-     config = Config('path/to/config/directory')
+      config = Config('path/to/config/directory')
 
-     async with config.open() as cfg:
+      async with config.open() as cfg:
          # read the 'qbs' section
          data = await cfg.read('qbs')
 
@@ -44,6 +45,20 @@
    :py:obj:`None` is returned. Otherwise, you can use these *data* and when done, you may want to
    update them. This is done with a call to the :ref:`coroutine <coroutine>` method,
    :py:meth:`update`.
+
+   .. py:classmethod:: get_default_path
+
+      Return the default path. If the platform is not supported, :py:obj:`None` is returned.
+
+      On GNU/Linux, the default path will be located in the following directory::
+
+         $HOME/.config/StoiridhProject/StoiridhTools
+
+      On Windows, the default path will be located in the following directory::
+
+         %APPDATA%/StoiridhProject/StoiridhTools
+
+      Available on GNU/Linux and Windows.
 
    .. py:attribute:: path
 

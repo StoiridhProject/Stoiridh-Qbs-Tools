@@ -19,22 +19,26 @@
 ####################################################################################################
 import asyncio
 import configparser
+import os
+import sys
 
 from collections import OrderedDict
 from pathlib import Path
 
 
 class Config:
-    FILENAME = 'sqt.conf'
+    FILENAME = 'stoiridhtools.conf'
+    ROOTDIR = 'StoiridhProject/StoiridhTools'
 
-    def __init__(self, path, loop=None):
+    def __init__(self, path=None, loop=None):
         """Construct a :py:class:`Config` object.
 
         The class supports the :term:`asynchronous context manager`.
 
         Parameters:
 
-        - *path*, corresponds to the absolute path where the configuration file can be found.
+        - *path*, corresponds to the absolute path where the configuration file can be found. If
+        :py:obj:`None`, then the default location will be used.
         - *loop*, is an optional parameter which corresponds to a :ref:`coroutine <coroutine>` loop.
 
         Example::
@@ -67,16 +71,43 @@ class Config:
         else:
             self._loop = loop
 
-        if isinstance(path, str):
-            self._path = Path(path).resolve()
-        elif isinstance(path, Path):
-            self._path = path.resolve()
+        if path is None:
+            self._path = self.get_default_path()
         else:
-            raise TypeError("argument (path) should be a str or pathlib.Path object, not %r"
-                            % type(path))
+            if isinstance(path, str):
+                self._path = Path(path).resolve()
+            elif isinstance(path, Path):
+                self._path = path.resolve()
+            else:
+                raise TypeError("argument (path) should be a str or pathlib.Path object, not %r"
+                                % type(path))
 
         if not self._path.is_dir():
             raise ValueError("argument (path) is not a directory.")
+
+    @classmethod
+    def get_default_path(cls):
+        """Return the default path. If the platform is not supported, :py:obj:`None` is returned.
+
+        On GNU/Linux, the default path will be located in the following directory::
+
+            $HOME/.config/StoiridhProject/StoiridhTools
+
+        On Windows, the default path will be located in the following directory::
+
+            %APPDATA%/StoiridhProject/StoiridhTools
+
+        Available on GNU/Linux and Windows.
+        """
+        if sys.platform.startswith('linux'):
+            cls._rootpath = Path(os.environ['HOME'], '.config', cls.ROOTDIR)
+        elif sys.platform.startswith('win32'):
+            cls._rootpath = Path(os.environ['APPDATA'], cls.ROOTDIR)
+
+        if not cls._rootpath.exists():
+            cls._rootpath.mkdir(parents=True)
+
+        return cls._rootpath or None
 
     @property
     def path(self):

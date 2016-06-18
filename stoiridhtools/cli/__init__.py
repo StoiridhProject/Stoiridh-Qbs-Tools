@@ -32,10 +32,11 @@ LOG = logging.getLogger(__name__)
 
 class Command:
     """Argument command"""
-    def __init__(self, parser, name=None, verbose=False):
+    def __init__(self, parser, name=None, verbose=False, loop=None):
         self._name = name
         self._parser = parser
         self._verbose = verbose
+        self._loop = loop
 
     @property
     def name(self):
@@ -102,7 +103,7 @@ class CommandManager:
                             %r''' % cmdtype)
 
         # pray for cmdtype is really a type and not an instanciated object!
-        cmd = cmdtype(self._command_parser)
+        cmd = cmdtype(self._command_parser, loop=self._loop)
         cmd.prepare()
 
         # save the command for a later use

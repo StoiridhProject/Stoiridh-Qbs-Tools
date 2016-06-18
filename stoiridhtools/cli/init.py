@@ -17,8 +17,6 @@
 ##            along with this program.  If not, see <http://www.gnu.org/licenses/>.               ##
 ##                                                                                                ##
 ####################################################################################################
-import asyncio
-
 from pathlib import Path
 
 from stoiridhtools.cli import Command, STOIRIDHTOOLS_PROJECT_NAME, STOIRIDHTOOLS_SUPPORTED_VERSIONS
@@ -30,8 +28,8 @@ from stoiridhtools.sdk import SDK
 class InitCommand(Command):
     """The :py:class:`InitCommand` class will initialise the SDK by the installation of the missing
     packages, then scan the system in order to find the :term:`Qbs` executable."""
-    def __init__(self, parser):
-        super().__init__(parser, 'init')
+    def __init__(self, parser, **kwargs):
+        super().__init__(parser, 'init', **kwargs)
 
     def prepare(self):
         """Prepare the command-line arguments for the ``init`` command."""
@@ -57,7 +55,6 @@ class InitCommand(Command):
             >>> stoiridhtools init
         """
         force = 'force' in kwargs and kwargs['force'] or False
-        loop = asyncio.get_event_loop()
 
         async def wrapper():
             config = Config()
@@ -84,4 +81,4 @@ class InitCommand(Command):
                     data = {'filepath': str(qbs.filepath), 'version': str(qbs.version)}
                     await cfg.update('qbs', data)
 
-        loop.run_until_complete(wrapper())
+        self._loop.run_until_complete(wrapper())

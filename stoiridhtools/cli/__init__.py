@@ -80,7 +80,6 @@ class CommandManager:
             manager.add(InitCommand)
             manager.run()
     """
-
     def __init__(self):
         self._commands = dict()
         self._loop = None

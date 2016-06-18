@@ -152,8 +152,8 @@ def main():
     from stoiridhtools.cli import init
 
     with CommandManager() as manager:
-        manager.append(ConfigCommand)
         manager.append(init.InitCommand)
+        # manager.append(ConfigCommand)
         manager.run()
 
 

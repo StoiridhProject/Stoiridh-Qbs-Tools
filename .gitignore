@@ -35,9 +35,12 @@ Makefile*
 
 # Python
 __pycache__/
+build/
+*.egg-info/
+dist/
 
 # Sphinx
 doc/build/
 
 # tests
-tests/data/sqt.conf
+tests/data/stoiridhtools.conf

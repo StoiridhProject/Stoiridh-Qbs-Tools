@@ -1,0 +1,9 @@
+include LICENCE.FDL
+include LICENCE.GPL3
+include README.md
+include stoiridhtools.py
+
+recursive-include doc *
+prune doc/build
+
+recursive-include stoiridhtools/share *

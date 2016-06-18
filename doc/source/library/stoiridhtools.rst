@@ -1,4 +1,4 @@
-:py:mod:`stoiridh.qbs.tools.qbs` module
+:py:mod:`stoiridhtools` module
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -7,15 +7,15 @@
 .. moduleauthor:: William McKIE <mckie.william@hotmail.co.uk>
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
-.. py:module:: stoiridh.qbs.tools.qbs
+.. py:module:: stoiridhtools
 
 ----------------------------------------------------------------------------------------------------
 
-The :py:mod:`stoiridh.qbs.tools.qbs` module provides a tool to scan the environment variables of the
-Operating System in order to find :term:`Qbs`.
+The :py:mod:`stoiridhtools` module provides an interface to handle the versions of |project|.
 
 .. toctree::
    :maxdepth: 2
 
-   Qbs <qbs/qbs>
-   Scanner <qbs/scanner>
+   Config <config>
+   SDK <sdk>
+   VersionNumber <versionnumber>

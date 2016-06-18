@@ -20,8 +20,8 @@
 import unittest
 
 from pathlib import Path
-from stoiridhtools import VersionNumber
 from stoiridhtools.qbs import Qbs
+from stoiridhtools.versionnumber import VersionNumber
 
 
 class TestQbs(unittest.TestCase):

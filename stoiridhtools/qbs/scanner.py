@@ -25,8 +25,8 @@ import subprocess
 import sys
 
 from pathlib import Path
-from . import Qbs
-from .. import VersionNumber
+from stoiridhtools.qbs import Qbs
+from stoiridhtools.versionnumber import VersionNumber
 
 
 # logging

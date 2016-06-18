@@ -21,10 +21,6 @@ import argparse
 import asyncio
 import logging
 import stoiridhtools
-import stoiridhtools.qbs
-
-from pathlib import Path
-
 
 # constants
 STOIRIDHTOOLS_PROJECT_NAME = 'Stòiridh Tools'
@@ -74,66 +70,6 @@ class Command:
             print(message)
 
 
-class InitCommand(Command):
-    """The :py:class:`InitCommand` class will initialise the SDK by the installation of the missing
-    packages, then scan the system in order to find the :term:`Qbs` executable."""
-    def __init__(self, parser):
-        super().__init__(parser, 'init')
-
-    def prepare(self):
-        """Prepare the command-line arguments for the ``init`` command."""
-        init_desc = """
-        Initialise {project}.
-
-        The initialisation will start by the installation of the missing packages, then a scan of
-        specific environment variables in order to find the Qbs executable.
-        """.format_map({'project': STOIRIDHTOOLS_PROJECT_NAME})
-
-        init = self._parser.add_parser('init',
-                                       help="initialise %s" % STOIRIDHTOOLS_PROJECT_NAME,
-                                       description=init_desc)
-
-        self._add_verbose_argument(init)
-        init.add_argument('-f', '--force', action='store_true', help="force initialisation")
-
-    def run(self, *args, **kwargs):
-        """Run the ``init`` command.
-
-        Example::
-
-            >>> stoiridhtools init
-        """
-        force = 'force' in kwargs and kwargs['force'] or False
-        loop = asyncio.get_event_loop()
-
-        async def wrapper():
-            config = stoiridhtools.Config()
-            sdk = stoiridhtools.SDK(STOIRIDHTOOLS_SUPPORTED_VERSIONS)
-
-            self._print_verbose('There are %d supported version(s) of %s' %
-                                (len(STOIRIDHTOOLS_SUPPORTED_VERSIONS), STOIRIDHTOOLS_PROJECT_NAME))
-
-            if force:
-                self._print_verbose('cleaning all packages installed from', sdk.install_root_path)
-                sdk.clean()
-
-            self._print_verbose('Downloading and installing the packages')
-            await sdk.install()
-
-            scanner = stoiridhtools.qbs.Scanner()
-
-            self._print_verbose('searching for the Qbs executable')
-            qbs = await scanner.scan()
-
-            if qbs:
-                async with config.open() as cfg:
-                    self._print_verbose('updating stoiridhtools.conf')
-                    data = {'filepath': str(qbs.filepath), 'version': str(qbs.version)}
-                    await cfg.update('qbs', data)
-
-        loop.run_until_complete(wrapper())
-
-
 class CommandManager:
     """The :py:class:`CommandManager` class will register zero or more :py:class:`Command` type
     objects.
@@ -144,7 +80,6 @@ class CommandManager:
             manager.add(InitCommand)
             manager.run()
     """
-
     def __init__(self):
         self._commands = dict()
         self._loop = None
@@ -213,9 +148,11 @@ class CommandManager:
 
 
 def main():
+    from stoiridhtools.cli import init
+
     with CommandManager() as manager:
-        manager.append(InitCommand)
-        manager.append(ConfigCommand)
+        manager.append(init.InitCommand)
+        # manager.append(ConfigCommand)
         manager.run()
 
 

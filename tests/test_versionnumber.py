@@ -19,7 +19,7 @@
 ####################################################################################################
 import unittest
 
-from stoiridhtools import VersionNumber
+from stoiridhtools.versionnumber import VersionNumber
 
 
 class VersionNumberData:

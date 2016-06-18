@@ -26,7 +26,8 @@ import urllib.request
 
 from itertools import filterfalse
 from pathlib import Path
-from .versionnumber import VersionNumber
+
+from stoiridhtools.versionnumber import VersionNumber
 
 
 # logging

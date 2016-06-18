@@ -19,18 +19,19 @@
 ####################################################################################################
 import unittest
 
-from stoiridhtools import qbs, VersionNumber
+from stoiridhtools.qbs.scanner import Scanner
+from stoiridhtools.versionnumber import VersionNumber
 from util.decorators import asyncio_loop
 
 
 @asyncio_loop
 class TestQbsScanner(unittest.TestCase):
     def setUp(self):
-        self.scanner = qbs.Scanner()
+        self.scanner = Scanner()
 
     def test_minimum_version(self):
         self.assertEqual(self.scanner.minimum_version, VersionNumber('1.5.0'))
-        self.scanner = qbs.Scanner(minimum_version=VersionNumber('1.4.5'))
+        self.scanner = Scanner(minimum_version=VersionNumber('1.4.5'))
         self.assertEqual(self.scanner.minimum_version, VersionNumber('1.4.5'))
 
     def test_scan(self):

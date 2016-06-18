@@ -1,4 +1,4 @@
-Stòiridh Qbs Tools --- Qbs API Reference
+|project| --- Qbs API Reference
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -6,8 +6,8 @@ Stòiridh Qbs Tools --- Qbs API Reference
 
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
-.. qbs:sdk:: StoiridhQbsTools
-   :synopsis: Extend Qbs functionalities
+.. qbs:sdk:: StoiridhTools
+   :synopsis: Extend the Qbs functionalities
 
 ----------------------------------------------------------------------------------------------------
 

@@ -1,4 +1,4 @@
-Stòiridh Qbs Tools --- Python 3 API Reference
+|project| --- Python 3 API Reference
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.

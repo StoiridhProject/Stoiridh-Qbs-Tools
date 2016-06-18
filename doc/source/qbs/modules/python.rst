@@ -7,7 +7,7 @@ Qbs Module -- Python
 .. moduleauthor:: William McKIE <mckie.william@hotmail.co.uk>
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
-.. qbs:currentsdk:: StoiridhQbsTools
+.. qbs:currentsdk:: StoiridhTools
 
 ----------------------------------------------------------------------------------------------------
 

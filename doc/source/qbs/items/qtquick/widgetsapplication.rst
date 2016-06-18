@@ -1,4 +1,4 @@
-:qbs:pkg:`~StoiridhQbsTools.Stoiridh.QtQuick` --- WidgetsApplication
+:qbs:pkg:`~StoiridhTools.Stoiridh.QtQuick` --- WidgetsApplication
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -6,7 +6,7 @@
 
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
-.. qbs:currentsdk:: StoiridhQbsTools
+.. qbs:currentsdk:: StoiridhTools
 .. qbs:currentpackage:: Stoiridh.QtQuick
 
 ----------------------------------------------------------------------------------------------------

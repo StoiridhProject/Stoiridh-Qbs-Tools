@@ -1,4 +1,4 @@
-:qbs:pkg:`~StoiridhQbsTools.Stoiridh.Qt` --- Documentation
+:qbs:pkg:`~StoiridhTools.Stoiridh.Qt` --- Documentation
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -6,7 +6,7 @@
 
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
-.. qbs:currentsdk:: StoiridhQbsTools
+.. qbs:currentsdk:: StoiridhTools
 .. qbs:currentpackage:: Stoiridh.Qt
 
 ----------------------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ The *Documentation* item depends from the following modules:
 
 * cpp [#]_
 * Qt.core [#]_
-* :qbs:mod:`~StoiridhQbsTools.Python`
+* :qbs:mod:`~StoiridhTools.Python`
 
 Properties
 ^^^^^^^^^^

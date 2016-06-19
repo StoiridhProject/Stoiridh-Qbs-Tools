@@ -1,4 +1,4 @@
-:py:mod:`stoiridhtools.qbs` --- Scanner
+:py:mod:`stoiridhtools.qbs.scanner` --- Find the wanted version of Qbs
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -6,9 +6,19 @@
 
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
-.. py:currentmodule:: stoiridhtools.qbs
+.. py:module:: stoiridhtools.qbs.scanner
+   :synopsis: Find the wanted version of Qbs
 
 ----------------------------------------------------------------------------------------------------
+
+Introduction
+------------
+
+The :py:mod:`stoiridhtools.qbs.scanner` module provides a :py:class:`Scanner` class that performs a
+scan on specific environment variables in order to find the wanted version of Qbs.
+
+Objects
+-------
 
 .. py:class:: Scanner(minimum_version=VersionNumber('1.5.0'))
 

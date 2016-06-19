@@ -102,7 +102,7 @@ class SDK:
 
         This is a :ref:`coroutine <coroutine>` method.
         """
-        with tempfile.TemporaryDirectory(prefix='StoiridhQbsTools') as d:
+        with tempfile.TemporaryDirectory(prefix='StoiridhTools') as d:
             try:
                 packages = await self._download_packages(d)
             except:

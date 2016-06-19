@@ -17,5 +17,5 @@ Operating System in order to find :term:`Qbs`.
 .. toctree::
    :maxdepth: 2
 
-   Qbs <qbs/qbs>
-   Scanner <qbs/scanner>
+   qbs/qbs
+   qbs/scanner

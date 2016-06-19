@@ -29,7 +29,7 @@ from util.decorators import asyncio_loop
 
 @asyncio_loop
 @unittest.skipIf(not (sys.platform.startswith('linux') or sys.platform.startswith('win32')),
-                 'stoiridhtools.SDK is only available on GNU/Linux and Windows.')
+                 'stoiridhtools.sdk.SDK is only available on GNU/Linux and Windows.')
 class TestSDK(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -38,7 +38,7 @@ class TestSDK(unittest.TestCase):
         cls.STOIRIDH_PROJECT_TEST_DIR = 'StoiridhProject-Test'
 
         # since there is no official release for now, we'll modify the url of the Stòiridh Tools
-        # in order to be able to test the stoiridhtools.SDK class.
+        # in order to be able to test the stoiridhtools.sdk.SDK class.
         datadir = Path('tests/data').resolve()
         SDK.URL = str(datadir.as_uri()) + '/{version}.tar.gz'
 

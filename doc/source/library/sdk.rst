@@ -1,4 +1,4 @@
-:py:mod:`stoiridhtools` --- SDK
+:py:mod:`stoiridhtools.sdk` --- Package manager
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -6,11 +6,21 @@
 
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
-.. py:currentmodule:: stoiridhtools
+.. py:module:: stoiridhtools.sdk
+   :synopsis: Package manager
 
 ----------------------------------------------------------------------------------------------------
 
-.. py:class:: SDK(versions[, loop=None])
+Introduction
+------------
+
+The :py:mod:`stoiridhtools.sdk` module provides a :py:class:`SDK` class that handles the install as
+well as the remove of the Qbs packages.
+
+Objects
+-------
+
+.. py:class:: SDK(versions, [path=None[, loop=None]])
 
    Construct a :py:class:`SDK` object.
 

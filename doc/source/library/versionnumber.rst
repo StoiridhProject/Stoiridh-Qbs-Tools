@@ -1,4 +1,4 @@
-:py:mod:`stoiridhtools` --- VersionNumber
+:py:mod:`stoiridhtools.versionnumber` --- Simplified semantic versioning
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -6,9 +6,19 @@
 
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
-.. py:currentmodule:: stoiridhtools
+.. py:module:: stoiridhtools.versionnumber
+   :synopsis: Simplified semantic versioning
 
 ----------------------------------------------------------------------------------------------------
+
+Introduction
+------------
+
+The :py:mod:`stoiridhtools.versionnumber` module provides a :py:class:`VersionNumber` class that
+handles a simplified semantic versioning.
+
+Objects
+-------
 
 .. py:class:: VersionNumber(version_str)
               VersionNumber(major, minor, patch)

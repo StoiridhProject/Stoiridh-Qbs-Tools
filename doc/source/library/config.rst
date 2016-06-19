@@ -1,4 +1,4 @@
-:py:mod:`stoiridhtools` --- Config
+:py:mod:`stoiridhtools.config` --- Handle the settings of |project|
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -6,12 +6,21 @@
 
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
-.. py:currentmodule:: stoiridhtools
+.. py:module:: stoiridhtools.config
+   :synopsis: Handle the settings
 
 ----------------------------------------------------------------------------------------------------
 
+Introduction
+------------
 
-.. py:class:: Config([path=None [, loop=None]])
+The :py:mod:`stoiridhtools.config` module provides a :py:class:`Config` class that allows the access
+to the configuration file of |project|.
+
+Objects
+-------
+
+.. py:class:: Config([path=None[, loop=None]])
 
    Construct a :py:class:`Config` object.
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# StoiridhQbsTools documentation build configuration file, created by
+# StoiridhTools documentation build configuration file, created by
 # sphinx-quickstart on Sat May 21 16:44:02 2016.
 #
 # This file is execfile()d with the current directory set to its
@@ -58,7 +58,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'Stòiridh Qbs Tools'
+project = 'Stòiridh Tools'
 copyright = '2016, Stòiridh Project'
 author = 'William McKIE'
 
@@ -133,7 +133,7 @@ html_theme = 'alabaster'
 
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
-# html_title = 'StoiridhQbsTools v0.1.0'
+# html_title = 'StoiridhTools v0.1.0'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 # html_short_title = None
@@ -215,7 +215,7 @@ html_static_path = ['_static']
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'StoiridhQbsToolsdoc'
+htmlhelp_basename = 'StoiridhToolsdoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -237,7 +237,7 @@ htmlhelp_basename = 'StoiridhQbsToolsdoc'
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'StoiridhQbsTools.tex', 'Stòiridh Qbs Tools Documentation',
+    (master_doc, 'StoiridhTools.tex', 'Stòiridh Tools Documentation',
      'William McKIE', 'manual'),
 ]
 
@@ -267,7 +267,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'stoiridhqbstools', 'Stòiridh Qbs Tools Documentation',
+    (master_doc, 'stoiridhtools', 'Stòiridh Tools Documentation',
      [author], 1)
 ]
 
@@ -281,8 +281,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'StoiridhQbsTools', 'Stòiridh Qbs Tools Documentation',
-     author, 'StoiridhQbsTools', 'One line description of project.',
+    (master_doc, 'StoiridhTools', 'Stòiridh Tools Documentation',
+     author, 'StoiridhTools', 'One line description of project.',
      'Miscellaneous'),
 ]
 
@@ -373,6 +373,6 @@ epub_exclude_files = ['search.html']
 intersphinx_mapping = {'https://docs.python.org/3': None}
 
 rst_epilog = """
-.. |project| replace:: Stòiridh Qbs Tools
+.. |project| replace:: Stòiridh Tools
 .. |project-version| replace:: |project| |version|
 """

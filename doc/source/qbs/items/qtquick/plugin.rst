@@ -1,4 +1,4 @@
-:qbs:pkg:`~StoiridhQbsTools.Stoiridh.QtQuick` --- Plugin
+:qbs:pkg:`~StoiridhTools.Stoiridh.QtQuick` --- Plugin
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -6,7 +6,7 @@
 
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
-.. qbs:currentsdk:: StoiridhQbsTools
+.. qbs:currentsdk:: StoiridhTools
 .. qbs:currentpackage:: Stoiridh.QtQuick
 
 ----------------------------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ The *Plugin* item depends from the following modules:
   * qml
   * quick
 
-* :qbs:mod:`~StoiridhQbsTools.Python`
+* :qbs:mod:`~StoiridhTools.Python`
 
 Properties
 ^^^^^^^^^^

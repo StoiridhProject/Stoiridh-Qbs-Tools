@@ -43,7 +43,7 @@ class Config:
 
         Example::
 
-            from stoiridhtools import Config
+            from stoiridhtools.config import Config
 
             config = Config('path/to/config/directory')
 
@@ -125,7 +125,7 @@ class Config:
             async with config.open() as cfg:
                 data = await cfg.read('qbs')
 
-        :rtype: ~stoiridhtools.Config
+        :rtype: ~stoiridhtools.config.Config
         """
         self._filepath = self._path.joinpath(self.FILENAME)
 

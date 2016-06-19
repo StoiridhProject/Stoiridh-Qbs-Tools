@@ -16,6 +16,6 @@ The :py:mod:`stoiridhtools` module provides an interface to handle the versions 
 .. toctree::
    :maxdepth: 2
 
-   Config <config>
-   SDK <sdk>
-   VersionNumber <versionnumber>
+   config
+   sdk
+   versionnumber

@@ -31,7 +31,7 @@ from util.decorators import asyncio_loop
 
 @asyncio_loop
 @unittest.skipIf(not (sys.platform.startswith('linux') or sys.platform.startswith('win32')),
-                 'stoiridhtools.Config is only available on GNU/Linux and Windows.')
+                 'stoiridhtools.config.Config is only available on GNU/Linux and Windows.')
 class TestConfig(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

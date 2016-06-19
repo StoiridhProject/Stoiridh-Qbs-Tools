@@ -6,7 +6,7 @@
 
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
-.. _stoiridhqbstools-qbs-modules:
+.. _stoiridhtools-qbs-modules:
 
 ----------------------------------------------------------------------------------------------------
 

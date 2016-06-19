@@ -1,4 +1,4 @@
-:qbs:pkg:`~StoiridhQbsTools.Stoiridh.Cpp` --- Package
+:qbs:pkg:`~StoiridhTools.Stoiridh.Cpp` --- Package
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -7,7 +7,7 @@
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
 .. qbs:package:: Stoiridh.Cpp
-   :sdk: StoiridhQbsTools
+   :sdk: StoiridhTools
 
 ----------------------------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ file.
 Items
 ^^^^^
 
-The :qbs:pkg:`~StoiridhQbsTools.Stoiridh.Cpp` package holds the following items:
+The :qbs:pkg:`~StoiridhTools.Stoiridh.Cpp` package holds the following items:
 
 .. toctree::
    :maxdepth: 1

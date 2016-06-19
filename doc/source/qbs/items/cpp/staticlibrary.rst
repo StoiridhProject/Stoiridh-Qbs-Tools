@@ -1,4 +1,4 @@
-:qbs:pkg:`~StoiridhQbsTools.Stoiridh.Cpp` --- StaticLibrary
+:qbs:pkg:`~StoiridhTools.Stoiridh.Cpp` --- StaticLibrary
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -6,7 +6,7 @@
 
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
-.. qbs:currentsdk:: StoiridhQbsTools
+.. qbs:currentsdk:: StoiridhTools
 .. qbs:currentpackage:: Stoiridh.Cpp
 
 ----------------------------------------------------------------------------------------------------

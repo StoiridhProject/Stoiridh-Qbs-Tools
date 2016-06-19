@@ -49,7 +49,7 @@ class Scanner:
             self._minimum_version = minimum_version
         else:
             raise TypeError('''argument (minimum_version) should be a
-                            stoiridhtools.VersionNumber object, not %r'''
+                            stoiridhtools.versionnumber.VersionNumber object, not %r'''
                             % type(minimum_version))
 
     @property
@@ -57,7 +57,7 @@ class Scanner:
         """This read-only property returns the minimum version required by the scanner in order to
         find the Qbs executable.
 
-        :rtype: ~stoiridhtools.VersionNumber
+        :rtype: ~stoiridhtools.versionnumber.VersionNumber
         """
         return self._minimum_version
 

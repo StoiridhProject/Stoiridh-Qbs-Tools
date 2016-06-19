@@ -1,4 +1,4 @@
-:py:mod:`stoiridhtools.qbs` --- Qbs
+:py:mod:`stoiridhtools.qbs` --- Wrapper for a Qbs executble
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -9,6 +9,9 @@
 .. py:currentmodule:: stoiridhtools.qbs
 
 ----------------------------------------------------------------------------------------------------
+
+Objects
+-------
 
 .. py:class:: Qbs(filepath, version)
 

@@ -1,4 +1,4 @@
-:qbs:pkg:`~StoiridhQbsTools.Stoiridh.QtQuick` --- Package
+:qbs:pkg:`~StoiridhTools.Stoiridh.QtQuick` --- Package
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -7,7 +7,7 @@
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
 .. qbs:package:: Stoiridh.QtQuick
-   :sdk: StoiridhQbsTools
+   :sdk: StoiridhTools
 
 ----------------------------------------------------------------------------------------------------
 
@@ -29,7 +29,7 @@ file.
 Items
 ^^^^^
 
-The :qbs:pkg:`~StoiridhQbsTools.Stoiridh.QtQuick` package holds the following items:
+The :qbs:pkg:`~StoiridhTools.Stoiridh.QtQuick` package holds the following items:
 
 .. toctree::
    :maxdepth: 1

@@ -1,4 +1,4 @@
-:py:mod:`stoiridhtools.qbs` --- Wrapper for a Qbs executble
+:py:mod:`stoiridhtools.qbs` --- Wrapper for a Qbs executable
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -6,9 +6,16 @@
 
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
-.. py:currentmodule:: stoiridhtools.qbs
+.. py:module:: stoiridhtools.qbs
+   :synopsis: Wrapper for a Qbs executable
 
 ----------------------------------------------------------------------------------------------------
+
+Introduction
+------------
+
+The :py:mod:`stoiridhtools.qbs` module provides a tool to scan the environment variables of the
+Operating System in order to find :term:`Qbs`.
 
 Objects
 -------

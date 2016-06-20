@@ -1,4 +1,4 @@
-|project| --- Python 3 API Reference
+Core Services
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -8,10 +8,13 @@
 
 ----------------------------------------------------------------------------------------------------
 
-Welcome to the |project| Python 3 API Reference!
+The modules described in this chapter provide tools for downloading new packages or access to the
+|project| configuration.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
-   library/index
-   library/qbs/index
+   stoiridhtools
+   config
+   sdk
+   versionnumber

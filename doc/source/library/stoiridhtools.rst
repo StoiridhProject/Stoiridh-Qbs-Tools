@@ -1,4 +1,4 @@
-:py:mod:`stoiridhtools` module
+:py:mod:`stoiridhtools` --- Control verbosity between submodules
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -8,14 +8,33 @@
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
 .. py:module:: stoiridhtools
+   :synopsis: Control verbosity between submodules
 
 ----------------------------------------------------------------------------------------------------
 
-The :py:mod:`stoiridhtools` module provides an interface to handle the versions of |project|.
+Introduction
+------------
 
-.. toctree::
-   :maxdepth: 2
+The :py:mod:`stoiridhtools` module provides some utility functions in order to control the verbosity
+between submodules.
 
-   config
-   sdk
-   versionnumber
+Functions
+---------
+
+.. py:function:: enable_verbosity(enable)
+
+   Enable or disable the verbosity of the messages.
+
+.. py:function:: vprint(message)
+
+   Print a verbose message in the :py:data:`sys.stdout`, if and only if the
+   :py:func:`enable_verbosity` is enabled.
+
+.. py:function:: vsprint(message)
+
+   Print a verbose step message in the :py:data:`sys.stdout`, if and only if the
+   :py:func:`enable_verbosity` is enabled.
+
+   .. note::
+
+      A step message starts with a ``::`` character.

@@ -20,37 +20,24 @@
 import argparse
 import asyncio
 import logging
-import stoiridhtools
 
-# constants
-STOIRIDHTOOLS_PROJECT_NAME = 'Stòiridh Tools'
-STOIRIDHTOOLS_PROJECT_VERSION = stoiridhtools.__version__
-STOIRIDHTOOLS_SUPPORTED_VERSIONS = ['0.1.0']
+from stoiridhtools import enable_verbosity, PROJECT_NAME, __version__
+
 
 LOG = logging.getLogger(__name__)
 
 
 class Command:
     """Argument command"""
-    def __init__(self, parser, name=None, verbose=False, loop=None):
+    def __init__(self, parser, name=None, loop=None):
         self._name = name
         self._parser = parser
-        self._verbose = verbose
         self._loop = loop
 
     @property
     def name(self):
         """Return the name of the command."""
         return self._name
-
-    @property
-    def verbose(self):
-        """Hold the verbosity of the command."""
-        return self._verbose
-
-    @verbose.setter
-    def verbose(self, value):
-        self._verbose = value
 
     def prepare(self):
         """Prepare the arguments that can be used with the command."""
@@ -63,12 +50,6 @@ class Command:
     def _add_verbose_argument(self, parser):
         """Add a *verbose* argument to the given *parser* of the command."""
         parser.add_argument('-v', '--verbose', action='store_true', help="be more verbose")
-
-    def _print_verbose(self, message):
-        """Print a verbose message in the :py:data:`sys.stdout`, if and only if the
-        :py:attr:`verbose` property is :py:data:`True`."""
-        if self.verbose:
-            print(message)
 
 
 class CommandManager:
@@ -85,10 +66,10 @@ class CommandManager:
         self._commands = dict()
         self._loop = None
         self._parser = argparse.ArgumentParser(prog='stoiridhtools',
-                                               description="Setup the %s build environment"
-                                                           % STOIRIDHTOOLS_PROJECT_NAME)
+                                               description='Setup the %s build environment'
+                                                           % PROJECT_NAME)
         self._parser.add_argument('-V', '--version', action='store_true',
-                                  help="show the version number and exit")
+                                  help='show the version number and exit')
         self._command_parser = self._parser.add_subparsers(dest='command', description=None)
 
     def append(self, cmdtype):
@@ -116,12 +97,14 @@ class CommandManager:
         LOG.debug("Parsing the command-line arguments.")
         args = self._parser.parse_args()
 
+        if hasattr(args, 'verbose'):
+            enable_verbosity(args.verbose)
+
         if args.version:
-            print(STOIRIDHTOOLS_PROJECT_VERSION)
+            print(__version__)
         elif args.command in self._commands.keys():
             LOG.debug("Running the command: %s", args.command)
             cmd = self._commands.get(args.command)
-            cmd.verbose = args.verbose if hasattr(args, 'verbose') else False
             cmd.run(args)
         else:
             self._parser.print_help()

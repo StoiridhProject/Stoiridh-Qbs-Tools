@@ -18,3 +18,38 @@
 ##                                                                                                ##
 ####################################################################################################
 __version__ = '0.1.0'
+__all__ = ['__version__', 'enable_verbosity', 'vprint', 'vsprint']
+
+
+# constants
+PROJECT_NAME = 'Stòiridh Tools'
+SUPPORTED_VERSIONS = ['0.1.0']
+
+
+# private class
+class Verbosity:
+    enable = False
+
+
+def enable_verbosity(enable):
+    """Enable or disable the verbosity of the messages."""
+    Verbosity.enable = enable
+
+
+def vprint(message):
+    """Print a verbose message in the :py:data:`sys.stdout`, if and only if the
+    :py:func:`enable_verbosity` is enabled."""
+    if Verbosity.enable:
+        print(message)
+
+
+def vsprint(message):
+    """Print a verbose step message in the :py:data:`sys.stdout`, if and only if the
+    :py:func:`enable_verbosity` is enabled.
+
+    .. note::
+
+        A step message starts with a '::' character.
+    """
+    if Verbosity.enable:
+        print('::', message)

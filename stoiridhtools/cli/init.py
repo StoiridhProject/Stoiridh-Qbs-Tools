@@ -19,7 +19,8 @@
 ####################################################################################################
 from pathlib import Path
 
-from stoiridhtools.cli import Command, STOIRIDHTOOLS_PROJECT_NAME, STOIRIDHTOOLS_SUPPORTED_VERSIONS
+from stoiridhtools import vsprint, PROJECT_NAME, SUPPORTED_VERSIONS
+from stoiridhtools.cli import Command
 from stoiridhtools.config import Config
 from stoiridhtools.qbs.scanner import Scanner
 from stoiridhtools.sdk import SDK
@@ -38,14 +39,13 @@ class InitCommand(Command):
 
         The initialisation will start by the installation of the missing packages, then a scan of
         specific environment variables in order to find the Qbs executable.
-        """.format_map({'project': STOIRIDHTOOLS_PROJECT_NAME})
+        """.format_map({'project': PROJECT_NAME})
 
-        init = self._parser.add_parser('init',
-                                       help="initialise %s" % STOIRIDHTOOLS_PROJECT_NAME,
+        init = self._parser.add_parser('init', help='initialise %s' % PROJECT_NAME,
                                        description=init_desc)
 
         self._add_verbose_argument(init)
-        init.add_argument('-f', '--force', action='store_true', help="force initialisation")
+        init.add_argument('-f', '--force', action='store_true', help='force initialisation')
 
     def run(self, *args, **kwargs):
         """Run the ``init`` command.
@@ -58,26 +58,30 @@ class InitCommand(Command):
 
         async def wrapper():
             config = Config()
-            sdk = SDK(STOIRIDHTOOLS_SUPPORTED_VERSIONS)
+            sdk = SDK(SUPPORTED_VERSIONS)
 
-            self._print_verbose('There are %d supported version(s) of %s' %
-                                (len(STOIRIDHTOOLS_SUPPORTED_VERSIONS), STOIRIDHTOOLS_PROJECT_NAME))
+            l = len(SUPPORTED_VERSIONS)
+
+            if l > 1:
+                vsprint('There are %d supported versions of %s' % (l, PROJECT_NAME))
+            else:
+                vsprint('There is %d supported version of %s' % (l, PROJECT_NAME))
 
             if force:
-                self._print_verbose('cleaning all packages installed from', sdk.install_root_path)
+                vsprint('cleaning all packages installed from', sdk.install_root_path)
                 sdk.clean()
 
-            self._print_verbose('Downloading and installing the packages')
+            vsprint('Downloading and installing the packages')
             await sdk.install()
 
             scanner = Scanner()
 
-            self._print_verbose('searching for the Qbs executable')
+            vsprint('searching for the Qbs executable')
             qbs = await scanner.scan()
 
             if qbs:
                 async with config.open() as cfg:
-                    self._print_verbose('updating stoiridhtools.conf')
+                    vsprint('updating stoiridhtools.conf')
                     data = {'filepath': str(qbs.filepath), 'version': str(qbs.version)}
                     await cfg.update('qbs', data)
 

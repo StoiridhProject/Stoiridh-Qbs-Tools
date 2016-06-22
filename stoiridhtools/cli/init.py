@@ -29,8 +29,8 @@ from stoiridhtools.sdk import SDK
 class InitCommand(Command):
     """The :py:class:`InitCommand` class will initialise the SDK by the installation of the missing
     packages, then scan the system in order to find the :term:`Qbs` executable."""
-    def __init__(self, parser, **kwargs):
-        super().__init__(parser, 'init', **kwargs)
+    def __init__(self, subparser, **kwargs):
+        super().__init__(subparser, 'init', **kwargs)
 
     def prepare(self):
         """Prepare the command-line arguments for the ``init`` command."""
@@ -41,11 +41,9 @@ class InitCommand(Command):
         specific environment variables in order to find the Qbs executable.
         """.format_map({'project': PROJECT_NAME})
 
-        init = self._parser.add_parser('init', help='initialise %s' % PROJECT_NAME,
-                                       description=init_desc)
-
-        self._add_verbose_argument(init)
-        init.add_argument('-f', '--force', action='store_true', help='force initialisation')
+        cmd = self.create_command(help='initialise %s' % PROJECT_NAME, description=init_desc)
+        self._add_verbose_argument(cmd)
+        cmd.add_argument('-f', '--force', action='store_true', help='force initialisation')
 
     def run(self, *args, **kwargs):
         """Run the ``init`` command.

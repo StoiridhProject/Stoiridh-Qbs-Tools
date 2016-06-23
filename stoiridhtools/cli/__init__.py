@@ -60,14 +60,18 @@ class Command:
         return 'command_%s' % hash(self)
 
     @property
+    def parent(self):
+        """Return the parent of the command. :py:obj:`None`, if the command has not parent."""
+        return self._parent
+
+    @property
     def name(self):
         """Return the name of the command."""
         return self._name
 
-    @property
-    def parent(self):
-        """Return the parent of the command. :py:obj:`None`, if the command has not parent."""
-        return self._parent
+    def get_description(self):
+        """Return the description of the command."""
+        return None
 
     def print_help(self):
         """Print the help message of the command."""
@@ -90,7 +94,8 @@ class Command:
            ``*args`` and ``**kwargs`` accept any arguments from the
            :py:class:`~argparse.ArgumentParser` class.
         """
-        self._parser = self._subparser.add_parser(self.name, **kwargs)
+        self._parser = self._subparser.add_parser(self.name, description=self.get_description(),
+                                                  **kwargs)
         return self._parser
 
     def add_subcommand(self, cmdtype):

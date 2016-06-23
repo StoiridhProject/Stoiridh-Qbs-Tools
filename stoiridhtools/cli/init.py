@@ -32,16 +32,17 @@ class InitCommand(Command):
     def __init__(self, subparser, **kwargs):
         super().__init__(subparser, 'init', **kwargs)
 
-    def prepare(self):
-        """Prepare the command-line arguments for the ``init`` command."""
-        init_desc = """
-        Initialise {project}.
+    def get_description(self):
+        """Return the brief description of the ``init`` command."""
+        return '''Initialise {project}.
 
         The initialisation will start by the installation of the missing packages, then a scan of
         specific environment variables in order to find the Qbs executable.
-        """.format_map({'project': PROJECT_NAME})
+        '''.format_map({'project': PROJECT_NAME})
 
-        cmd = self.create_command(help='initialise %s' % PROJECT_NAME, description=init_desc)
+    def prepare(self):
+        """Prepare the command-line arguments for the ``init`` command."""
+        cmd = self.create_command(help='initialise %s' % PROJECT_NAME)
         self._add_verbose_argument(cmd)
         cmd.add_argument('-f', '--force', action='store_true', help='force initialisation')
 

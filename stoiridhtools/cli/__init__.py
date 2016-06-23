@@ -202,7 +202,7 @@ class CommandManager:
     def run(self):
         """Run the command."""
         LOG.debug("Parsing the command-line arguments.")
-        args = self._parser.parse_args()
+        args, unknown_args = self._parser.parse_known_args()
 
         if hasattr(args, 'verbose'):
             enable_verbosity(args.verbose)
@@ -213,9 +213,9 @@ class CommandManager:
             LOG.debug("Running the command: %s", args.command)
             cmd = self._commands.get(args.command)
             if self._has_subcommands(args):
-                self._run_subcommand(cmd, args)
+                self._run_subcommand(cmd, args, unknown_args=unknown_args)
             else:
-                cmd.run(args)
+                cmd.run(args, unknown_args=unknown_args)
         else:
             self._parser.print_help()
 
@@ -246,7 +246,7 @@ class CommandManager:
         for subcommand in cmd.get_subcommands():
             self._prepare(subcommand)
 
-    def _run_subcommand(self, cmd, args):
+    def _run_subcommand(self, cmd, args, **kwargs):
         """Run a subcommand from the *cmd* command."""
         assert isinstance(cmd, Command)
 
@@ -265,7 +265,7 @@ class CommandManager:
         subcommand = search(cmd, scids)
 
         if subcommand:
-            subcommand.run(args)
+            subcommand.run(args, **kwargs)
 
     def __enter__(self):
         """Start the asynchronous event loop."""

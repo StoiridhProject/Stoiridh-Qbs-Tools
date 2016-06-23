@@ -28,16 +28,55 @@ LOG = logging.getLogger(__name__)
 
 
 class Command:
-    """Argument command"""
-    def __init__(self, parser, name=None, loop=None):
+    """Base class for all commands.
+
+    Parameters:
+
+    - *subparser*, corresponds to a subparser from the :py:class:`~argparse.ArgumentParser` class.
+    - *name*, corresponds to the name of the command.
+    - *loop*, corresponds to the asynchronous event loop given by the :py:mod:`asyncio` module.
+    - *parent*, corresponds to the parent of the command. Only relevant when a command owns
+      subcommands.
+    """
+    def __init__(self, subparser, name=None, loop=None, parent=None):
         self._name = name
-        self._parser = parser
+        self._parent = None
+        self._parser = None
+        self._subparser = subparser
         self._loop = loop
+        self._subcommands = list()
+        self._subcommands_parser = None
+
+        if parent is not None:
+            if isinstance(parent, Command):
+                self._parent = parent
+            else:
+                raise TypeError('''argument (parent) should be a base of the stoiridhtools.Command
+                                object, not %r''' % type(parent))
+
+    @property
+    def id(self):
+        """Return the identifier of the command."""
+        return 'command_%s' % hash(self)
+
+    @property
+    def parent(self):
+        """Return the parent of the command. :py:obj:`None`, if the command has not parent."""
+        return self._parent
 
     @property
     def name(self):
         """Return the name of the command."""
         return self._name
+
+    def get_description(self):
+        """Return the description of the command."""
+        return None
+
+    def print_help(self):
+        """Print the help message of the command."""
+        if self._parser is not None:
+            self._parser.print_help()
 
     def prepare(self):
         """Prepare the arguments that can be used with the command."""
@@ -47,9 +86,72 @@ class Command:
         """Run the command."""
         raise NotImplementedError("must be implemented in subclasses.")
 
+    def create_command(self, **kwargs):
+        """Create and return the associated parser to the command.
+
+        .. note::
+
+           ``*args`` and ``**kwargs`` accept any arguments from the
+           :py:class:`~argparse.ArgumentParser` class.
+        """
+        self._parser = self._subparser.add_parser(self.name, description=self.get_description(),
+                                                  **kwargs)
+        return self._parser
+
+    def add_subcommand(self, cmdtype):
+        """Add a :py:class:`Command` as subcommand.
+
+        Parameter:
+
+        - *cmdtype*, corresponds to a type that inherits from the :py:class:`Command` class.
+
+        :raise: :py:exc:`TypeError` if *cmdtype* is not a base of the :py:class:`Command` class.
+        :raise: :py:exc:`RuntimeError` if you try to add a subcommand becore create the command with
+                the :py:meth:`create_command` method.
+        :raise: :py:exc:`RuntimeWarning` if a subcommand is already added to the command.
+        """
+        if not issubclass(cmdtype, Command):
+            raise TypeError('''argument (cmdtype) should be a stoiridhtools.cli.Command object, not
+                            %r''' % cmdtype)
+        if self._parser is None:
+            raise RuntimeError('you must call create_command() before trying to add a subcommand')
+
+        # create a new subparser where all subcommands from the command will be able to be identify
+        # by the args.command attribute.
+        if self._subcommands_parser is None:
+            self._subcommands_parser = self._parser.add_subparsers(dest=self.id, description=None)
+
+        # instantiate the cmdtype in order to be able to bind the subparser and set its parent.
+        cmd = cmdtype(self._subcommands_parser, loop=self._loop, parent=self)
+
+        # avoid duplicate commands
+        hascmd = len(list(filter(lambda x: x.name == cmd.name, self._subcommands))) > 0
+
+        if hascmd:
+            raise RuntimeWarning('command (%s) of type (%r) is already added' % (cmd.name,
+                                                                                 type(cmd)))
+        else:
+            self._subcommands.append(cmd)
+
+    def get_subcommands(self):
+        """Yield the subcommands."""
+        for subcommand in self._subcommands:
+            yield subcommand
+
     def _add_verbose_argument(self, parser):
         """Add a *verbose* argument to the given *parser* of the command."""
         parser.add_argument('-v', '--verbose', action='store_true', help="be more verbose")
+
+    def __hash__(self):
+        return self.parent and hash(self.parent) ^ hash(self.name) or hash(self.name)
+
+    def __eq__(self, other):
+        if not isinstance(other, Command):
+            return NotImplemented
+        return vars(self) == vars(other)
+
+    def __ne__(self, other):
+        return not self == other
 
 
 class CommandManager:
@@ -58,8 +160,10 @@ class CommandManager:
 
     Examples::
 
+        from stoiridhtools.cli import init
+
         with CommandManager() as manager:
-            manager.add(InitCommand)
+            manager.append(init.InitCommand)
             manager.run()
     """
     def __init__(self):
@@ -78,6 +182,8 @@ class CommandManager:
         Parameter:
 
         - *cmdtype*, corresponds to the type of a :py:class:`Command` object.
+
+        :raise: :py:exc:`TypeError` if *cmdtype* is not a base of the :py:class:`Command` class.
         """
         if not issubclass(cmdtype, Command):
             raise TypeError('''argument (cmdtype) should be a stoiridhtools.cli.Command object, not
@@ -85,17 +191,18 @@ class CommandManager:
 
         # pray for cmdtype is really a type and not an instanciated object!
         cmd = cmdtype(self._command_parser, loop=self._loop)
-        cmd.prepare()
+        self._prepare(cmd)
 
         # save the command for a later use
         clsmod, clsname = cmd.__class__.__module__, cmd.__class__.__name__
-        LOG.debug('register %s command' % (clsmod and '.'.join((clsmod, clsname) or clsname)))
+        LOG.debug('Registering the %s command' % (clsmod and '.'.join((clsmod, clsname) or
+                                                  clsname)))
         self._commands[cmd.name] = cmd
 
     def run(self):
         """Run the command."""
         LOG.debug("Parsing the command-line arguments.")
-        args = self._parser.parse_args()
+        args, unknown_args = self._parser.parse_known_args()
 
         if hasattr(args, 'verbose'):
             enable_verbosity(args.verbose)
@@ -105,9 +212,60 @@ class CommandManager:
         elif args.command in self._commands.keys():
             LOG.debug("Running the command: %s", args.command)
             cmd = self._commands.get(args.command)
-            cmd.run(args)
+            if self._has_subcommands(args):
+                self._run_subcommand(cmd, args, unknown_args=unknown_args)
+            else:
+                cmd.run(args, unknown_args=unknown_args)
         else:
             self._parser.print_help()
+
+    def _has_subcommands(self, args):
+        """Return :py:data:`True` if in the given arguments (*args*) contains one or more
+        subcommands."""
+        return len(self._get_subcommands(args)) > 0
+
+    def _get_subcommands(self, args):
+        """Return a dictionary (id, name) of subcommands from the arguments, *args*."""
+        subcommands = dict()
+        for scid in filter(lambda x: x.startswith('command_'), vars(args)):
+            name = getattr(args, scid, None)
+            # don't append the subcommands that are not used, because when either a command or a
+            # subcommand holds one or more subcommands then the command's id will be set in the
+            # args.
+            if name is not None:
+                subcommands[scid] = name
+        return subcommands
+
+    def _prepare(self, cmd):
+        """Prepare *cmd* as well as its subcommands."""
+        assert isinstance(cmd, Command)
+
+        cmd.prepare()
+
+        # preparing all subcommands by making a recursive call.
+        for subcommand in cmd.get_subcommands():
+            self._prepare(subcommand)
+
+    def _run_subcommand(self, cmd, args, **kwargs):
+        """Run a subcommand from the *cmd* command."""
+        assert isinstance(cmd, Command)
+
+        scids = self._get_subcommands(args)
+
+        def search(command, ids):
+            if len(ids) == 0:
+                return command
+            if command.id in ids.keys():
+                scname = ids[command.id]
+                del ids[command.id]
+                for subcommand in command.get_subcommands():
+                    if subcommand.name == scname:
+                        return search(subcommand, ids)
+
+        subcommand = search(cmd, scids)
+
+        if subcommand:
+            subcommand.run(args, **kwargs)
 
     def __enter__(self):
         """Start the asynchronous event loop."""
@@ -132,11 +290,11 @@ class CommandManager:
 
 
 def main():
-    from stoiridhtools.cli import init
+    from stoiridhtools.cli import init, config
 
     with CommandManager() as manager:
         manager.append(init.InitCommand)
-        # manager.append(ConfigCommand)
+        manager.append(config.ConfigCommand)
         manager.run()
 
 

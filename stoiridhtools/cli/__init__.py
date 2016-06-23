@@ -290,11 +290,11 @@ class CommandManager:
 
 
 def main():
-    from stoiridhtools.cli import init
+    from stoiridhtools.cli import init, config
 
     with CommandManager() as manager:
         manager.append(init.InitCommand)
-        # manager.append(ConfigCommand)
+        manager.append(config.ConfigCommand)
         manager.run()
 
 

@@ -34,11 +34,9 @@ class InitCommand(Command):
 
     def get_description(self):
         """Return the brief description of the ``init`` command."""
-        return '''Initialise {project}.
-
-        The initialisation will start by the installation of the missing packages, then a scan of
-        specific environment variables in order to find the Qbs executable.
-        '''.format_map({'project': PROJECT_NAME})
+        return '''The initialisation will start by the installation of the missing packages, then a
+        scan of specific environment variables in order to find the Qbs executable.
+        '''
 
     def prepare(self):
         """Prepare the command-line arguments for the ``init`` command."""

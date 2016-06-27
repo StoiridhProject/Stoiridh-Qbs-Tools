@@ -143,7 +143,7 @@ class QtConfigCommand(Command):
                     # U+221E corresponds to the infinity character in the Unicode specification.
                     inf = u'\u221E'.encode(sys.stdout.encoding)
                 except UnicodeEncodeError:
-                    inf = '+1'.encode(sys.stdout.encoding)
+                    inf = '1+'.encode(sys.stdout.encoding)
                 return '%s arguments required' % bytes.decode(inf, sys.stdout.encoding)
             elif nargs == 1:
                 return '1 argument required'

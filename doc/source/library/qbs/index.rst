@@ -13,5 +13,6 @@ The modules described in this chapter provide tools to interact with :term:`Qbs`
 .. toctree::
    :maxdepth: 1
 
+   profile
    qbs
    scanner

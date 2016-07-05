@@ -272,9 +272,9 @@ class TestQbsProfile(unittest.TestCase):
 
             # case 4: cover the case where we try to add a file instead of a directory.
             with self.assertRaises(FileNotFoundError) as context:
-                profile.add_qbs_search_path(r'tests\data\test_qbs_profile\qbs.ini')
+                profile.add_qbs_search_path('tests/data/test_qbs_profile/qbs.ini')
 
-            filepath = Path(r'tests\data\test_qbs_profile\qbs.ini').resolve()
+            filepath = Path('tests/data/test_qbs_profile/qbs.ini').resolve()
             self.assertEqual('%s is not a directory' % filepath, str(context.exception))
 
             # case 5: cover the case where we have a path that exists, but it does not respect the

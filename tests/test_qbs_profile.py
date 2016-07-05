@@ -166,8 +166,12 @@ class TestQbsConfiguration(unittest.TestCase):
         with self.assertRaises(RuntimeError) as context:
             sqp.read_config('tests/data/test_qbs_profile/qbs.ini')
 
-        self.assertEqual('tests/data/test_qbs_profile/qbs.ini is not a valid Qbs configuration '
-                         'file.', str(context.exception))
+        if sys.platform.startswith('linux'):
+            self.assertEqual('tests/data/test_qbs_profile/qbs.ini is not a valid Qbs configuration '
+                             'file.', str(context.exception))
+        elif sys.platform.startswith('win32'):
+            self.assertEqual(r'tests\data\test_qbs_profile\qbs.ini is not a valid Qbs configuration'
+                             r' file.', str(context.exception))
 
         # check for the profiles given from the file correspond to the profiles given from the data
         profiles = sqp.read_config(self.qbs_file)

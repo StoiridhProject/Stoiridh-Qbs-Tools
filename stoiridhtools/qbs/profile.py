@@ -219,7 +219,6 @@ def _make_profile(profile, keys, value):
 def _make_value(value):
     """Convert the given *value* into its right type and return it."""
     path = Path(value)
-    is_path = path.exists() and (path.is_file() or path.is_dir())
 
     if value.find(',') != -1:
         result = [v.strip() for v in value.split(',')]
@@ -229,7 +228,7 @@ def _make_value(value):
         result = int(value)
     elif value in ('true', 'false'):
         result = True if value == 'true' else False
-    elif is_path:
+    elif path.exists() and (path.is_file() or path.is_dir()):
         result = path
     else:
         result = value

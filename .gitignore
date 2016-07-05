@@ -44,3 +44,8 @@ doc/build/
 
 # tests
 tests/data/stoiridhtools.conf
+
+# Coverage
+.coverage
+.coverage.*
+htmlcov/

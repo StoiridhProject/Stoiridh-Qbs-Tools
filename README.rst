@@ -2,8 +2,14 @@
 Stòiridh Tools
 ==============
 
-Stòiridh Qbs Tools is a toolkit for Qbs-based projects to make easier the creation, the
-configuration, and the installation of your projects.
+.. image:: https://travis-ci.org/StoiridhProject/StoiridhTools.svg?branch=master
+   :target: https://travis-ci.org/StoiridhProject/StoiridhTools
+
+.. image:: https://codecov.io/gh/StoiridhProject/StoiridhTools/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/StoiridhProject/StoiridhTools
+
+Stòiridh Tools is a toolkit for Qbs-based projects to make easier the creation, the configuration,
+and the installation of your projects.
 
 For more information about the project, you can cast a glance at the
 `wiki <https://github.com/viprip/Stoiridh-Qbs-Tools/wiki>`_.
@@ -118,7 +124,7 @@ Licence
 .. highlight:: text
 
 The project is licenced under the GPL version 3. See
-`LICENCE.GPL3 <https://github.com/viprip/Stoiridh-Qbs-Tools/blob/master/LICENCE.GPL3>`_ located at
+`LICENCE.GPL3 <https://github.com/StoiridhProject/StoiridhTools/blob/master/LICENCE.GPL3>`_ located at
 the root of the project for more information::
 
    This program is free software: you can redistribute it and/or modify

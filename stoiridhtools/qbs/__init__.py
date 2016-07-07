@@ -17,26 +17,30 @@
 ##            along with this program.  If not, see <http://www.gnu.org/licenses/>.               ##
 ##                                                                                                ##
 ####################################################################################################
+"""
+The :py:mod:`stoiridhtools.qbs` module provides a tool to scan the environment variables of the
+Operating System in order to find :term:`Qbs`.
+"""
 from pathlib import Path
 from stoiridhtools.versionnumber import VersionNumber
 
 
 class Qbs:
+    """Construct a :py:class:`Qbs` object.
+
+    Generally speaking, this object is working jointly with the
+    :py:class:`~stoiridhtools.qbs.scanner.Scanner` object.
+
+    Parameters:
+
+    - *filepath*, corresponds to the absolute path where the Qbs executable is located.
+    - *version*, is its version number.
+
+    :raise: :py:exc:`TypeError` when *filepath* is not a :py:class:`str` object or a
+            :py:class:`pathlib.Path` object, but also when *version* is not a :py:class:`str`
+            object or a :py:class:`~stoiridhtools.versionnumber.VersionNumber` object.
+    """
     def __init__(self, filepath, version):
-        """Construct a :py:class:`Qbs` object.
-
-        Generally speaking, this object is working jointly with the
-        :py:class:`~stoiridhtools.qbs.scanner.Scanner` object.
-
-        Parameters:
-
-        - *filepath*, corresponds to the absolute path where the Qbs executable is located.
-        - *version*, is its version number.
-
-        :raise: :py:exc:`TypeError` when *filepath* is not a :py:class:`str` object or a
-                :py:class:`pathlib.Path` object, but also when *version* is not a :py:class:`str`
-                object or a :py:class:`~stoiridhtools.versionnumber.VersionNumber` object.
-        """
         if isinstance(filepath, str):
             self._filepath = Path(filepath)
         elif isinstance(filepath, Path):

@@ -38,7 +38,7 @@ class ConfigCommand(Command):
 
     def prepare(self):
         """Prepare the command-line arguments for the ``config`` command."""
-        cmd = self.create_command(help='configure %s' % PROJECT_NAME)
+        self.create_command(help='configure %s' % PROJECT_NAME)
         self.add_subcommand(QtConfigCommand)
 
     def run(self, *args, **kwargs):
@@ -114,7 +114,7 @@ class QtConfigCommand(Command):
         if option not in self.options:
             self._parser.error('invalid option: %s' % option)
 
-        nargs, desc = self.options.get(option, (None, None))
+        nargs, _ = self.options.get(option, (None, None))
 
         if nargs is not None and len(values) != nargs:
             self._parser.error('option %s: expected %d argument(s) but %d was given'
@@ -130,8 +130,8 @@ class QtConfigCommand(Command):
         async with self.config.open() as cfg:
             data = await cfg.read('qt')
             if data is not None:
-                for k, v in data.items():
-                    print('%s: %s' % (k, v))
+                for key, value in data.items():
+                    print('%s: %s' % (key, value))
 
     def print_options(self):
         """Print the options available for the Qt subcommand."""
@@ -154,5 +154,5 @@ class QtConfigCommand(Command):
 
         print('Options availables:\n')
 
-        for o, (n, d) in self.options.items():
-            print('%s: %s\n  %s\n' % (o, pprint_nargs(n), d))
+        for option, (nargs, description) in self.options.items():
+            print('%s: %s\n  %s\n' % (option, pprint_nargs(nargs), description))

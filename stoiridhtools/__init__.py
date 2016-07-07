@@ -17,6 +17,10 @@
 ##            along with this program.  If not, see <http://www.gnu.org/licenses/>.               ##
 ##                                                                                                ##
 ####################################################################################################
+"""
+The :py:mod:`stoiridhtools` module provides some utility functions in order to control the verbosity
+between submodules.
+"""
 __version__ = '0.1.0'
 __all__ = ['__version__', 'enable_verbosity', 'vprint', 'vsprint']
 
@@ -27,19 +31,19 @@ SUPPORTED_VERSIONS = ['0.1.0']
 
 
 # private class
-class Verbosity:
+class _Verbosity:
     enable = False
 
 
 def enable_verbosity(enable):
     """Enable or disable the verbosity of the messages."""
-    Verbosity.enable = enable
+    _Verbosity.enable = enable
 
 
 def vprint(message):
     """Print a verbose message in the :py:data:`sys.stdout`, if and only if the
     :py:func:`enable_verbosity` is enabled."""
-    if Verbosity.enable:
+    if _Verbosity.enable:
         print(message)
 
 
@@ -51,5 +55,5 @@ def vsprint(message):
 
         A step message starts with a '::' character.
     """
-    if Verbosity.enable:
+    if _Verbosity.enable:
         print('::', message)

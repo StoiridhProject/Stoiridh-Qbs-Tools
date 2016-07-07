@@ -125,9 +125,9 @@ class Command:
         cmd = cmdtype(self._subcommands_parser, loop=self._loop, parent=self)
 
         # avoid duplicate commands
-        hascmd = len(list(filter(lambda x: x.name == cmd.name, self._subcommands))) > 0
+        has_command = len([c for c in self._subcommands if cmd.name == c.name]) > 0
 
-        if hascmd:
+        if has_command:
             raise RuntimeWarning('command (%s) of type (%r) is already added' % (cmd.name,
                                                                                  type(cmd)))
         else:
@@ -170,8 +170,8 @@ class CommandManager:
         self._commands = dict()
         self._loop = None
         self._parser = argparse.ArgumentParser(prog='stoiridhtools',
-                                               description='Setup the %s build environment'
-                                                           % PROJECT_NAME)
+                                               description=('Setup the %s build environment'
+                                                            % PROJECT_NAME))
         self._parser.add_argument('-V', '--version', action='store_true',
                                   help='show the version number and exit')
         self._command_parser = self._parser.add_subparsers(dest='command', description=None)
@@ -194,9 +194,11 @@ class CommandManager:
         self._prepare(cmd)
 
         # save the command for a later use
-        clsmod, clsname = cmd.__class__.__module__, cmd.__class__.__name__
-        LOG.debug('Registering the %s command' % (clsmod and '.'.join((clsmod, clsname) or
-                                                  clsname)))
+        clsmod = cmd.__class__.__module__
+        clsname = cmd.__class__.__name__
+
+        LOG.debug('Registering the %s command', clsmod and '.'.join((clsmod, clsname) or clsname))
+
         self._commands[cmd.name] = cmd
 
     def run(self):
@@ -290,6 +292,7 @@ class CommandManager:
 
 
 def main():
+    """Main entry for the stoiridhtools.cli module."""
     from stoiridhtools.cli import init, config
 
     with CommandManager() as manager:

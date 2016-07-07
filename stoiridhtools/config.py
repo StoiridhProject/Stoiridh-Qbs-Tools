@@ -17,6 +17,10 @@
 ##            along with this program.  If not, see <http://www.gnu.org/licenses/>.               ##
 ##                                                                                                ##
 ####################################################################################################
+"""
+The :py:mod:`stoiridhtools.config` module provides a :py:class:`Config` class that allows the access
+to the configuration file of |project|.
+"""
 import asyncio
 import configparser
 import os
@@ -27,44 +31,45 @@ from pathlib import Path
 
 
 class Config:
+    """Construct a :py:class:`Config` object.
+
+    The class supports the :term:`asynchronous context manager`.
+
+    Parameters:
+
+    - *path*, corresponds to the absolute path where the configuration file can be found. If
+    :py:obj:`None`, then the default location will be used.
+    - *loop*, is an optional parameter which corresponds to a :ref:`coroutine <coroutine>` loop.
+
+    Example::
+
+        from stoiridhtools.config import Config
+
+        config = Config('path/to/config/directory')
+
+        async with config.open() as cfg:
+            # read the 'qbs' section
+            data = await cfg.read('qbs')
+
+            # do something with the data ...
+
+            # update the 'qbs' section with the new data
+            await cfg.update('qbs', data)
+
+    In the example above, we start to specify the path where the configuration will be saved.
+    Then we :py:meth:`open` it in order to read these *data*. Each *sections* can be retrieved
+    by calling the :ref:`coroutine <coroutine>` method, :py:meth:`read`. This method will return
+    the *data* associated to the *section*, here the *qbs* section. If no such section exists,
+    then :py:obj:`None` is returned. Otherwise, you can use these *data* and when done, you may
+    want to update them. This is done with a call to the :ref:`coroutine <coroutine>` method,
+    :py:meth:`update`.
+    """
     FILENAME = 'stoiridhtools.conf'
     ROOTDIR = 'StoiridhProject/StoiridhTools'
 
     def __init__(self, path=None, loop=None):
-        """Construct a :py:class:`Config` object.
-
-        The class supports the :term:`asynchronous context manager`.
-
-        Parameters:
-
-        - *path*, corresponds to the absolute path where the configuration file can be found. If
-        :py:obj:`None`, then the default location will be used.
-        - *loop*, is an optional parameter which corresponds to a :ref:`coroutine <coroutine>` loop.
-
-        Example::
-
-            from stoiridhtools.config import Config
-
-            config = Config('path/to/config/directory')
-
-            async with config.open() as cfg:
-                # read the 'qbs' section
-                data = await cfg.read('qbs')
-
-                # do something with the data ...
-
-                # update the 'qbs' section with the new data
-                await cfg.update('qbs', data)
-
-        In the example above, we start to specify the path where the configuration will be saved.
-        Then we :py:meth:`open` it in order to read these *data*. Each *sections* can be retrieved
-        by calling the :ref:`coroutine <coroutine>` method, :py:meth:`read`. This method will return
-        the *data* associated to the *section*, here the *qbs* section. If no such section exists,
-        then :py:obj:`None` is returned. Otherwise, you can use these *data* and when done, you may
-        want to update them. This is done with a call to the :ref:`coroutine <coroutine>` method,
-        :py:meth:`update`.
-        """
         self._config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
+        self._filepath = None
 
         if loop is None or not isinstance(loop, asyncio.BaseEventLoop):
             self._loop = asyncio.get_event_loop()
@@ -130,8 +135,8 @@ class Config:
         self._filepath = self._path.joinpath(self.FILENAME)
 
         if self._filepath.exists():
-            with self._filepath.open(mode='r', encoding='utf-8') as fd:
-                self._config.read_file(fd)
+            with self._filepath.open(mode='r', encoding='utf-8') as file:
+                self._config.read_file(file)
 
         return self
 
@@ -191,7 +196,7 @@ class Config:
                 if len(self._config[section]) == 0:
                     self._config.remove_section(section)
             # update the configuration file with the new values.
-            with self._filepath.open(mode='w', encoding='utf-8') as fd:
-                self._config.write(fd)
+            with self._filepath.open(mode='w', encoding='utf-8') as file:
+                self._config.write(file)
         else:
             return False

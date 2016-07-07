@@ -590,7 +590,7 @@ class QbsDomain(Domain):
             return []
 
         objects = self.data['objects']
-        matches = []
+        matches = list()
         newname = None
 
         # we are in a reference specific search where we do complete the given name and then search

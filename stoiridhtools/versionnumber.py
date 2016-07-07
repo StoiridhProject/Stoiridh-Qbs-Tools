@@ -17,38 +17,42 @@
 ##            along with this program.  If not, see <http://www.gnu.org/licenses/>.               ##
 ##                                                                                                ##
 ####################################################################################################
+"""
+The :py:mod:`stoiridhtools.versionnumber` module provides a :py:class:`VersionNumber` class that
+handles a simplified semantic versioning.
+"""
 import re
 
 
 class VersionNumber:
+    """Construct a :py:class:`VersionNumber` object. *args* corresponds to the major, minor, and
+    patch segments and accepts either a :py:obj:`str` object or an :py:obj:`int` object.
+
+    Example::
+
+        >>> VersionNumber('1.2')
+        1.2.0
+        >>> VersionNumber('1.5.7')
+        1.5.7
+        >>> VersionNumber(1, 5, 7)
+        1.5.7
+
+    :raise: :py:exc:`ValueError` if :py:obj:`str` is not a valid version like
+            ``major.minor[.patch]``.
+    """
     version_re = re.compile(r'^(\d+)\.(\d+)(?:\.(\d+))?$')
 
     def __init__(self, *args):
-        """Construct a :py:class:`VersionNumber` object. *args* corresponds to the major, minor, and
-        patch segments and accepts either a :py:obj:`str` object or an :py:obj:`int` object.
-
-        Example::
-
-            >>> VersionNumber('1.2')
-            1.2.0
-            >>> VersionNumber('1.5.7')
-            1.5.7
-            >>> VersionNumber(1, 5, 7)
-            1.5.7
-
-        :raise: :py:exc:`ValueError` if :py:obj:`str` is not a valid version like
-                ``major.minor[.patch]``.
-        """
         self._segments = [1, 0, 0]
 
-        if (len(args) > 0):
+        if len(args) > 0:
             arg = args[0]
             if isinstance(arg, VersionNumber):
                 self._segments = arg._segments[:]
             elif isinstance(arg, str):
-                m = VersionNumber.version_re.match(arg)
-                if m:
-                    self._segments = [int(s) if s else 0 for s in m.group(1, 2, 3)]
+                version_match = VersionNumber.version_re.match(arg)
+                if version_match:
+                    self._segments = [int(s) if s else 0 for s in version_match.group(1, 2, 3)]
                 else:
                     raise ValueError('The version number is not valid:', arg)
             elif isinstance(arg, int):
@@ -90,7 +94,7 @@ class VersionNumber:
                 % (self.__class__.__name__, self.major, self.minor, self.patch))
 
     def __str__(self):
-        return '.'.join(map(str, self._segments))
+        return '.'.join([str(s) for s in self._segments])
 
     def __eq__(self, other):
         if not isinstance(other, VersionNumber):

@@ -98,7 +98,7 @@ class Scanner:
             else:
                 LOG.warning("%s was not found in the %s directory", app.name, app.parent)
 
-        if qbs is not None:
+        if qbs is None:
             # look into the PATH environment variable in order to find the Qbs executable.
             for path in os.environ['PATH'].split(sep):
                 app = Path(path, appname)

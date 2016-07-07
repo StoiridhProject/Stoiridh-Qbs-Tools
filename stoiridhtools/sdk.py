@@ -17,6 +17,10 @@
 ##            along with this program.  If not, see <http://www.gnu.org/licenses/>.               ##
 ##                                                                                                ##
 ####################################################################################################
+"""
+The :py:mod:`stoiridhtools.sdk` module provides a :py:class:`SDK` class that handles the install as
+well as the remove of the Qbs packages.
+"""
 import asyncio
 import logging
 import shutil
@@ -35,26 +39,26 @@ LOG = logging.getLogger(__name__)
 
 
 class SDK:
+    """Construct a :py:class:`SDK` object.
+
+    Parameters:
+
+    - *versions*, corresponds to a :py:obj:`list` of versions string.
+    - *path*, is the root path where the packages will be installed. If no path is given, the
+      default path from the :py:meth:`~stoiridhtools.Config.get_default_path` will be used.
+    - *loop*, is an optional parameter that refers to an asynchronous event loop. If
+      :py:obj:`None`, then the *loop* will be assigned to the current
+      :py:func:`asyncio.get_event_loop()`.
+    """
     URL = 'https://github.com/viprip/Stoiridh-Qbs-Tools/archive/{version}.tar.gz'
 
     def __init__(self, versions, path=None, loop=None):
-        """Construct a :py:class:`SDK` object.
-
-        Parameters:
-
-        - *versions*, corresponds to a :py:obj:`list` of versions string.
-        - *path*, is the root path where the packages will be installed. If no path is given, the
-          default path from the :py:meth:`~stoiridhtools.Config.get_default_path` will be used.
-        - *loop*, is an optional parameter that refers to an asynchronous event loop. If
-          :py:obj:`None`, then the *loop* will be assigned to the current
-          :py:func:`asyncio.get_event_loop()`.
-        """
         self._versions = versions or None
 
         if isinstance(path, Path):
             self._rootpath = path
         else:
-            from .config import Config
+            from stoiridhtools.config import Config
             self._rootpath = Config.get_default_path()
 
         if loop is None:
@@ -102,17 +106,17 @@ class SDK:
 
         This is a :ref:`coroutine <coroutine>` method.
         """
-        with tempfile.TemporaryDirectory(prefix='StoiridhTools') as d:
+        with tempfile.TemporaryDirectory(prefix='StoiridhTools') as tempdir:
             try:
-                packages = await self._download_packages(d)
+                packages = await self._download_packages(tempdir)
             except:
                 LOG.info('No packages to be installed')
             else:
                 await self._move_packages(await self._extract_packages(packages))
 
-    async def _download_packages(self, dir):
+    async def _download_packages(self, path):
         """Download the non-installed packages."""
-        futures = [asyncio.ensure_future(p.download(dir)) for p in self.noninstalled_packages]
+        futures = [asyncio.ensure_future(p.download(path)) for p in self.noninstalled_packages]
         return await asyncio.gather(*futures)
 
     async def _extract_packages(self, packages):
@@ -132,7 +136,7 @@ class SDK:
         return [self.__get_archive_url(v) for v in self._versions] or None
 
     def __repr__(self):
-        return ('<%s versions=%s>' % (self.__class__.__name__, self._versions))
+        return '<%s versions=%s>' % (self.__class__.__name__, self._versions)
 
 
 class _Package:
@@ -194,9 +198,9 @@ class _Package:
         """Check whether the package is installed."""
         return self.path.exists() if self.path else False
 
-    async def download(self, dir):
+    async def download(self, path):
         """Download the package."""
-        return await self._loop.run_in_executor(None, self._download, dir)
+        return await self._loop.run_in_executor(None, self._download, path)
 
     async def extract(self):
         """Extract the package."""
@@ -206,16 +210,16 @@ class _Package:
         """Move the extracted content of the temporary package into `path`."""
         return await self._loop.run_in_executor(None, self._move)
 
-    def _download(self, dir):
-        LOG.info('Downloading %s ...' % self.url)
+    def _download(self, path):
+        LOG.info('Downloading %s ...', self.url)
         try:
-            filepath = Path(dir, self.filename)
+            filepath = Path(path, self.filename)
             self.temp = _TemporaryPackage(filepath)
-            with urllib.request.urlopen(self.url) as b, filepath.open(mode='wb') as f:
-                f.write(b.read())
-        except urllib.request.HTTPError as e:
-            LOG.warning('Unable to download the following package: (url: %s, code: %s, reason: %s)'
-                        % (self.url, e.code, e.reason))
+            with urllib.request.urlopen(self.url) as buffer, filepath.open(mode='wb') as file:
+                file.write(buffer.read())
+        except urllib.request.HTTPError as error:
+            LOG.warning('Unable to download the following package: (url: %s, code: %s, reason: %s)',
+                        self.url, error.code, error.reason)
         else:
             return self
 
@@ -230,19 +234,19 @@ class _Package:
                     if info.isfile() and info.name.startswith(rootdir):
                         tar.extract(info.name, path=str(filepath.parent))
         else:
-            LOG.warning("Unable to extract the package (%s), because it doesn't exists" % self.name)
+            LOG.warning("Unable to extract the package (%s), because it doesn't exists", self.name)
 
         return self if filepath.exists() else None
 
     def _move(self):
-        LOG.info('Installing %s' % self.version)
+        LOG.info('Installing %s', self.version)
         try:
-            for d in self.temp.path.iterdir():
-                shutil.copytree(str(d), str(self.path.joinpath(d.parts[-1])))
-        except shutil.Error as e:
-            LOG.error(e)
+            for directory in self.temp.path.iterdir():
+                shutil.copytree(str(directory), str(self.path.joinpath(directory.parts[-1])))
+        except shutil.Error as error:
+            LOG.error(error)
         else:
-            LOG.info('The package %s was successfully installed' % self.version)
+            LOG.info('The package %s was successfully installed', self.version)
             del self.temp
 
     def __repr__(self):

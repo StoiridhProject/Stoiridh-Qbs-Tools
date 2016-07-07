@@ -17,8 +17,6 @@
 ##            along with this program.  If not, see <http://www.gnu.org/licenses/>.               ##
 ##                                                                                                ##
 ####################################################################################################
-from pathlib import Path
-
 from stoiridhtools import vsprint, PROJECT_NAME, SUPPORTED_VERSIONS
 from stoiridhtools.cli import Command
 from stoiridhtools.config import Config
@@ -57,15 +55,15 @@ class InitCommand(Command):
             config = Config()
             sdk = SDK(SUPPORTED_VERSIONS)
 
-            l = len(SUPPORTED_VERSIONS)
+            len_versions = len(SUPPORTED_VERSIONS)
 
-            if l > 1:
-                vsprint('There are %d supported versions of %s' % (l, PROJECT_NAME))
+            if len_versions > 1:
+                vsprint('There are %d supported versions of %s' % (len_versions, PROJECT_NAME))
             else:
-                vsprint('There is %d supported version of %s' % (l, PROJECT_NAME))
+                vsprint('There is %d supported version of %s' % (len_versions, PROJECT_NAME))
 
             if force:
-                vsprint('cleaning all packages installed from', sdk.install_root_path)
+                vsprint('cleaning all packages installed from %s' % sdk.install_root_path)
                 sdk.clean()
 
             vsprint('Downloading and installing the packages')
@@ -76,7 +74,7 @@ class InitCommand(Command):
             vsprint('searching for the Qbs executable')
             qbs = await scanner.scan()
 
-            if qbs:
+            if qbs is not None:
                 async with config.open() as cfg:
                     vsprint('updating stoiridhtools.conf')
                     data = {'filepath': str(qbs.filepath), 'version': str(qbs.version)}

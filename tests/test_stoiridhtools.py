@@ -17,43 +17,55 @@
 ##            along with this program.  If not, see <http://www.gnu.org/licenses/>.               ##
 ##                                                                                                ##
 ####################################################################################################
-"""
-The :py:mod:`stoiridhtools` module provides some utility functions in order to control the verbosity
-between submodules.
-"""
-__version__ = '0.1.0'
-__all__ = ['__version__', 'enable_verbosity', 'vprint', 'vsprint']
+import io
+import unittest
+import sys
+import stoiridhtools
 
 
-# constants
-PROJECT_NAME = 'Stòiridh Tools'
-SUPPORTED_VERSIONS = ['0.1.0']
+class StreamMorph:
+    def __init__(self):
+        sys.stdout = io.StringIO()
+        self.seek = 0
+
+    def get_line(self):
+        output = sys.stdout.getvalue()
+        result = output[self.seek:len(output) - 1]
+        if result is not None:
+            self.seek += len(output)
+        return result or None
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        if exc_type is None:
+            sys.stdout.close()
+            sys.stdout = sys.__stdout__
+        else:
+            return False
 
 
-# private class
-class _Verbosity:
-    enable = False
+class TestStoiridhTools(unittest.TestCase):
+    def setUp(self):
+        stoiridhtools.enable_verbosity(False)
 
+    def test_verbosity_on(self):
+        with StreamMorph() as morph:
+            stoiridhtools.enable_verbosity(True)
 
-def enable_verbosity(enable):
-    """Enable or disable the verbosity of the messages."""
-    _Verbosity.enable = enable
+            stoiridhtools.vprint("Testing the vprint function")
+            self.assertEqual("Testing the vprint function", morph.get_line())
 
+            stoiridhtools.vsprint("Step1: Testing vsprint function")
+            self.assertEqual(":: Step1: Testing vsprint function", morph.get_line())
 
-def vprint(message):
-    """Print a verbose message in the :py:data:`sys.stdout`, if and only if the
-    :py:func:`enable_verbosity` is enabled."""
-    if _Verbosity.enable:
-        print(message)
+    def test_verbosity_off(self):
+        with StreamMorph() as morph:
+            stoiridhtools.enable_verbosity(False)
 
+            stoiridhtools.vprint("Testing vprint function")
+            self.assertIsNone(morph.get_line())
 
-def vsprint(message):
-    """Print a verbose step message in the :py:data:`sys.stdout`, if and only if the
-    :py:func:`enable_verbosity` is enabled.
-
-    .. note::
-
-        A step message starts with a '::' character.
-    """
-    if _Verbosity.enable:
-        print('::', message)
+            stoiridhtools.vsprint("Step1: Testing vsprint function")
+            self.assertIsNone(morph.get_line())

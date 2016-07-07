@@ -245,8 +245,8 @@ class TestQbsProfile(unittest.TestCase):
                 try:
                     os.makedirs(str(itemsdir))
                     os.makedirs(str(modulesdir))
-                except OSError as err:
-                    self.assertEqual(False, True, msg=str(err))
+                except OSError as error:
+                    self.assertEqual(False, True, msg=str(error))
                 else:
                     paths.append(path)
 

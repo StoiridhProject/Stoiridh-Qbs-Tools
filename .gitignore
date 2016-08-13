@@ -38,6 +38,7 @@ __pycache__/
 build/
 *.egg-info/
 dist/
+.python-version
 
 # Sphinx
 doc/build/

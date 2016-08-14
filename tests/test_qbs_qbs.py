@@ -18,8 +18,8 @@
 ##                                                                                                ##
 ####################################################################################################
 import unittest
-
 from pathlib import Path
+
 from stoiridhtools.qbs import Qbs
 from stoiridhtools.versionnumber import VersionNumber
 

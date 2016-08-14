@@ -21,11 +21,9 @@ import os
 import shutil
 import sys
 import unittest
-
 from pathlib import Path
 
 import stoiridhtools.qbs.profile as sqp
-
 
 if sys.platform.startswith('linux'):
     DATA = {

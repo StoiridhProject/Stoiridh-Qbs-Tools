@@ -21,8 +21,7 @@ import argparse
 import asyncio
 import logging
 
-from stoiridhtools import enable_verbosity, PROJECT_NAME, __version__
-
+from stoiridhtools import PROJECT_NAME, __version__, enable_verbosity
 
 LOG = logging.getLogger(__name__)
 

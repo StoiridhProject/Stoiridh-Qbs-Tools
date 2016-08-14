@@ -20,9 +20,9 @@
 import os
 import sys
 import unittest
-
 from pathlib import Path
 from shutil import copyfile
+
 from stoiridhtools import qbs
 from stoiridhtools.config import Config
 from stoiridhtools.versionnumber import VersionNumber

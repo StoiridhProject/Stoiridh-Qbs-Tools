@@ -18,8 +18,9 @@
 ##                                                                                                ##
 ####################################################################################################
 import io
-import unittest
 import sys
+import unittest
+
 import stoiridhtools
 
 

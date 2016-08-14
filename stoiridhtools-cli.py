@@ -19,7 +19,6 @@
 ####################################################################################################
 import sys
 
-
 if __name__ == '__main__':
     from stoiridhtools import cli
     sys.exit(cli.main())

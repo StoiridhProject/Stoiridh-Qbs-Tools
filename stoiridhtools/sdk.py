@@ -27,12 +27,10 @@ import shutil
 import tarfile
 import tempfile
 import urllib.request
-
 from itertools import filterfalse
 from pathlib import Path
 
 from stoiridhtools.versionnumber import VersionNumber
-
 
 # logging
 LOG = logging.getLogger(__name__)

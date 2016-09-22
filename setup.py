@@ -29,7 +29,7 @@ if sys.version_info < (3, 5):
     sys.exit(1)
 
 
-# get the long description from the README.md file
+# get the long description from the README.rst file
 readme = Path('README.rst').resolve()
 
 with readme.open(encoding='utf-8') as f:
@@ -64,7 +64,7 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            'stoiridhtools=stoiridhtools.cli:main',
+            'stoiridhtools=stoiridhtools:main',
         ],
     },
 )

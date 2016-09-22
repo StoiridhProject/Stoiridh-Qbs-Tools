@@ -1,4 +1,4 @@
-|project| --- Python 3 API Reference
+Logging Services
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -8,11 +8,10 @@
 
 ----------------------------------------------------------------------------------------------------
 
-Welcome to the |project| Python 3 API Reference!
+The modules described in this chapter provides a set of utilities to trace the different modules
+provided by |project|.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
-   library/index
-   library/logging/index
-   library/qbs/index
+   logging

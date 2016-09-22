@@ -22,6 +22,7 @@ The :py:mod:`stoiridhtools.qbs` module provides a tool to scan the environment v
 Operating System in order to find :term:`Qbs`.
 """
 from pathlib import Path
+
 from stoiridhtools.versionnumber import VersionNumber
 
 

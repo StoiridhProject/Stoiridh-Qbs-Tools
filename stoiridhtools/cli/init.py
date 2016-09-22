@@ -17,7 +17,7 @@
 ##            along with this program.  If not, see <http://www.gnu.org/licenses/>.               ##
 ##                                                                                                ##
 ####################################################################################################
-from stoiridhtools import vsprint, PROJECT_NAME, SUPPORTED_VERSIONS
+from stoiridhtools import PROJECT_NAME, SUPPORTED_VERSIONS, vsprint
 from stoiridhtools.cli import Command
 from stoiridhtools.config import Config
 from stoiridhtools.qbs.scanner import Scanner

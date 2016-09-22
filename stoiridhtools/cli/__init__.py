@@ -19,12 +19,11 @@
 ####################################################################################################
 import argparse
 import asyncio
-import logging
 
-from stoiridhtools import enable_verbosity, PROJECT_NAME, __version__
+import stoiridhtools.logging
+from stoiridhtools import PROJECT_NAME, __version__, enable_verbosity
 
-
-LOG = logging.getLogger(__name__)
+LOG = stoiridhtools.logging.get_logger(__name__)
 
 
 class Command:

@@ -17,19 +17,19 @@
 ##            along with this program.  If not, see <http://www.gnu.org/licenses/>.               ##
 ##                                                                                                ##
 ####################################################################################################
-import stoiridhtools
 import sys
-
 from pathlib import Path
-from setuptools import setup, find_packages
 
+from setuptools import find_packages, setup
+
+import stoiridhtools
 
 if sys.version_info < (3, 5):
     print('ERROR: StoiridhTools requires at least Python 3.5 to run.')
     sys.exit(1)
 
 
-# get the long description from the README.md file
+# get the long description from the README.rst file
 readme = Path('README.rst').resolve()
 
 with readme.open(encoding='utf-8') as f:
@@ -64,7 +64,7 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            'stoiridhtools=stoiridhtools.cli:main',
+            'stoiridhtools=stoiridhtools:main',
         ],
     },
 )

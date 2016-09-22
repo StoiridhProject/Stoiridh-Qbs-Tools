@@ -25,9 +25,7 @@ import configparser
 import logging
 import re
 import sys
-
 from pathlib import Path
-
 
 __all__ = ['Profile', 'read_config']
 

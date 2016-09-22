@@ -20,6 +20,10 @@
 import asyncio
 import functools
 
+import stoiridhtools.logging
+
+stoiridhtools.logging.set_level(stoiridhtools.logging.WARNING)
+
 
 class asyncio_loop:
     """Class decorator to get or start - a new one - the asynchronous event loop and finally close

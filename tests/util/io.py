@@ -18,55 +18,57 @@
 ##                                                                                                ##
 ####################################################################################################
 import io
-import sys
-import unittest
-
-import stoiridhtools
 
 
-class StreamMorph:
-    def __init__(self):
-        sys.stdout = io.StringIO()
-        self.seek = 0
+class OutputStreamWrapper:
+    """The :py:class:`OutputStreamWrapper` class is a wrapper that intercepts calls from the
+    :py:data:`sys.stdout` and the :py:data:`sys.stderr` streams.
 
-    def get_line(self):
-        output = sys.stdout.getvalue()
-        result = output[self.seek:len(output) - 1]
-        if result is not None:
-            self.seek += len(output)
-        return result or None
+    When a message is written from either the output stream or the error stream or both, the
+    :py:meth:`get_lines` method will return the lastest lines written from these streams.
+    """
+    def __init__(self, out_stream=io.StringIO(), err_stream=io.StringIO()):
+        self.stdout = out_stream
+        self.stderr = err_stream
+
+    def get_lines(self, stream=None):
+        """Return the latest lines written from the :py:data:`sys.stdout` stream and/or the
+        :py:data:`sys.stderr` stream. If `stream` is specified, then the method will return the
+        latest lines from this stream.
+
+        .. note:
+
+           If messages are written in both before a call to this one, then the method will
+           concatenate the lines from the :py:data:`sys.stdout` and the :py:data:`sys.stderr`
+           functions.
+        """
+        if stream is not None:
+            message = self._get_lines(stream)
+        else:
+            message = self._get_lines(self.stdout)
+            error_message = self._get_lines(self.stderr)
+
+            if message is not None:
+                if error_message is not None:
+                    message = message + error_message
+                else:
+                    message = message
+            elif error_message is not None:
+                message = error_message
+
+        return message and message[:-1] or None
+
+    def _get_lines(self, stream):
+        output = stream.getvalue()
+        stream.seek(0)
+        stream.truncate()
+        return output
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         if exc_type is None:
-            sys.stdout.close()
-            sys.stdout = sys.__stdout__
+            pass
         else:
             return False
-
-
-class TestStoiridhTools(unittest.TestCase):
-    def setUp(self):
-        stoiridhtools.enable_verbosity(False)
-
-    def test_verbosity_on(self):
-        with StreamMorph() as morph:
-            stoiridhtools.enable_verbosity(True)
-
-            stoiridhtools.vprint("Testing the vprint function")
-            self.assertEqual("Testing the vprint function", morph.get_line())
-
-            stoiridhtools.vsprint("Step1: Testing vsprint function")
-            self.assertEqual(":: Step1: Testing vsprint function", morph.get_line())
-
-    def test_verbosity_off(self):
-        with StreamMorph() as morph:
-            stoiridhtools.enable_verbosity(False)
-
-            stoiridhtools.vprint("Testing vprint function")
-            self.assertIsNone(morph.get_line())
-
-            stoiridhtools.vsprint("Step1: Testing vsprint function")
-            self.assertIsNone(morph.get_line())

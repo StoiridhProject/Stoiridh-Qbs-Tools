@@ -12,14 +12,12 @@ import re
 
 from docutils import nodes
 from docutils.parsers.rst import Directive, directives
-
 from sphinx import addnodes
 from sphinx.directives import ObjectDescription
 from sphinx.domains import Domain, Index, ObjType
-from sphinx.locale import l_, _
+from sphinx.locale import _, l_
 from sphinx.roles import XRefRole
 from sphinx.util.nodes import make_refnode
-
 
 # RE for both a Qbs module and a Qbs item.
 qbs_sig_re = re.compile(r'^(?P<name>[\w]+)$')

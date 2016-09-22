@@ -19,7 +19,7 @@
 ####################################################################################################
 from os import remove
 from pathlib import Path
-from shutil import copytree, copyfile, Error, rmtree
+from shutil import Error, copyfile, copytree, rmtree
 
 
 class HtmlDirectoryNotFound(FileNotFoundError):

@@ -27,11 +27,10 @@ import os
 import re
 import subprocess
 import sys
-
 from pathlib import Path
+
 from stoiridhtools.qbs import Qbs
 from stoiridhtools.versionnumber import VersionNumber
-
 
 # logging
 LOG = logging.getLogger(__name__)

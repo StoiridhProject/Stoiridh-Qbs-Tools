@@ -19,8 +19,8 @@
 ####################################################################################################
 import io
 import os
-import unittest
 import shutil
+import unittest
 from pathlib import Path
 
 import colorama
@@ -86,13 +86,20 @@ class TestLogging(unittest.TestCase):
         stoiridhtools.logging.init(filename=str(filename), stream=self.stderr)
 
     def test_logger(self):
+        root_logger = stoiridhtools.logging.get_logger()
         logger = stoiridhtools.logging.get_logger()
+
+        self.assertEqual(logger, root_logger)
         self.assertEqual('root', logger.name)
 
+        logging_logger = stoiridhtools.logging.get_logger(__name__)
         logger = stoiridhtools.logging.get_logger(__name__)
+
+        self.assertEqual(logger, logging_logger)
         self.assertEqual(__name__, logger.name)
 
         logger = self.LOG
+        self.assertEqual(logger, logging_logger)
         self.assertEqual(__name__, logger.name)
 
     def test_level(self):
@@ -245,3 +252,7 @@ class TestLogging(unittest.TestCase):
             self.LOG.warning('Logging a message from test_logging with a severity level: %s',
                              'warning')
             self.assertEqual(result % __name__, wrapper.get_lines())
+
+    def test_bf_repr(self):
+        result = '<Logger name=%s level=%d>' % (self.LOG.name, self.LOG.level)
+        self.assertEqual(result, repr(self.LOG))

@@ -359,6 +359,8 @@ class _LoggingProxy:
         else:
             self.stream.stream = stream
 
+        self._handlers.attach_stream_to_logger(self._root_logger)
+
         if 'filename' in kwargs and 'path' in kwargs:
             raise ValueError('both argument (filename) and argument (path) should not be specified '
                              'together')

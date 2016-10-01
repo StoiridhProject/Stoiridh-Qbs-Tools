@@ -167,6 +167,8 @@ Functions
 
    Log and print out a message with severity level `WARNING`.
 
+.. _stoiridhtools.logging.logger:
+
 Logger Object
 -------------
 

@@ -31,6 +31,15 @@ class OutputStreamWrapper:
         self.stdout = out_stream
         self.stderr = err_stream
 
+    def clear(self):
+        if self.stdout is not None:
+            self.stdout.seek(0)
+            self.stdout.truncate()
+
+        if self.stderr is not None:
+            self.stderr.seek(0)
+            self.stderr.truncate()
+
     def get_lines(self, stream=None):
         """Return the latest lines written from the :py:data:`sys.stdout` stream and/or the
         :py:data:`sys.stderr` stream. If `stream` is specified, then the method will return the

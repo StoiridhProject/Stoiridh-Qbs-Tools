@@ -244,6 +244,9 @@ class Logger:
         self._root_proxy = kwargs.pop('root_proxy', None)
         self.level = level
 
+        if self._root_proxy is not None and name not in self._root_proxy.loggers:
+            self._root_proxy.loggers[name] = self
+
     @property
     def name(self):
         """Return the logger's name."""
@@ -299,6 +302,9 @@ class Logger:
         """Log and print out a message with severity level `WARNING`."""
         self._logger.warning(msg, *args, **kwargs)
 
+    def __repr__(self):
+        return '<%s name=%s level=%s>' % (self.__class__.__name__, self.name, self.level)
+
 
 class _LoggingProxy:
     DEFAULT_FILENAME = 'stoiridhtools-%(date)s.log' % {'date': date.today()}
@@ -307,6 +313,7 @@ class _LoggingProxy:
         self._root_logger = Logger(level=NOTSET)
         self._handlers = _LoggingHandlers(stream=logging.StreamHandler())
         self._handlers.attach(self._root_logger)
+        self._loggers = dict()
 
     @property
     def root(self):
@@ -326,6 +333,11 @@ class _LoggingProxy:
             value = sys.stderr
 
         self._handlers.stream = value
+
+    @property
+    def loggers(self):
+        """Return the loggers bound to the proxy."""
+        return self._loggers
 
     def init(self, **kwargs):
         """Initialise the logging proxy. Currently, this function only supports the following
@@ -358,6 +370,8 @@ class _LoggingProxy:
             self.stream = logging.StreamHandler(stream)
         else:
             self.stream.stream = stream
+
+        self._handlers.attach_stream_to_logger(self._root_logger)
 
         if 'filename' in kwargs and 'path' in kwargs:
             raise ValueError('both argument (filename) and argument (path) should not be specified '
@@ -490,7 +504,7 @@ def get_logger(name=None):
 
     .. seealso:: :py:func:`logging.getLogger`
     """
-    return Logger(name, root_proxy=_PROXY)
+    return _PROXY.loggers.get(name, Logger(name, root_proxy=_PROXY))
 
 
 def get_level():

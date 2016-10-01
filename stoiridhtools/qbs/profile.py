@@ -22,15 +22,16 @@ The :py:mod:`stoiridhtools.qbs.profile` module allows to retrieve the Qbs profil
 configuration file.
 """
 import configparser
-import logging
 import re
 import sys
 from pathlib import Path
 
+import stoiridhtools.logging
+
 __all__ = ['Profile', 'read_config']
 
 
-LOG = logging.getLogger(__name__)
+LOG = stoiridhtools.logging.get_logger(__name__)
 KEY = 'qt-project\\qbs\\'
 SECTION = 'org'
 INT_RE = re.compile(r'^(\d+)$')  # used by the _make_value(value) function

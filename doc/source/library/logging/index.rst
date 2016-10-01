@@ -15,3 +15,4 @@ provided by |project|.
    :maxdepth: 1
 
    logging
+   action

@@ -22,7 +22,6 @@ The :py:mod:`stoiridhtools.sdk` module provides a :py:class:`SDK` class that han
 well as the remove of the Qbs packages.
 """
 import asyncio
-import logging
 import shutil
 import tarfile
 import tempfile
@@ -30,10 +29,11 @@ import urllib.request
 from itertools import filterfalse
 from pathlib import Path
 
+import stoiridhtools.logging
 from stoiridhtools.versionnumber import VersionNumber
 
 # logging
-LOG = logging.getLogger(__name__)
+LOG = stoiridhtools.logging.get_logger(__name__)
 
 
 class SDK:

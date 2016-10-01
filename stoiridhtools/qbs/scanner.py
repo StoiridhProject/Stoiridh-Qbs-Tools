@@ -22,18 +22,18 @@ The :py:mod:`stoiridhtools.qbs.scanner` module provides a :py:class:`Scanner` cl
 scan on specific environment variables in order to find the wanted version of Qbs.
 """
 import asyncio
-import logging
 import os
 import re
 import subprocess
 import sys
 from pathlib import Path
 
+import stoiridhtools.logging
 from stoiridhtools.qbs import Qbs
 from stoiridhtools.versionnumber import VersionNumber
 
 # logging
-LOG = logging.getLogger(__name__)
+LOG = stoiridhtools.logging.get_logger(__name__)
 
 
 class Scanner:

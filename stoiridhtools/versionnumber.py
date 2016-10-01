@@ -26,7 +26,7 @@ import re
 
 class VersionNumber:
     """Construct a :py:class:`VersionNumber` object. *args* corresponds to the major, minor, and
-    patch segments and accepts either a :py:obj:`str` object or an :py:obj:`int` object.
+    patch segments and accepts either a :py:class:`str` object or an :py:class:`int` object.
 
     Example::
 
@@ -37,7 +37,7 @@ class VersionNumber:
         >>> VersionNumber(1, 5, 7)
         1.5.7
 
-    :raise: :py:exc:`ValueError` if :py:obj:`str` is not a valid version like
+    :raise: :py:exc:`ValueError` if :py:class:`str` is not a valid version like
             ``major.minor[.patch]``.
     """
     version_re = re.compile(r'^(\d+)\.(\d+)(?:\.(\d+))?$')

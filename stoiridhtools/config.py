@@ -141,7 +141,7 @@ class Config:
 
     async def read(self, section):
         """Return the data associated to *section* and return them under the form of a
-        :py:obj:`dict`.
+        :py:class:`dict`.
 
         If there is no section called *section* within the configuration file, then a :py:obj:`None`
         type is returned.

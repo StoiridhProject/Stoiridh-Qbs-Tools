@@ -27,7 +27,7 @@ Objects
 
    Parameters:
 
-   - *versions*, corresponds to a :py:obj:`list` of versions string.
+   - *versions*, corresponds to a :py:class:`list` of versions string.
    - *path*, is the root path where the packages will be installed. If no path is given, the
      default path from the :py:meth:`~stoiridhtools.Config.get_default_path` will be used.
    - *loop*, is an optional parameter that refers to an asynchronous event loop. If :py:obj:`None`,

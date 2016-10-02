@@ -32,6 +32,9 @@ from pathlib import Path
 import stoiridhtools.logging
 from stoiridhtools.versionnumber import VersionNumber
 
+__all__ = ['SDK']
+
+
 # logging
 LOG = stoiridhtools.logging.get_logger(__name__)
 

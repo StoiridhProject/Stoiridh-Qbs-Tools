@@ -17,56 +17,18 @@
 ##            along with this program.  If not, see <http://www.gnu.org/licenses/>.               ##
 ##                                                                                                ##
 ####################################################################################################
-import io
-import sys
 import unittest
 
 import stoiridhtools
 
 
-class StreamMorph:
-    def __init__(self):
-        sys.stdout = io.StringIO()
-        self.seek = 0
-
-    def get_line(self):
-        output = sys.stdout.getvalue()
-        result = output[self.seek:len(output) - 1]
-        if result is not None:
-            self.seek += len(output)
-        return result or None
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        if exc_type is None:
-            sys.stdout.close()
-            sys.stdout = sys.__stdout__
-        else:
-            return False
-
-
 class TestStoiridhTools(unittest.TestCase):
-    def setUp(self):
-        stoiridhtools.enable_verbosity(False)
+    @classmethod
+    def tearDownClass(cls):
+        stoiridhtools.deinit()
 
-    def test_verbosity_on(self):
-        with StreamMorph() as morph:
-            stoiridhtools.enable_verbosity(True)
+    def test_init(self):
+        stoiridhtools.init()
 
-            stoiridhtools.vprint("Testing the vprint function")
-            self.assertEqual("Testing the vprint function", morph.get_line())
-
-            stoiridhtools.vsprint("Step1: Testing vsprint function")
-            self.assertEqual(":: Step1: Testing vsprint function", morph.get_line())
-
-    def test_verbosity_off(self):
-        with StreamMorph() as morph:
-            stoiridhtools.enable_verbosity(False)
-
-            stoiridhtools.vprint("Testing vprint function")
-            self.assertIsNone(morph.get_line())
-
-            stoiridhtools.vsprint("Step1: Testing vsprint function")
-            self.assertIsNone(morph.get_line())
+    def test_deinit(self):
+        stoiridhtools.deinit()

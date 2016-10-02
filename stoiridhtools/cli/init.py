@@ -17,11 +17,16 @@
 ##            along with this program.  If not, see <http://www.gnu.org/licenses/>.               ##
 ##                                                                                                ##
 ####################################################################################################
-from stoiridhtools import PROJECT_NAME, SUPPORTED_VERSIONS, vsprint
+import stoiridhtools.logging
+import stoiridhtools.logging.action
+from stoiridhtools import PROJECT_NAME, SUPPORTED_VERSIONS
 from stoiridhtools.cli import Command
 from stoiridhtools.config import Config
 from stoiridhtools.qbs.scanner import Scanner
 from stoiridhtools.sdk import SDK
+
+LOG = stoiridhtools.logging.get_logger(__name__)
+ACTION = stoiridhtools.logging.action.create(logger=LOG)
 
 
 class InitCommand(Command):
@@ -57,27 +62,31 @@ class InitCommand(Command):
 
             len_versions = len(SUPPORTED_VERSIONS)
 
+            ACTION.begin('Initialising the SDK')
+
             if len_versions > 1:
-                vsprint('There are %d supported versions of %s' % (len_versions, PROJECT_NAME))
+                ACTION.step('There are %d supported versions of %s', len_versions, PROJECT_NAME)
             else:
-                vsprint('There is %d supported version of %s' % (len_versions, PROJECT_NAME))
+                ACTION.step('There is %d supported version of %s', len_versions, PROJECT_NAME)
 
             if force:
-                vsprint('cleaning all packages installed from %s' % sdk.install_root_path)
+                ACTION.step('cleaning all packages installed from %s', sdk.install_root_path)
                 sdk.clean()
 
-            vsprint('Downloading and installing the packages')
+            ACTION.step('Downloading and installing the packages')
             await sdk.install()
 
             scanner = Scanner()
 
-            vsprint('searching for the Qbs executable')
+            ACTION.step('searching for the Qbs executable')
             qbs = await scanner.scan()
 
             if qbs is not None:
                 async with config.open() as cfg:
-                    vsprint('updating stoiridhtools.conf')
+                    ACTION.step('updating stoiridhtools.conf')
                     data = {'filepath': str(qbs.filepath), 'version': str(qbs.version)}
                     await cfg.update('qbs', data)
+
+            ACTION.end()
 
         self._loop.run_until_complete(wrapper())

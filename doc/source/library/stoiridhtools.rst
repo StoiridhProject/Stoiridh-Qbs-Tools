@@ -1,4 +1,4 @@
-:py:mod:`stoiridhtools` --- Control verbosity between submodules
+:py:mod:`stoiridhtools` --- Initialise and deinitialise |project|
 ====================================================================================================
 
 .. Copyright 2015-2016 Stòiridh Project.
@@ -8,33 +8,23 @@
 .. sectionauthor:: William McKIE <mckie.william@hotmail.co.uk>
 
 .. py:module:: stoiridhtools
-   :synopsis: Control verbosity between submodules
+   :synopsis: Initialise and deinitialise |project|.
 
 ----------------------------------------------------------------------------------------------------
 
 Introduction
 ------------
 
-The :py:mod:`stoiridhtools` module provides some utility functions in order to control the verbosity
-between submodules.
+The :py:mod:`stoiridhtools` module is the main entry-point of |project|. This module offers two
+functions that should not be directly called from other modules.
 
 Functions
 ---------
 
-.. py:function:: enable_verbosity(enable)
+.. py:function:: init()
 
-   Enable or disable the verbosity of the messages.
+   Initialise |project|.
 
-.. py:function:: vprint(message)
+.. py:function:: deinit()
 
-   Print a verbose message in the :py:data:`sys.stdout`, if and only if the
-   :py:func:`enable_verbosity` is enabled.
-
-.. py:function:: vsprint(message)
-
-   Print a verbose step message in the :py:data:`sys.stdout`, if and only if the
-   :py:func:`enable_verbosity` is enabled.
-
-   .. note::
-
-      A step message starts with a ``::`` character.
+   Deinitialise |project|.

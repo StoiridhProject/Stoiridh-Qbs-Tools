@@ -18,8 +18,8 @@
 ##                                                                                                ##
 ####################################################################################################
 """
-The :py:mod:`stoiridhtools` module provides some utility functions in order to control the verbosity
-between submodules.
+The :py:mod:`stoiridhtools` module is the main entry-point of Stòiridh Tools. This module offers two
+functions that should not be directly called from other modules.
 """
 import sys
 from pathlib import Path
@@ -29,7 +29,7 @@ import colorama
 import stoiridhtools.logging
 
 __version__ = '0.1.0'
-__all__ = ['__version__', 'enable_verbosity', 'vprint', 'vsprint']
+__all__ = ['__version__']
 
 
 # constants
@@ -93,32 +93,3 @@ def get_default_path():
             path = Path(root_path, organisation, application_name)
 
     return path
-
-
-# private class
-class _Verbosity:
-    enable = False
-
-
-def enable_verbosity(enable):
-    """Enable or disable the verbosity of the messages."""
-    _Verbosity.enable = enable
-
-
-def vprint(message):
-    """Print a verbose message in the :py:data:`sys.stdout`, if and only if the
-    :py:func:`enable_verbosity` is enabled."""
-    if _Verbosity.enable:
-        print(message)
-
-
-def vsprint(message):
-    """Print a verbose step message in the :py:data:`sys.stdout`, if and only if the
-    :py:func:`enable_verbosity` is enabled.
-
-    .. note::
-
-        A step message starts with a '::' character.
-    """
-    if _Verbosity.enable:
-        print('::', message)

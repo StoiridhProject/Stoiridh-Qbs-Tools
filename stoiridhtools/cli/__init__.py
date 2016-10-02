@@ -21,7 +21,7 @@ import argparse
 import asyncio
 
 import stoiridhtools.logging
-from stoiridhtools import PROJECT_NAME, __version__, enable_verbosity
+from stoiridhtools import PROJECT_NAME, __version__
 
 LOG = stoiridhtools.logging.get_logger(__name__)
 
@@ -206,7 +206,9 @@ class CommandManager:
         args, unknown_args = self._parser.parse_known_args()
 
         if hasattr(args, 'verbose'):
-            enable_verbosity(args.verbose)
+            stoiridhtools.logging.set_level(stoiridhtools.logging.WARNING)
+        else:
+            stoiridhtools.logging.set_level(stoiridhtools.logging.CRITICAL)
 
         if args.version:
             print(__version__)

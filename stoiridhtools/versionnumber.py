@@ -23,6 +23,8 @@ handles a simplified semantic versioning.
 """
 import re
 
+__all__ = ['VersionNumber']
+
 
 class VersionNumber:
     """Construct a :py:class:`VersionNumber` object. *args* corresponds to the major, minor, and

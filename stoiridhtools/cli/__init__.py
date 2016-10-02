@@ -23,6 +23,9 @@ import asyncio
 import stoiridhtools.logging
 from stoiridhtools import PROJECT_NAME, __version__
 
+__all__ = ['Command', 'CommandManager']
+
+
 LOG = stoiridhtools.logging.get_logger(__name__)
 
 

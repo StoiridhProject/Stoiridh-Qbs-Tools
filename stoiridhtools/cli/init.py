@@ -25,6 +25,9 @@ from stoiridhtools.config import Config
 from stoiridhtools.qbs.scanner import Scanner
 from stoiridhtools.sdk import SDK
 
+__all__ = ['InitCommand']
+
+
 LOG = stoiridhtools.logging.get_logger(__name__)
 ACTION = stoiridhtools.logging.action.create(logger=LOG)
 

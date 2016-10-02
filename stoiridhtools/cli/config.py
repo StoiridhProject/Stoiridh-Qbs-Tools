@@ -21,6 +21,8 @@ from stoiridhtools import PROJECT_NAME
 from stoiridhtools.cli import Command
 from stoiridhtools.config import Config
 
+__all__ = ['ConfigCommand', 'QtConfigCommand']
+
 
 class ConfigCommand(Command):
     """The :py:class:`ConfigCommand` class allows to configure Stòiridh Tools.

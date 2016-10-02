@@ -28,6 +28,8 @@ import sys
 from collections import OrderedDict
 from pathlib import Path
 
+__all__ = ['Config']
+
 
 class Config:
     """Construct a :py:class:`Config` object.

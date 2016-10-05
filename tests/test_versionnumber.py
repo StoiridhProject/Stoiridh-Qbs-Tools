@@ -23,27 +23,27 @@ from stoiridhtools.versionnumber import VersionNumber
 
 
 class VersionNumberData:
-    def __init__(self, tag, va, vb):
+    def __init__(self, tag, left, right):
         self._tag = tag
-        self._va = va
-        self._vb = vb
+        self._left = left
+        self._right = right
 
     @property
     def tag(self):
         return self._tag
 
     @property
-    def va(self):
-        return self._va
+    def left(self):
+        return self._left
 
     @property
-    def vb(self):
-        return self._vb
+    def right(self):
+        return self._right
 
 
 class TestVersionNumber(unittest.TestCase):
     def setUp(self):
-        self.v = VersionNumber('2.4.2')
+        self.version = VersionNumber('2.4.2')
 
     def test_init(self):
         data = [
@@ -55,66 +55,89 @@ class TestVersionNumber(unittest.TestCase):
 
         for d in data:
             with self.subTest(d.tag):
-                self.assertEqual(d.va, d.vb)
+                self.assertEqual(d.left, d.right)
 
-        # special case where v2 copies v1
-        v1 = VersionNumber(1, 5, 7)
-        v2 = VersionNumber(v1)
-        self.assertEqual(v1, v2)
+        # special case where version2 copies version1
+        version1 = VersionNumber(1, 5, 7)
+        version2 = VersionNumber(version1)
+        self.assertEqual(version1, version2)
 
-        # some invalid version numbers, since Stòiridh Qbs Tools will only handle the official
-        # release.
+        # some invalid version numbers, since Stòiridh Tools will only handle the official release.
         with self.assertRaises(ValueError):
-            v1 = VersionNumber('1')
-            v2 = VersionNumber('1.2.4b')
-            v3 = VersionNumber('1.2.3-prerelease')
-            v4 = VersionNumber('1.2.4.8')
+            VersionNumber('1')
+
+        with self.assertRaises(ValueError):
+            VersionNumber('1.2.4b')
+
+        with self.assertRaises(ValueError):
+            VersionNumber('1.2.3-prerelease')
+
+        with self.assertRaises(ValueError):
+            VersionNumber('1.2.4.8')
 
     def test_major(self):
-        self.assertEqual(self.v.major, 2)
-        self.v.major = 1
-        self.assertEqual(self.v.major, 1)
+        self.assertEqual(self.version.major, 2)
+        self.version.major = 1
+        self.assertEqual(self.version.major, 1)
 
     def test_minor(self):
-        self.assertEqual(self.v.minor, 4)
-        self.v.minor = 5
-        self.assertEqual(self.v.minor, 5)
+        self.assertEqual(self.version.minor, 4)
+        self.version.minor = 5
+        self.assertEqual(self.version.minor, 5)
 
     def test_patch(self):
-        self.assertEqual(self.v.patch, 2)
-        self.v.patch = 73
-        self.assertEqual(self.v.patch, 73)
+        self.assertEqual(self.version.patch, 2)
+        self.version.patch = 73
+        self.assertEqual(self.version.patch, 73)
+
+    def test_hash(self):
+        self.assertEqual(hash(self.version), hash(VersionNumber(2, 4, 2)))
 
     def test_bf_str(self):
-        self.assertEqual(str(self.v), '2.4.2')
+        self.assertEqual(str(self.version), '2.4.2')
 
     def test_bf_repr(self):
-        self.assertEqual(repr(self.v), '<VersionNumber major=2 minor=4 patch=2>')
+        self.assertEqual(repr(self.version), '<VersionNumber major=2 minor=4 patch=2>')
 
     def test_op_eq(self):
-        self.assertEqual(self.v, VersionNumber(2, 4, 2))
+        self.assertEqual(self.version, VersionNumber(2, 4, 2))
+
+        with self.assertRaises(AssertionError):
+            self.assertEqual(self.version, (1, 2, 3))
 
     def test_op_ne(self):
-        self.assertNotEqual(self.v, VersionNumber(1, 4, 2))
+        self.assertNotEqual(self.version, VersionNumber(1, 4, 2))
 
     def test_op_lt(self):
-        self.assertLess(self.v, VersionNumber('2.4.3'))
-        self.assertLess(self.v, VersionNumber('2.5.0'))
-        self.assertLess(self.v, VersionNumber('3.0.0'))
+        self.assertLess(self.version, VersionNumber('2.4.3'))
+        self.assertLess(self.version, VersionNumber('2.5.0'))
+        self.assertLess(self.version, VersionNumber('3.0.0'))
+
+        with self.assertRaises(TypeError):
+            self.assertLess(self.version, (1, 2, 3))
 
     def test_op_le(self):
-        self.assertLessEqual(self.v, VersionNumber('2.4.2'))
-        self.assertLessEqual(self.v, VersionNumber('2.4.3'))
-        self.assertLessEqual(self.v, VersionNumber('2.5.0'))
-        self.assertLessEqual(self.v, VersionNumber('3.0.0'))
+        self.assertLessEqual(self.version, VersionNumber('2.4.2'))
+        self.assertLessEqual(self.version, VersionNumber('2.4.3'))
+        self.assertLessEqual(self.version, VersionNumber('2.5.0'))
+        self.assertLessEqual(self.version, VersionNumber('3.0.0'))
+
+        with self.assertRaises(TypeError):
+            self.assertLessEqual(self.version, (1, 2, 3))
 
     def test_op_gt(self):
-        self.assertGreater(self.v, VersionNumber('2.4.1'))
-        self.assertGreater(self.v, VersionNumber('1.5.0'))
-        self.assertGreater(self.v, VersionNumber('1.0.0'))
+        self.assertGreater(self.version, VersionNumber('2.4.1'))
+        self.assertGreater(self.version, VersionNumber('1.5.0'))
+        self.assertGreater(self.version, VersionNumber('1.0.0'))
+
+        with self.assertRaises(TypeError):
+            self.assertGreater(self.version, (1, 2, 3))
 
     def test_op_ge(self):
-        self.assertGreaterEqual(self.v, VersionNumber('2.4.2'))
-        self.assertGreaterEqual(self.v, VersionNumber('2.4.1'))
-        self.assertGreaterEqual(self.v, VersionNumber('1.5.0'))
-        self.assertGreaterEqual(self.v, VersionNumber('1.0.0'))
+        self.assertGreaterEqual(self.version, VersionNumber('2.4.2'))
+        self.assertGreaterEqual(self.version, VersionNumber('2.4.1'))
+        self.assertGreaterEqual(self.version, VersionNumber('1.5.0'))
+        self.assertGreaterEqual(self.version, VersionNumber('1.0.0'))
+
+        with self.assertRaises(TypeError):
+            self.assertGreaterEqual(self.version, (1, 2, 3))

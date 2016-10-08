@@ -83,6 +83,8 @@ class Config:
             if isinstance(path, str):
                 self._path = Path(path).resolve()
             elif isinstance(path, Path):
+                if not path.exists():
+                    path.mkdir(parents=True)
                 self._path = path.resolve()
             else:
                 raise TypeError("argument (path) should be a str or pathlib.Path object, not %r"

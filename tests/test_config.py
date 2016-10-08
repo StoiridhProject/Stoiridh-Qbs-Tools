@@ -23,6 +23,7 @@ import unittest
 from pathlib import Path
 from shutil import copyfile
 
+import stoiridhtoolstest.config
 from stoiridhtools import qbs
 from stoiridhtools.config import Config
 from stoiridhtools.versionnumber import VersionNumber
@@ -42,10 +43,12 @@ class TestConfig(unittest.TestCase):
         cls.config_file = Path('tests/data').resolve().joinpath(Config.FILENAME)
 
         # config's default path
-        if sys.platform.startswith('linux'):
-            cls.default_path = Path(os.environ['HOME'], '.config', 'StoiridhProject/StoiridhTools')
-        elif sys.platform.startswith('win32'):
-            cls.default_path = Path(os.environ['APPDATA'], 'StoiridhProject/StoiridhTools')
+        cls.stoiridhtools = stoiridhtoolstest.config.StoiridhTools()
+        cls.default_path = cls.stoiridhtools.path.config
+        cls.config_path = cls.stoiridhtools.path.config
+
+        Config.ROOTDIR = (stoiridhtoolstest.config.StoiridhTools.organisation() + '/' +
+                          stoiridhtoolstest.config.StoiridhTools.project())
 
     @classmethod
     def tearDownClass(cls):
@@ -54,20 +57,44 @@ class TestConfig(unittest.TestCase):
             os.remove(str(cls.config_file))
 
     def setUp(self):
+        self.stoiridhtools.path.mkdirs()
+
         self.config = Config('tests/data')
         self.qbs = qbs.Qbs('/usr/bin/qbs', VersionNumber('1.5.0'))
 
         copyfile(str(self.default_config_file), str(self.config.path.joinpath(Config.FILENAME)))
 
+    def tearDown(self):
+        self.stoiridhtools.path.rmdirs()
+
+    def test_init(self):
+        config = Config(loop=self.loop)
+        self.assertEqual(getattr(config, '_loop'), self.loop)
+        self.assertEqual(config.path, config.get_default_path())
+
+        self.stoiridhtools.path.rmdirs()
+        config = Config(path=self.config_path)
+        self.assertEqual(config.path, self.config_path)
+
+        with self.assertRaises(TypeError):
+            config = Config(path=73)
+
+        with self.assertRaises(ValueError):
+            config = Config(path=self.default_config_file)
+
     def test_get_default_path(self):
-        self.assertEqual(self.config.get_default_path(), self.default_path)
+        self.stoiridhtools.path.rmdirs()
+
+        default_path = Config.get_default_path()
+        self.assertEqual(default_path, self.default_path)
+        self.assertTrue(default_path.exists())
 
     def test_path(self):
         self.assertEqual(self.config.path, Path.cwd().joinpath('tests/data'))
 
     def test_open(self):
         async def wrapper():
-            async with self.config.open() as cfg:
+            async with self.config.open():
                 pass
 
         self.loop.run_until_complete(wrapper())
@@ -118,9 +145,17 @@ class TestConfig(unittest.TestCase):
             async with self.config.open() as cfg:
                 with self.assertRaises(TypeError):
                     await cfg.update('shape-shifting', 73)
+
+                with self.assertRaises(TypeError):
                     await cfg.update('shape-shifting', 3.1415)
+
+                with self.assertRaises(TypeError):
                     await cfg.update('shape-shifting', 'device')
+
+                with self.assertRaises(TypeError):
                     await cfg.update('shape-shifting', b'device')
+
+                with self.assertRaises(TypeError):
                     await cfg.update('shape-shifting', False)
 
         self.loop.run_until_complete(wrapper())

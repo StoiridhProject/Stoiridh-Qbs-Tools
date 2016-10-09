@@ -21,6 +21,7 @@
 The :py:mod:`stoiridhtools` module is the main entry-point of Stòiridh Tools. This module offers two
 functions that should not be directly called from other modules.
 """
+import os
 import sys
 from pathlib import Path
 
@@ -62,6 +63,14 @@ def deinit():
 
 def main():
     import stoiridhtools.cli
+
+    if sys.version_info < (3, 5):
+        print('ERROR: Stòiridh Tools requires at least Python 3.5 to run.')
+        sys.exit(1)
+
+    if not (sys.platform.startswith('linux') or sys.platform.startswith('win32')):
+        print('ERROR: Stòiridh Tools is only available on GNU/Linux or Windows.')
+        sys.exit(1)
 
     # initialise Stòiridh Tools
     init()

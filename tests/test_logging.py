@@ -28,7 +28,7 @@ import colorama
 import stoiridhtools
 import stoiridhtools.logging
 
-import util.io
+from stoiridhtoolstest.util.io import OutputStreamWrapper
 
 
 class TestLogging(unittest.TestCase):
@@ -144,7 +144,7 @@ class TestLogging(unittest.TestCase):
         result = self.CRITICAL + colorama.Style.RESET_ALL + \
             ' Logging a message from %s with a severity level: critical'
 
-        with util.io.OutputStreamWrapper(err_stream=self.stderr) as wrapper:
+        with OutputStreamWrapper(err_stream=self.stderr) as wrapper:
             stoiridhtools.logging.critical('Logging a message from root with a severity level: '
                                            'critical')
             self.assertEqual(result % 'root', wrapper.get_lines())
@@ -164,7 +164,7 @@ class TestLogging(unittest.TestCase):
         result = self.DEBUG + colorama.Style.RESET_ALL + \
             ' Logging a message from %s with a severity level: debug'
 
-        with util.io.OutputStreamWrapper(err_stream=self.stderr) as wrapper:
+        with OutputStreamWrapper(err_stream=self.stderr) as wrapper:
             stoiridhtools.logging.debug('Logging a message from root with a severity level: debug')
             self.assertEqual(result % 'root', wrapper.get_lines())
 
@@ -182,7 +182,7 @@ class TestLogging(unittest.TestCase):
         result = self.ERROR + colorama.Style.RESET_ALL + \
             ' Logging a message from %s with a severity level: error'
 
-        with util.io.OutputStreamWrapper(err_stream=self.stderr) as wrapper:
+        with OutputStreamWrapper(err_stream=self.stderr) as wrapper:
             stoiridhtools.logging.error('Logging a message from root with a severity level: error')
             self.assertEqual(result % 'root', wrapper.get_lines())
 
@@ -200,7 +200,7 @@ class TestLogging(unittest.TestCase):
         result = self.INFO + colorama.Style.RESET_ALL + \
             ' Logging a message from %s with a severity level: info'
 
-        with util.io.OutputStreamWrapper(err_stream=self.stderr) as wrapper:
+        with OutputStreamWrapper(err_stream=self.stderr) as wrapper:
             stoiridhtools.logging.info('Logging a message from root with a severity level: info')
             self.assertEqual(result % 'root', wrapper.get_lines())
 
@@ -217,7 +217,7 @@ class TestLogging(unittest.TestCase):
     def test_message(self):
         result = 'Logging a message from %s with a severity level: message'
 
-        with util.io.OutputStreamWrapper(err_stream=self.stderr) as wrapper:
+        with OutputStreamWrapper(err_stream=self.stderr) as wrapper:
             stoiridhtools.logging.message('Logging a message from root with a severity level: '
                                           'message')
             self.assertEqual(result % 'root', wrapper.get_lines())
@@ -237,7 +237,7 @@ class TestLogging(unittest.TestCase):
         result = self.WARNING + colorama.Style.RESET_ALL + \
             ' Logging a message from %s with a severity level: warning'
 
-        with util.io.OutputStreamWrapper(err_stream=self.stderr) as wrapper:
+        with OutputStreamWrapper(err_stream=self.stderr) as wrapper:
             stoiridhtools.logging.warning('Logging a message from root with a severity level: '
                                           'warning')
             self.assertEqual(result % 'root', wrapper.get_lines())

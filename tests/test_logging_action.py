@@ -27,7 +27,7 @@ import stoiridhtools
 import stoiridhtools.logging
 import stoiridhtools.logging.action
 
-import util.io
+from stoiridhtoolstest.util.io import OutputStreamWrapper
 
 
 class TestLoggingAction(unittest.TestCase):
@@ -88,13 +88,13 @@ class TestLoggingAction(unittest.TestCase):
     def test_begin_end(self):
         result = self.ACTION.PREFIX + 'Starting a new Task'
 
-        with util.io.OutputStreamWrapper(err_stream=self.stderr) as wrapper:
+        with OutputStreamWrapper(err_stream=self.stderr) as wrapper:
             self.ACTION.begin('Starting a new Task')
             self.assertEqual(result, wrapper.get_lines())
             self.ACTION.end()
 
     def test_step(self):
-        with util.io.OutputStreamWrapper(err_stream=self.stderr) as wrapper:
+        with OutputStreamWrapper(err_stream=self.stderr) as wrapper:
             self.ACTION.begin('Starting a new Task')
             wrapper.clear()
 

@@ -24,7 +24,8 @@ import unittest
 from pathlib import Path
 
 from stoiridhtools.sdk import SDK
-from util.decorators import asyncio_loop
+
+from stoiridhtoolstest.util.decorators import asyncio_loop
 
 
 @asyncio_loop

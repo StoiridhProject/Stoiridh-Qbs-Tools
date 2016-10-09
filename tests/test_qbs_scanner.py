@@ -21,7 +21,8 @@ import unittest
 
 from stoiridhtools.qbs.scanner import Scanner
 from stoiridhtools.versionnumber import VersionNumber
-from util.decorators import asyncio_loop
+
+from stoiridhtoolstest.util.decorators import asyncio_loop
 
 
 @asyncio_loop

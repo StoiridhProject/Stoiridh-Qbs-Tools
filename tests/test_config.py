@@ -23,11 +23,12 @@ import unittest
 from pathlib import Path
 from shutil import copyfile
 
-import stoiridhtoolstest.config
 from stoiridhtools import qbs
 from stoiridhtools.config import Config
 from stoiridhtools.versionnumber import VersionNumber
-from util.decorators import asyncio_loop
+
+import stoiridhtoolstest.config
+from stoiridhtoolstest.util.decorators import asyncio_loop
 
 
 @asyncio_loop

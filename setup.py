@@ -25,7 +25,11 @@ from setuptools import find_packages, setup
 import stoiridhtools
 
 if sys.version_info < (3, 5):
-    print('ERROR: StoiridhTools requires at least Python 3.5 to run.')
+    print('ERROR: Stòiridh Tools requires at least Python 3.5 to run.')
+    sys.exit(1)
+
+if not (sys.platform.startswith('linux') or sys.platform.startswith('win32')):
+    print('ERROR: Stòiridh Tools is only available on GNU/Linux or Windows.')
     sys.exit(1)
 
 
